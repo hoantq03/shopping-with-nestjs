@@ -6,6 +6,7 @@ import { HttpExceptionFilter } from './common/index';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const PORT = process.env.PORT;
+
   // * Add validation
   app.useGlobalPipes(
     new ValidationPipe({

@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UserStatus } from 'src/common';
+import { RoleUser, UserStatus } from 'src/common';
 
 export class ReqUpdateUserDto {
   @IsOptional()
@@ -28,6 +28,9 @@ export class ReqUpdateUserDto {
   @IsOptional()
   @MinLength(2, { always: false })
   lastName?: string;
+
+  @IsEnum(RoleUser)
+  role: string;
 
   @IsOptional()
   phone?: string;

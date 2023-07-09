@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  MinLength,
+} from 'class-validator';
+import { RoleUser } from 'src/common';
 
 export class CreateUserDto {
   @IsEmail()
@@ -20,6 +27,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(2)
   lastName: string;
+
+  @IsEnum(RoleUser)
+  role: string;
 
   @IsNotEmpty()
   phone: string;

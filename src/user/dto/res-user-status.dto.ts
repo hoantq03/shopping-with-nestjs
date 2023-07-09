@@ -1,15 +1,16 @@
 import { UsersEntity } from '../user.entity';
 
 export class ResUserDto {
-  constructor(user: UsersEntity) {
-    id: String;
-    status: String;
-    firstName: String;
-    lastName: String;
-    phone: String;
-    birthDay: Date;
-    email: String;
+  id: string;
+  status: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  birthDay: Date;
+  email: string;
+  role: string;
 
+  constructor(user: UsersEntity) {
     Object.assign(this, {
       id: user.id,
       status: user.status,
@@ -18,6 +19,7 @@ export class ResUserDto {
       phone: user.phone,
       birthday: user.birthday,
       email: user.email,
+      role: user.role,
     });
   }
 }

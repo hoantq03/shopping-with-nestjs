@@ -1,5 +1,8 @@
 import { DataSource } from 'typeorm';
-import { CreateUser1687788815349 } from '../migrations';
+import {
+  CreateUser1687788815349,
+  AddRoleColumn1688870468614,
+} from '../migrations';
 
 export default new DataSource({
   type: process.env.DB_TYPE as any,
@@ -9,5 +12,5 @@ export default new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   logging: false,
-  migrations: [CreateUser1687788815349],
+  migrations: [CreateUser1687788815349, AddRoleColumn1688870468614],
 });

@@ -3,6 +3,7 @@ import {
   CreateUserDto,
   ReqFindAllUserDto,
   ReqFindUserByEmailDto,
+  ReqUpdateUserDto,
   ReqUserStatusDto,
   ResUserDto,
 } from './dto';
@@ -37,14 +38,8 @@ export class UserController {
     return this.userService.changeStatusUser(id, body);
   }
 
-  //  /user
-  @Post()
-  async createUser(@Body() body: CreateUserDto): Promise<ResUserDto> {
-    return this.userService.createUser(body);
-  }
-
   @Put()
-  async updateUser(@Body() body: ReqUserStatusDto): Promise<ResUserDto> {
+  async updateUser(@Body() body: ReqUpdateUserDto): Promise<ResUserDto> {
     return this.userService.updateUser(body);
   }
 }

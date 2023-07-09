@@ -33,7 +33,7 @@ export class UserServices {
     return ResUsers;
   }
 
-  async createUser(props: CreateUserDto): Promise<ResUserDto> {
+  async signUp(props: CreateUserDto): Promise<ResUserDto> {
     if (props.password !== props.confirmPassword) {
       UserException.passwordNotMatch();
     }
@@ -49,27 +49,25 @@ export class UserServices {
       Number.parseInt(process.env.SALT, 10),
     );
 
-    const userCreate: UsersEntity = this.userRepo.create({
+    const userSignUp: UsersEntity = this.userRepo.create({
       ...props,
       id: userId,
       status: UserStatus.ACTIVE,
     });
-    await this.userRepo.save(userCreate);
-    return new ResUserDto(userCreate);
+    await this.userRepo.save(userSignUp);
+    return new ResUserDto(userSignUp);
   }
 
-  async findUserByEmail(email: string): Promise<UsersEntity> {
+  async findUserByEmail(email: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
       where: { email },
     });
-    if (!user) return new UserException.userNotFound();
-    return user;
+    return user ? user : null;
   }
 
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({ where: { id } });
-    if (!user) return new UserException.userNotFound();
-    return user;
+    return user ? user : null;
   }
 
   async getUserByEmail(email: string): Promise<ResUserDto> {
@@ -110,6 +108,7 @@ export class UserServices {
       UserException.userNotFound();
     }
 
+    user.role = updatedData.role ?? user.role;
     user.password = hashPassword ?? user.password;
     user.status = status ?? user.status;
     user.firstName = updatedData.firstName ?? user.firstName;
