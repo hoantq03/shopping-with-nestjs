@@ -1,6 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
-  CreateUserDto,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
+import {
   ReqFindAllUserDto,
   ReqFindUserByEmailDto,
   ReqUpdateUserDto,
@@ -8,12 +15,14 @@ import {
   ResUserDto,
 } from './dto';
 import { UserServices } from './user.services';
+import { AdminGuard } from 'src/guard/admin.guard';
 
 @Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserServices) {}
 
   // another routes
+  @UseGuards(AdminGuard)
   @Post('/get-all-users')
   async getAllUser(@Body() body: ReqFindAllUserDto): Promise<ResUserDto[]> {
     return this.userService.getAllUser(body);
