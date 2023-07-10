@@ -20,6 +20,7 @@ export class AuthServices {
       AuthException.unauthorized();
     }
     const payLoad = { sub: user.id, email: user.email };
+
     return {
       access_token: await this.jwtService.signAsync(payLoad),
     };

@@ -39,6 +39,7 @@ export class UserController {
     return this.userService.getUserById(id);
   }
 
+  @UseGuards(AdminGuard)
   @Put('/:id')
   async changeStatusUser(
     @Param('id') id: string,
@@ -47,6 +48,7 @@ export class UserController {
     return this.userService.changeStatusUser(id, body);
   }
 
+  @UseGuards(AdminGuard)
   @Put()
   async updateUser(@Body() body: ReqUpdateUserDto): Promise<ResUserDto> {
     return this.userService.updateUser(body);
