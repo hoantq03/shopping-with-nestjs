@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { RoleUser } from 'src/common';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsEmail()
   email: string;
 

@@ -5,19 +5,22 @@ import { Repository } from 'typeorm';
 import { UserStatus } from '../common';
 import { UserException } from '../exception';
 import {
-  CreateUserDto,
+  RegisterUserDto,
   ReqFindAllUserDto,
   ReqUpdateUserDto,
   ReqUserStatusDto,
   ResUserDto,
 } from './dto';
-import { UsersEntity } from './user.entity';
+import { UsersEntity } from './entity/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { ReqAddAddress, ResAddressDto } from './dto/add-address';
 
 @Injectable()
 export class UserServices {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly userRepo: Repository<UsersEntity>,
+    private jwtService: JwtService,
   ) {}
 
   async getAllUser(body: ReqFindAllUserDto): Promise<ResUserDto[]> {
@@ -33,7 +36,7 @@ export class UserServices {
     return ResUsers;
   }
 
-  async signUp(props: CreateUserDto): Promise<ResUserDto> {
+  async signUp(props: RegisterUserDto): Promise<object> {
     if (props.password !== props.confirmPassword) {
       UserException.passwordNotMatch();
     }
@@ -55,7 +58,13 @@ export class UserServices {
       status: UserStatus.ACTIVE,
     });
     await this.userRepo.save(userSignUp);
-    return new ResUserDto(userSignUp);
+
+    const user = new ResUserDto(userSignUp);
+    const payLoad = { userId: user.id, email: user.email };
+
+    return {
+      access_token: await this.jwtService.signAsync(payLoad),
+    };
   }
 
   async findUserByEmail(email: string): Promise<UsersEntity | null> {
@@ -129,5 +138,10 @@ export class UserServices {
     user.status = body.status;
     await this.userRepo.save(user);
     return new ResUserDto(user);
+  }
+
+  async addAddress(address: ReqAddAddress): Promise<any> {
+    console.log(address);
+    return;
   }
 }

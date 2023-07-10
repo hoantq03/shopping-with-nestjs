@@ -3,7 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 
 import { TypeOrmConfigService } from './orm-config.service';
-import { UsersEntity } from 'src/user/user.entity';
+import { UsersEntity } from 'src/user/entity/user.entity';
+import { AddressEntity } from 'src/user/entity/address.entity';
 
 export const dbSourceOption: DataSourceOptions = {
   type: process.env.DB_TYPE as any,
@@ -14,7 +15,7 @@ export const dbSourceOption: DataSourceOptions = {
   database: process.env.DB_NAME,
   synchronize: false,
   logging: false,
-  entities: [UsersEntity],
+  entities: [UsersEntity, AddressEntity],
 };
 
 @Module({

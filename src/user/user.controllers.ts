@@ -16,6 +16,8 @@ import {
 } from './dto';
 import { UserServices } from './user.services';
 import { AdminGuard } from 'src/guard/admin.guard';
+import { AuthGuard } from 'src/guard/auth.guard';
+import { ReqAddAddress, ResAddressDto } from './dto/add-address';
 
 @Controller('/users')
 export class UserController {
@@ -23,6 +25,7 @@ export class UserController {
 
   // another routes
   @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard)
   @Post('/get-all-users')
   async getAllUser(@Body() body: ReqFindAllUserDto): Promise<ResUserDto[]> {
     return this.userService.getAllUser(body);
@@ -40,6 +43,7 @@ export class UserController {
   }
 
   @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard)
   @Put('/:id')
   async changeStatusUser(
     @Param('id') id: string,
@@ -49,8 +53,16 @@ export class UserController {
   }
 
   @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard)
   @Put()
   async updateUser(@Body() body: ReqUpdateUserDto): Promise<ResUserDto> {
     return this.userService.updateUser(body);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post()
+  async newAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
+    const address = await this.userService.addAddress(body);
+    return new ResAddressDto(address);
   }
 }

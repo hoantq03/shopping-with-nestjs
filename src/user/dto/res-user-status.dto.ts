@@ -1,4 +1,4 @@
-import { UsersEntity } from '../user.entity';
+import { UsersEntity } from '../entity/user.entity';
 
 export class ResUserDto {
   id: string;

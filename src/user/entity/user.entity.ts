@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany, JoinColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { AddressEntity } from './address.entity';
 
 const USER_PREFIX = 'user_';
 
@@ -51,6 +52,9 @@ export class UsersEntity {
 
   @Column({ name: 'updated_by' })
   updatedBy: string;
+
+  @OneToMany(() => AddressEntity, (address) => address.user)
+  address!: AddressEntity[];
 
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

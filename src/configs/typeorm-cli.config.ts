@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import {
   CreateUser1687788815349,
   AddRoleColumn1688870468614,
+  AddressTable1688958021742,
 } from '../migrations';
 
 export default new DataSource({
@@ -12,5 +13,9 @@ export default new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   logging: false,
-  migrations: [CreateUser1687788815349, AddRoleColumn1688870468614],
+  migrations: [
+    CreateUser1687788815349,
+    AddRoleColumn1688870468614,
+    AddressTable1688958021742,
+  ],
 });
