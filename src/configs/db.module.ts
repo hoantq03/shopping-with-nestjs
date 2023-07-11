@@ -5,6 +5,8 @@ import { DataSourceOptions } from 'typeorm';
 import { TypeOrmConfigService } from './orm-config.service';
 import { UsersEntity } from 'src/user/entity/user.entity';
 import { AddressEntity } from 'src/user/entity';
+import { ProductEntity } from 'src/product/entity/product.entity';
+import { CategoryEntity } from 'src/product/entity/categories.entity';
 
 export const dbSourceOption: DataSourceOptions = {
   type: process.env.DB_TYPE as any,
@@ -15,7 +17,7 @@ export const dbSourceOption: DataSourceOptions = {
   database: process.env.DB_NAME,
   synchronize: false,
   logging: false,
-  entities: [UsersEntity, AddressEntity],
+  entities: [UsersEntity, AddressEntity, ProductEntity, CategoryEntity],
 };
 
 @Module({

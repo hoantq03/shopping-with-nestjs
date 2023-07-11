@@ -1,32 +1,17 @@
 import { UsersEntity } from 'src/user/entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { CategoryEntity } from './categories.entity';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { ProductEntity } from './product.entity';
 
-@Entity('products')
-export class ProductEntity {
+@Entity('categories')
+export class CategoryEntity {
   @PrimaryColumn()
-  id: string;
+  categoryId: string;
 
   @Column()
   name: string;
 
   @Column()
   description: string;
-
-  @Column()
-  color: string;
-
-  @Column()
-  discount: number;
-
-  @Column()
-  imageUrl: string;
-
-  @Column()
-  price: number;
-
-  @Column()
-  quantityInStock: number;
 
   @Column({
     type: 'timestamptz',
@@ -48,9 +33,6 @@ export class ProductEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  @ManyToOne(() => UsersEntity, (user) => user.products)
-  user: UsersEntity;
-
-  @ManyToOne(() => CategoryEntity, (category) => category.products)
-  category: CategoryEntity;
+  @OneToMany(() => ProductEntity, (products) => products.category)
+  products: ProductEntity[];
 }

@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { AddressEntity } from 'src/user/entity';
+import { ProductEntity } from 'src/product/entity/product.entity';
 const USER_PREFIX = 'user_';
 
 @Entity('users')
@@ -54,6 +55,9 @@ export class UsersEntity {
 
   @OneToMany(() => AddressEntity, (address) => address.user)
   address: AddressEntity[];
+
+  @OneToMany(() => ProductEntity, (products) => products.user)
+  products: ProductEntity[];
 
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
