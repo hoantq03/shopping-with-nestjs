@@ -4,7 +4,7 @@ import { UsersEntity } from './user.entity';
 
 const ADDRESS_PREFIX = 'address_';
 
-@Entity()
+@Entity('address_info')
 export class AddressEntity {
   @PrimaryColumn()
   id!: string;
@@ -24,7 +24,7 @@ export class AddressEntity {
   @ManyToOne(() => UsersEntity, (user) => user.address)
   user!: UsersEntity;
 
-  static createUserId(id?: string): string {
+  static createAddressId(id?: string): string {
     return id ? id : `${ADDRESS_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

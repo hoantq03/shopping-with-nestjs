@@ -1,3 +1,4 @@
+import { AddressEntity } from '../entity';
 import { UsersEntity } from '../entity/user.entity';
 
 export class ResUserDto {
@@ -9,6 +10,7 @@ export class ResUserDto {
   birthDay: Date;
   email: string;
   role: string;
+  address: AddressEntity[];
 
   constructor(user: UsersEntity) {
     Object.assign(this, {
@@ -20,6 +22,7 @@ export class ResUserDto {
       birthday: user.birthday,
       email: user.email,
       role: user.role,
+      address: user.address,
     });
   }
 }

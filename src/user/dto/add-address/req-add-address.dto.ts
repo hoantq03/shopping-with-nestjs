@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class ReqAddAddress {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional({ always: false })
   id: string;
 
   @IsString()
@@ -21,7 +21,7 @@ export class ReqAddAddress {
   @IsNotEmpty()
   country: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsOptional({ always: false })
   userId: string;
 }

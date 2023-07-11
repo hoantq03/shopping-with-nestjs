@@ -36,12 +36,6 @@ export class UserController {
     return await this.userService.getUserByEmail(body.email);
   }
 
-  //  /:id
-  @Get('/:id')
-  findById(@Param('id') id: string): Promise<ResUserDto> {
-    return this.userService.getUserById(id);
-  }
-
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard)
   @Put('/:id')
@@ -60,9 +54,21 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @Post()
+  @Post('/add-address')
   async newAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
-    const address = await this.userService.addAddress(body);
-    return new ResAddressDto(address);
+    return this.userService.addAddress(body);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/get-all-address')
+  async getAllAddress(): Promise<ResAddressDto[]> {
+    return this.userService.getAllAddress();
+  }
+
+  //  /:id
+  @UseGuards(AuthGuard)
+  @Get('/:id')
+  getById(@Param('id') id: string): Promise<ResUserDto> {
+    return this.userService.getUserById(id);
   }
 }

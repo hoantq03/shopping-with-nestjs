@@ -1,4 +1,5 @@
-import { AddressEntity } from 'src/user/entity/address.entity';
+import { UsersEntity } from 'src/user/entity';
+import { AddressEntity } from 'src/user/entity';
 
 export class ResAddressDto {
   id: string;
@@ -6,7 +7,7 @@ export class ResAddressDto {
   country: string;
   postal_code: string;
   city: string;
-  userId: string;
+  user: UsersEntity;
 
   constructor(address: AddressEntity) {
     Object.assign(this, {
@@ -15,7 +16,7 @@ export class ResAddressDto {
       country: address.country,
       postal_code: address.postal_code,
       city: address.city,
-      userId: address.user,
+      User: address.user,
     });
   }
 }

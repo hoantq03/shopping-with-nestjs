@@ -14,12 +14,17 @@ import {
 import { UsersEntity } from './entity/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ReqAddAddress, ResAddressDto } from './dto/add-address';
+import { AddressEntity } from 'src/user/entity';
+import { isEmpty } from 'lodash';
+import { AddressException } from 'src/exception/address.exception';
 
 @Injectable()
 export class UserServices {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly userRepo: Repository<UsersEntity>,
+    @InjectRepository(AddressEntity)
+    private addressRepo: Repository<AddressEntity>,
     private jwtService: JwtService,
   ) {}
 
@@ -27,6 +32,7 @@ export class UserServices {
     const ResUsers: ResUserDto[] = [];
     const users: UsersEntity[] = await this.userRepo.find({
       where: { status: body.status },
+      relations: ['address'],
     });
 
     users.forEach((user) => {
@@ -70,12 +76,16 @@ export class UserServices {
   async findUserByEmail(email: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
       where: { email },
+      relations: ['address'],
     });
     return user ? user : null;
   }
 
   async findUserById(id: string): Promise<UsersEntity | null> {
-    const user: UsersEntity = await this.userRepo.findOne({ where: { id } });
+    const user: UsersEntity = await this.userRepo.findOne({
+      where: { id },
+      relations: ['address'],
+    });
     return user ? user : null;
   }
 
@@ -140,8 +150,38 @@ export class UserServices {
     return new ResUserDto(user);
   }
 
-  async addAddress(address: ReqAddAddress): Promise<any> {
-    console.log(address);
-    return;
+  async addAddress(address: ReqAddAddress): Promise<ResAddressDto> {
+    const { userId, ...rest } = { ...address };
+    const user = await this.findUserById(userId);
+    const id = AddressEntity.createAddressId();
+    const addressEntitySave = { id, ...rest, user };
+
+    await this.addressRepo.save(addressEntitySave);
+    return new ResAddressDto(addressEntitySave);
+  }
+
+  async findAddressById(id: string): Promise<ResAddressDto | null> {
+    return new ResAddressDto(
+      await this.addressRepo.findOne({ where: { id }, relations: ['user'] }),
+    );
+  }
+
+  async findAddressByUser(user: UsersEntity): Promise<ResAddressDto | null> {
+    return new ResAddressDto(
+      await this.addressRepo.findOne({
+        where: { user: user },
+        relations: ['user'],
+      }),
+    );
+  }
+
+  async getAllAddress(): Promise<ResAddressDto[]> {
+    const result = await this.addressRepo.find({
+      where: {},
+      relations: ['user'],
+    });
+    if (isEmpty(result)) AddressException.addressNotFound();
+
+    return result;
   }
 }

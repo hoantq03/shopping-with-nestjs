@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { AddressEntity } from 'src/user/entity/address.entity';
+import { AddressEntity } from 'src/user/entity';
+
 import { UsersEntity } from 'src/user/entity/user.entity';
 
 @Injectable()

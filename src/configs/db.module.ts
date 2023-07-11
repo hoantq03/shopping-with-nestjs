@@ -4,7 +4,7 @@ import { DataSourceOptions } from 'typeorm';
 
 import { TypeOrmConfigService } from './orm-config.service';
 import { UsersEntity } from 'src/user/entity/user.entity';
-import { AddressEntity } from 'src/user/entity/address.entity';
+import { AddressEntity } from 'src/user/entity';
 
 export const dbSourceOption: DataSourceOptions = {
   type: process.env.DB_TYPE as any,
