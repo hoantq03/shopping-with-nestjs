@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UserStatus } from '../common';
-import { UserException } from '../exception';
+import { AuthException, UserException } from '../exception';
 import {
   RegisterUserDto,
   ReqFindAllUserDto,
@@ -15,7 +15,7 @@ import { UsersEntity } from './entity/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ReqAddAddress, ResAddressDto } from './dto/add-address';
 import { AddressEntity } from 'src/user/entity';
-import { isEmpty } from 'lodash';
+import { add, isEmpty } from 'lodash';
 import { AddressException } from 'src/exception/address.exception';
 
 @Injectable()
@@ -183,5 +183,20 @@ export class UserServices {
     if (isEmpty(result)) AddressException.addressNotFound();
 
     return result;
+  }
+
+  async deleteAddress(addressId: string, userId: string): Promise<object> {
+    const address = await this.findAddressById(addressId);
+    if (!address) {
+      AddressException.addressNotFound();
+    }
+    if (address.user.id !== userId) {
+      AuthException.forbidden();
+    }
+    await this.addressRepo.delete(address);
+    return {
+      message: 'successfully deleted',
+      status: 204,
+    };
   }
 }

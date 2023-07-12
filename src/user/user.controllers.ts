@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import {
   ReqFindAllUserDto,
@@ -70,5 +71,13 @@ export class UserController {
   @Get('/:id')
   getById(@Param('id') id: string): Promise<ResUserDto> {
     return this.userService.getUserById(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/delete-address/:id')
+  async deleteAddress(@Param() param, @Body() body) {
+    const addressId = param.id;
+    const { userId } = body;
+    return this.userService.deleteAddress(addressId, userId);
   }
 }

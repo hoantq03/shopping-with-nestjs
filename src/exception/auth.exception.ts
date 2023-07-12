@@ -15,4 +15,12 @@ export class AuthException {
     };
     throw new HttpException(res, HttpStatus.BAD_REQUEST);
   }
+
+  static forbidden() {
+    const res = {
+      code: 'FORBIDDEN RESOURCES',
+      message: 'FORBIDDEN RESOURCES',
+    };
+    throw new HttpException(res, HttpStatus.FORBIDDEN);
+  }
 }

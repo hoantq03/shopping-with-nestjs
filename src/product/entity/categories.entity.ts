@@ -1,7 +1,8 @@
-import { UsersEntity } from 'src/user/entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { ProductEntity } from './product.entity';
+import { v4 as uuidv4 } from 'uuid';
 
+const CATEGORY_PREFIX = 'category_';
 @Entity('categories')
 export class CategoryEntity {
   @PrimaryColumn()
@@ -35,4 +36,8 @@ export class CategoryEntity {
 
   @OneToMany(() => ProductEntity, (products) => products.category)
   products: ProductEntity[];
+
+  static createAddressId(id?: string): string {
+    return id ? id : `${CATEGORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  }
 }
