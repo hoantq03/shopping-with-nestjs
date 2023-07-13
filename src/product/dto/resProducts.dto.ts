@@ -1,6 +1,8 @@
 import { UsersEntity } from 'src/user/entity';
 import { CategoryEntity } from '../entity/categories.entity';
 import { ProductEntity } from '../entity/product.entity';
+import { ResCategoryDto } from './resCategory.dto';
+import { ResUserDto } from 'src/user/dto';
 
 export class ResProduct {
   id: string;
@@ -11,8 +13,8 @@ export class ResProduct {
   imageUrl: string;
   price: number;
   quantityInStock: number;
-  category: CategoryEntity;
-  user: UsersEntity;
+  category: ResCategoryDto;
+  user: ResUserDto;
 
   constructor(product: ProductEntity) {
     Object.assign(this, {
@@ -24,8 +26,8 @@ export class ResProduct {
       imageUrl: product.imageUrl,
       price: product.price,
       quantityInStock: product.quantityInStock,
-      category: product.category,
-      user: product.user,
+      category: new ResCategoryDto(product.category),
+      user: new ResUserDto(product.user),
     });
   }
 }

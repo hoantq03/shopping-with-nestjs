@@ -21,8 +21,8 @@ export class UsersEntity {
   @Column()
   password!: string;
 
-  @Column()
-  role: string;
+  @Column({ default: 'user' })
+  role!: string;
 
   @Column({ length: 20 })
   phone!: string;

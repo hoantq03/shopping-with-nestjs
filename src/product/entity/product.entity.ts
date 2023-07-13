@@ -18,13 +18,13 @@ export class ProductEntity {
   @Column()
   color!: string;
 
-  @Column()
+  @Column('decimal', { precision: 2 })
   discount!: number;
 
   @Column()
   imageUrl!: string;
 
-  @Column()
+  @Column('decimal', { precision: 2 })
   price!: number;
 
   @Column()

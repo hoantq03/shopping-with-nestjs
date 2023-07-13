@@ -13,6 +13,7 @@ import { ResProduct } from './dto/resProducts.dto';
 import { CategoryEntity } from './entity/categories.entity';
 import { ProductEntity } from './entity/product.entity';
 import { UsersEntity } from 'src/user/entity';
+import { ResUserDto } from 'src/user/dto';
 
 @Injectable()
 export class ProductService {
@@ -40,9 +41,13 @@ export class ProductService {
       ProductException.categoryNotExist();
     }
     const productId = ProductEntity.createProductId();
-    const productProps = { id: productId, ...productInfo, user, category };
+    const productProps = {
+      id: productId,
+      ...productInfo,
+      user,
+      category,
+    };
     const product = this.productRepo.create(productProps);
-    console.log(product);
     await this.productRepo.save(product);
     return new ResProduct(product);
   }
@@ -57,7 +62,6 @@ export class ProductService {
     const categoryId = CategoryEntity.createCategoryId();
     const createdBy = categoryInfo.userId;
     const updatedBy = categoryInfo.userId;
-    console.log(categoryInfo);
     const categoryProps = { categoryId, ...categoryInfo, createdBy, updatedBy };
     const categoryEntity: CategoryEntity = await this.categoryRepo.create(
       categoryProps,
@@ -75,7 +79,6 @@ export class ProductService {
     if (!category) {
       CategoryException.categoryNotFound();
     }
-    console.log(category.products);
     if (!isEmpty(category.products)) {
       CategoryException.categoryContainProducts();
     }
