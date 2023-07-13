@@ -6,14 +6,16 @@ const CATEGORY_PREFIX = 'category_';
 @Entity('categories')
 export class CategoryEntity {
   @PrimaryColumn()
-  categoryId: string;
+  categoryId!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  description: string;
+  description!: string;
 
+  @OneToMany(() => ProductEntity, (products) => products.category)
+  products: ProductEntity[];
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
@@ -34,10 +36,7 @@ export class CategoryEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  @OneToMany(() => ProductEntity, (products) => products.category)
-  products: ProductEntity[];
-
-  static createAddressId(id?: string): string {
+  static createCategoryId(id?: string): string {
     return id ? id : `${CATEGORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

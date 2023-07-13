@@ -9,7 +9,7 @@ export class AddProductTable1689061983172 implements MigrationInterface {
         "description" character varying NOT NULL,
         "color" character varying(100) NOT NULL,
         "discount" real NOT NULL,
-        "imageUrl" character varying(20) NOT NULL,
+        "imageUrl" character varying(100) NOT NULL,
         "price" real NOT NULL,
         "categoryId" character varying NOT NULL,
         "userId" character varying NOT NULL,

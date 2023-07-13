@@ -153,9 +153,15 @@ export class UserServices {
   async addAddress(address: ReqAddAddress): Promise<ResAddressDto> {
     const { userId, ...rest } = { ...address };
     const user = await this.findUserById(userId);
+    const addressExisted = await this.userRepo.findOne({
+      where: { address: { address_line: address.address_line } },
+    });
+    if (addressExisted) {
+      AddressException.addressExisted();
+    }
     const id = AddressEntity.createAddressId();
     const addressEntitySave = { id, ...rest, user };
-
+    console.log(addressEntitySave);
     await this.addressRepo.save(addressEntitySave);
     return new ResAddressDto(addressEntitySave);
   }
@@ -181,8 +187,11 @@ export class UserServices {
       relations: ['user'],
     });
     if (isEmpty(result)) AddressException.addressNotFound();
-
-    return result;
+    const resAddress: ResAddressDto[] = [];
+    result.forEach((res) => {
+      resAddress.push(new ResAddressDto(res));
+    });
+    return resAddress;
   }
 
   async deleteAddress(addressId: string, userId: string): Promise<object> {
@@ -190,7 +199,7 @@ export class UserServices {
     if (!address) {
       AddressException.addressNotFound();
     }
-    if (address.user.id !== userId) {
+    if (address.userId !== userId) {
       AuthException.forbidden();
     }
     await this.addressRepo.delete(address);

@@ -7,4 +7,11 @@ export class AddressException {
     };
     throw new HttpException(res, HttpStatus.NOT_FOUND);
   }
+  static addressExisted() {
+    const res = {
+      code: 'ADDRESS EXISTED',
+      message: 'Address is existed',
+    };
+    throw new HttpException(res, HttpStatus.NOT_FOUND);
+  }
 }

@@ -13,7 +13,7 @@ export class ResCategoryDto {
     Object.assign(this, {
       categoryId: Category.categoryId,
       name: Category.name,
-      description: Category.categoryId,
+      description: Category.description,
       createdAt: Category.createdAt,
       createdBy: Category.createdBy,
       updatedAt: Category.updatedAt,

@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmpty } from 'lodash';
-import { CategoryException } from 'src/exception';
+import {
+  CategoryException,
+  ProductException,
+  UserException,
+} from 'src/exception';
 import { Repository } from 'typeorm';
 import { ReqAddCategory, ReqAddProduct } from './dto';
 import { ResCategoryDto } from './dto/resCategory.dto';
 import { ResProduct } from './dto/resProducts.dto';
 import { CategoryEntity } from './entity/categories.entity';
 import { ProductEntity } from './entity/product.entity';
+import { UsersEntity } from 'src/user/entity';
 
 @Injectable()
 export class ProductService {
@@ -16,12 +21,29 @@ export class ProductService {
     private productRepo: Repository<ProductEntity>,
     @InjectRepository(CategoryEntity)
     private categoryRepo: Repository<CategoryEntity>,
+    @InjectRepository(UsersEntity)
+    private userRepo: Repository<UsersEntity>,
   ) {}
 
   async addProduct(productInfo: ReqAddProduct): Promise<ResProduct> {
-    const product = this.productRepo.create(productInfo);
+    const user = await this.userRepo.findOne({
+      where: { id: productInfo.userId },
+    });
+    if (!user) {
+      ProductException.ownerNotExist();
+    }
+
+    const category = await this.categoryRepo.findOne({
+      where: { categoryId: productInfo.categoryId },
+    });
+    if (!category) {
+      ProductException.categoryNotExist();
+    }
+    const productId = ProductEntity.createProductId();
+    const productProps = { id: productId, ...productInfo, user, category };
+    const product = this.productRepo.create(productProps);
+    console.log(product);
     await this.productRepo.save(product);
-    console.log(productInfo);
     return new ResProduct(product);
   }
 
@@ -32,8 +54,11 @@ export class ProductService {
     if (!isEmpty(categories)) {
       CategoryException.categoryExisted();
     }
-    const categoryId = CategoryEntity.createAddressId();
-    const categoryProps = { categoryId, ...categoryInfo };
+    const categoryId = CategoryEntity.createCategoryId();
+    const createdBy = categoryInfo.userId;
+    const updatedBy = categoryInfo.userId;
+    console.log(categoryInfo);
+    const categoryProps = { categoryId, ...categoryInfo, createdBy, updatedBy };
     const categoryEntity: CategoryEntity = await this.categoryRepo.create(
       categoryProps,
     );

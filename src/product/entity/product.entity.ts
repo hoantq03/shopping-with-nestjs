@@ -7,28 +7,34 @@ const PRODUCT_PREFIX = 'product_';
 @Entity('products')
 export class ProductEntity {
   @PrimaryColumn()
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  description: string;
+  description!: string;
 
   @Column()
-  color: string;
+  color!: string;
 
   @Column()
-  discount: number;
+  discount!: number;
 
   @Column()
-  imageUrl: string;
+  imageUrl!: string;
 
   @Column()
-  price: number;
+  price!: number;
 
   @Column()
-  quantityInStock: number;
+  quantityInStock!: number;
+
+  @ManyToOne(() => UsersEntity, (user) => user.products)
+  user!: UsersEntity;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.products)
+  category!: CategoryEntity;
 
   @Column({
     type: 'timestamptz',
@@ -50,13 +56,7 @@ export class ProductEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  @ManyToOne(() => UsersEntity, (user) => user.products)
-  user: UsersEntity;
-
-  @ManyToOne(() => CategoryEntity, (category) => category.products)
-  category: CategoryEntity;
-
-  static createAddressId(id?: string): string {
+  static createProductId(id?: string): string {
     return id ? id : `${PRODUCT_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

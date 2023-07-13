@@ -10,4 +10,8 @@ export class ReqAddCategory {
 
   @IsString()
   description: string;
+
+  @IsString()
+  @IsOptional()
+  userId: string;
 }

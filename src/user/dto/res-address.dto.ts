@@ -7,7 +7,7 @@ export class ResAddressDto {
   country: string;
   postal_code: string;
   city: string;
-  user: UsersEntity;
+  userId: string;
 
   constructor(address: AddressEntity) {
     Object.assign(this, {
@@ -16,7 +16,7 @@ export class ResAddressDto {
       country: address.country,
       postal_code: address.postal_code,
       city: address.city,
-      user: address.user,
+      userId: address.user.id,
     });
   }
 }
