@@ -6,7 +6,6 @@ import {
   Post,
   Put,
   UseGuards,
-  Delete,
 } from '@nestjs/common';
 import {
   ReqFindAllUserDto,

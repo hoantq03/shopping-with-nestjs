@@ -6,28 +6,28 @@ import { v4 as uuidv4 } from 'uuid';
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')
 export class ProductEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ name: 'id' })
   id!: string;
 
-  @Column()
+  @Column({ length: 100, name: 'name' })
   name!: string;
 
-  @Column()
+  @Column({ name: 'description' })
   description!: string;
 
-  @Column()
+  @Column({ length: 100, name: 'color' })
   color!: string;
 
-  @Column('decimal', { precision: 2 })
+  @Column('decimal', { precision: 2, name: 'discount' })
   discount!: number;
 
-  @Column()
+  @Column({ length: 100, name: 'imageUrl' })
   imageUrl!: string;
 
-  @Column('decimal', { precision: 2 })
+  @Column('decimal', { precision: 2, name: 'price' })
   price!: number;
 
-  @Column()
+  @Column({ name: 'quantityInStock' })
   quantityInStock!: number;
 
   @ManyToOne(() => UsersEntity, (user) => user.products)

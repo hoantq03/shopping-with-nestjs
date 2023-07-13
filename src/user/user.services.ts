@@ -52,6 +52,7 @@ export class UserServices {
     if (userExist) {
       UserException.userExist();
     }
+
     const userId: string = UsersEntity.createUserId();
     props.password = await bcrypt.hash(
       props.password,
@@ -74,6 +75,7 @@ export class UserServices {
   }
 
   async findUserByEmail(email: string): Promise<UsersEntity | null> {
+    console.log('here');
     const user: UsersEntity = await this.userRepo.findOne({
       where: { email },
       relations: ['address'],

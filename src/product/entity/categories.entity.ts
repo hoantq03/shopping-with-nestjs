@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 const CATEGORY_PREFIX = 'category_';
 @Entity('categories')
 export class CategoryEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ name: 'categoryId' })
   categoryId!: string;
 
-  @Column()
+  @Column({ length: 100, name: 'name' })
   name!: string;
 
-  @Column()
+  @Column({ name: 'description' })
   description!: string;
 
   @OneToMany(() => ProductEntity, (products) => products.category)

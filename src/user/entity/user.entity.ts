@@ -15,20 +15,23 @@ export class UsersEntity {
   @Column({ length: 100, name: 'last_name' })
   lastName!: string;
 
-  @Column({ length: 100, unique: true })
+  @Column({ length: 100, unique: true, name: 'email' })
   email!: string;
 
-  @Column()
+  @Column({ name: 'password' })
   password!: string;
 
-  @Column({ default: 'user' })
+  @Column({ default: 'user', name: 'role' })
   role!: string;
 
-  @Column({ length: 20 })
+  @Column({ length: 20, name: 'phone' })
   phone!: string;
 
-  @Column()
+  @Column({ name: 'birthday' })
   birthday!: Date;
+
+  @Column('smallint', { name: 'status' })
+  status!: number;
 
   @Column({
     type: 'timestamptz',
@@ -39,9 +42,6 @@ export class UsersEntity {
 
   @Column({ name: 'created_by', default: () => '1' })
   createdBy?: string;
-
-  @Column({ name: 'status' })
-  status!: number;
 
   @Column({
     type: 'timestamptz',
