@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { ProductEntity } from 'src/product/entity';
 import { AddressEntity } from 'src/user/entity';
-import { ProductEntity } from 'src/product/entity/product.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 const USER_PREFIX = 'user_';
 
 @Entity('users')

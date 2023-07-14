@@ -1,7 +1,7 @@
 import { UsersEntity } from 'src/user/entity';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { CategoryEntity } from './categories.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { CategoryEntity } from './categories.entity';
 
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')

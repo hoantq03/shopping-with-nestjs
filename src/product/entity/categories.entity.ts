@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { ProductEntity } from './product.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductEntity } from './product.entity';
 
 const CATEGORY_PREFIX = 'category_';
 @Entity('categories')

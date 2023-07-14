@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmpty } from 'lodash';
-import {
-  CategoryException,
-  ProductException,
-  UserException,
-} from 'src/exception';
-import { Repository } from 'typeorm';
-import { ReqAddCategory, ReqAddProduct } from './dto';
-import { ResCategoryDto } from './dto/resCategory.dto';
-import { ResProduct } from './dto/resProducts.dto';
-import { CategoryEntity } from './entity/categories.entity';
-import { ProductEntity } from './entity/product.entity';
+import { CategoryException, ProductException } from 'src/exception';
 import { UsersEntity } from 'src/user/entity';
-import { ResUserDto } from 'src/user/dto';
+import { Repository } from 'typeorm';
+import {
+  ReqAddCategory,
+  ReqAddProduct,
+  ResCategoryDto,
+  ResProduct,
+} from './dto';
+import { CategoryEntity, ProductEntity } from './entity';
 
 @Injectable()
 export class ProductService {

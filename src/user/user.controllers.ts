@@ -7,17 +7,17 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { AdminGuard, AuthGuard } from 'src/guard';
 import {
+  ReqAddAddress,
   ReqFindAllUserDto,
   ReqFindUserByEmailDto,
   ReqUpdateUserDto,
   ReqUserStatusDto,
+  ResAddressDto,
   ResUserDto,
 } from './dto';
 import { UserServices } from './user.services';
-import { AdminGuard } from 'src/guard/admin.guard';
-import { AuthGuard } from 'src/guard/auth.guard';
-import { ReqAddAddress, ResAddressDto } from './dto/add-address';
 
 @Controller('/users')
 export class UserController {

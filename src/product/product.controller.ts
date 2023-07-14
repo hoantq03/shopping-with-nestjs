@@ -1,18 +1,20 @@
 import {
   Body,
   Controller,
-  Post,
-  UseGuards,
+  Delete,
   Get,
   Param,
-  Delete,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { AdminGuard } from 'src/guard';
-import { AuthGuard } from 'src/guard/auth.guard';
-import { ReqAddCategory, ReqAddProduct } from './dto';
+import { AdminGuard, AuthGuard } from 'src/guard';
+import {
+  ReqAddCategory,
+  ReqAddProduct,
+  ResCategoryDto,
+  ResProduct,
+} from './dto';
 import { ProductService } from './product.service';
-import { ResCategoryDto } from './dto/resCategory.dto';
-import { ResProduct } from './dto/resProducts.dto';
 @Controller('products')
 export class ProductController {
   constructor(private productServices: ProductService) {}

@@ -1,8 +1,6 @@
-import { UsersEntity } from 'src/user/entity';
-import { CategoryEntity } from '../entity/categories.entity';
+import { ResUserDto } from 'src/user/dto';
 import { ProductEntity } from '../entity/product.entity';
 import { ResCategoryDto } from './resCategory.dto';
-import { ResUserDto } from 'src/user/dto';
 
 export class ResProduct {
   id: string;

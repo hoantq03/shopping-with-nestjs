@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { DeleteResult, Repository } from 'typeorm';
+import { isEmpty } from 'lodash';
+import { AddressException, AuthException, UserException } from 'src/exception';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
+import { Repository } from 'typeorm';
 import { UserStatus } from '../common';
-import { AuthException, UserException } from '../exception';
 import {
   RegisterUserDto,
+  ReqAddAddress,
   ReqFindAllUserDto,
   ReqUpdateUserDto,
   ReqUserStatusDto,
+  ResAddressDto,
   ResUserDto,
 } from './dto';
-import { UsersEntity } from './entity/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import { ReqAddAddress, ResAddressDto } from './dto/add-address';
-import { AddressEntity } from 'src/user/entity';
-import { add, isEmpty } from 'lodash';
-import { AddressException } from 'src/exception/address.exception';
 
 @Injectable()
 export class UserServices {
@@ -75,8 +74,7 @@ export class UserServices {
   }
 
   async findUserByEmail(email: string): Promise<UsersEntity | null> {
-    console.log('here');
-    const user: UsersEntity = await this.userRepo.findOne({
+    const user = await this.userRepo.findOne({
       where: { email },
       relations: ['address'],
     });
