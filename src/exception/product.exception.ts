@@ -16,4 +16,11 @@ export class ProductException {
     };
     throw new HttpException(res, HttpStatus.BAD_REQUEST);
   }
+  static productNotFound() {
+    const res = {
+      code: 'PRODUCT NOT FOUND',
+      message: 'the product not found, please try again !',
+    };
+    throw new HttpException(res, HttpStatus.NOT_FOUND);
+  }
 }

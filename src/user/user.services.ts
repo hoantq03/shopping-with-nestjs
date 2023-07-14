@@ -161,7 +161,6 @@ export class UserServices {
     }
     const id = AddressEntity.createAddressId();
     const addressEntitySave = { id, ...rest, user };
-    console.log(addressEntitySave);
     await this.addressRepo.save(addressEntitySave);
     return new ResAddressDto(addressEntitySave);
   }

@@ -21,4 +21,11 @@ export class UserException {
     };
     throw new HttpException(res, HttpStatus.BAD_REQUEST);
   }
+  static permission() {
+    const res = {
+      code: 'PERMISSION IS FORBIDDEN',
+      message: 'you does not have permission to do this action',
+    };
+    throw new HttpException(res, HttpStatus.FORBIDDEN);
+  }
 }

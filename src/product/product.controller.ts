@@ -5,14 +5,17 @@ import {
   Get,
   Param,
   Post,
+  Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard, AuthGuard } from 'src/guard';
 import {
   ReqAddCategory,
   ReqAddProduct,
+  ReqUpdateProduct,
   ResCategoryDto,
-  ResProduct,
+  ResProductDto,
 } from './dto';
 import { ProductService } from './product.service';
 @Controller('products')
@@ -21,8 +24,39 @@ export class ProductController {
 
   @UseGuards(AuthGuard)
   @Post('/add-product')
-  async addProduct(@Body() productInfo: ReqAddProduct): Promise<ResProduct> {
+  async addProduct(@Body() productInfo: ReqAddProduct): Promise<ResProductDto> {
     return this.productServices.addProduct(productInfo);
+  }
+
+  @Get('/get-all-products')
+  async getAllProducts(@Query() query): Promise<ResProductDto[]> {
+    const page = query.page ?? 0;
+    return this.productServices.getAllProducts(page);
+  }
+
+  // update prod
+  @UseGuards(AuthGuard)
+  @Put('/update-product/:id')
+  async updateProduct(
+    @Body() productProps: ReqUpdateProduct,
+    @Param() param,
+  ): Promise<ResProductDto> {
+    const { id } = param;
+    return this.productServices.updateProduct(productProps, id);
+  }
+
+  // get product with category
+  @Get('/get-all-products')
+  async getAllProductsWithCategory(@Query() query): Promise<ResProductDto[]> {
+    const page = query.page ?? 0;
+    return this.productServices.getAllProducts(page);
+  }
+
+  //get one product
+  @Get('/get-product/:productId')
+  async getOneProduct(@Param() param): Promise<ResProductDto> {
+    const { productId } = param;
+    return this.productServices.getOneProduct(productId);
   }
 
   @UseGuards(AdminGuard)

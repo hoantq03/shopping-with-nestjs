@@ -2,7 +2,7 @@ import { ResUserDto } from 'src/user/dto';
 import { ProductEntity } from '../entity/product.entity';
 import { ResCategoryDto } from './resCategory.dto';
 
-export class ResProduct {
+export class ResProductDto {
   id: string;
   name: string;
   description: string;

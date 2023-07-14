@@ -19,6 +19,7 @@ export class AdminGuard implements CanActivate {
     try {
       const payLoad = await this.jwtService.verifyAsync(token);
       const user = await this.userServices.findUserByEmail(payLoad.email);
+      request.body.userId = payLoad.userId;
       if (user.role === 'admin') return true;
     } catch (e) {
       throw new Error(`Invalid Token ${JSON.stringify({ message: e })}`);
