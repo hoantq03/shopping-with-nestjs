@@ -10,7 +10,7 @@ export class AuthServices {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password: string): Promise<object> {
     const user = await this.userServices.findUserByEmail(email);
     if (!user) {
       AuthException.emailNotExist();
@@ -21,8 +21,10 @@ export class AuthServices {
     }
     const payLoad = { userId: user.id, email: user.email };
 
+    const token = await this.jwtService.signAsync(payLoad);
+
     return {
-      access_token: await this.jwtService.signAsync(payLoad),
+      access_token: token,
     };
   }
 }

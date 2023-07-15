@@ -29,47 +29,56 @@ export class ProductService {
   ) {}
 
   async addProduct(productInfo: ReqAddProduct): Promise<ResProductDto> {
-    const user = await this.userRepo.findOne({
+    const user: UsersEntity = await this.userRepo.findOne({
       where: { id: productInfo.userId },
     });
-    if (!user) {
-      ProductException.ownerNotExist();
-    }
+
+    if (!user) ProductException.ownerNotExist();
 
     const category = await this.categoryRepo.findOne({
       where: { categoryId: productInfo.categoryId },
     });
-    if (!category) {
-      ProductException.categoryNotExist();
-    }
-    const productId = ProductEntity.createProductId();
-    const productProps = {
+
+    if (!category) ProductException.categoryNotExist();
+
+    const productId: string = ProductEntity.createProductId();
+
+    const productProps: ProductEntity = {
       id: productId,
       ...productInfo,
       user,
       category,
     };
-    const product = this.productRepo.create(productProps);
+
+    const product: ProductEntity = this.productRepo.create(productProps);
     await this.productRepo.save(product);
     return new ResProductDto(product);
   }
 
-  async addCategory(categoryInfo: ReqAddCategory) {
-    const categories = await this.categoryRepo.find({
+  async addCategory(categoryInfo: ReqAddCategory): Promise<ResCategoryDto> {
+    const categories: CategoryEntity[] = await this.categoryRepo.find({
       where: { name: categoryInfo.name },
     });
-    if (!isEmpty(categories)) {
-      CategoryException.categoryExisted();
-    }
-    const categoryId = CategoryEntity.createCategoryId();
-    const createdBy = categoryInfo.userId;
-    const updatedBy = categoryInfo.userId;
-    const categoryProps = { categoryId, ...categoryInfo, createdBy, updatedBy };
-    const categoryEntity: CategoryEntity = await this.categoryRepo.create(
+
+    if (!isEmpty(categories)) CategoryException.categoryExisted();
+
+    const categoryId: string = CategoryEntity.createCategoryId();
+    const createdBy: string = categoryInfo.userId;
+    const updatedBy: string = categoryInfo.userId;
+
+    const categoryProps: CategoryEntity = {
+      categoryId,
+      ...categoryInfo,
+      createdBy,
+      updatedBy,
+      products: [],
+    };
+    const category: CategoryEntity = await this.categoryRepo.create(
       categoryProps,
     );
-    this.categoryRepo.save(categoryEntity);
-    return new ResCategoryDto(categoryEntity);
+
+    await this.categoryRepo.save(category);
+    return new ResCategoryDto(category);
   }
 
   async getAllCategory(): Promise<ResCategoryDto[]> {
@@ -77,14 +86,16 @@ export class ProductService {
   }
 
   async deleteCategory(categoryId: string) {
-    const category = await this.categoryRepo.findOne({ where: { categoryId } });
-    if (!category) {
-      CategoryException.categoryNotFound();
-    }
+    const category: CategoryEntity = await this.categoryRepo.findOne({
+      where: { categoryId },
+    });
+    if (!category) CategoryException.categoryNotFound();
+
     if (!isEmpty(category.products)) {
       CategoryException.categoryContainProducts();
     }
-    await this.categoryRepo.delete(category);
+
+    await this.categoryRepo.remove(category);
 
     return {
       message: 'Delete category successfully',
@@ -93,19 +104,16 @@ export class ProductService {
   }
 
   async getAllProducts(page: number): Promise<ResProductDto[]> {
-    const numProductsPerPage: number = Number.parseInt(
-      process.env.NUMBER_PRODUCT_PER_PAGE,
-    );
-
-    const [result, total] = await this.productRepo.findAndCount({
+    const [results, total] = await this.productRepo.findAndCount({
       order: { name: 'DESC' },
-      take: numProductsPerPage,
+      take: Number.parseInt(process.env.NUMBER_PRODUCT_PER_PAGE),
       skip: page,
       relations: ['category', 'user'],
     });
-    const resProduct = [];
-    result.forEach((res) => {
-      resProduct.push(new ResProductDto(res));
+
+    const resProduct: ResProductDto[] = [];
+    results.forEach((result) => {
+      resProduct.push(new ResProductDto(result));
     });
 
     return resProduct;
@@ -119,21 +127,20 @@ export class ProductService {
   }
 
   async getOneProduct(productId: string): Promise<ResProductDto> {
-    const product = await this.findProductById(productId);
+    const product: ProductEntity = await this.findProductById(productId);
     return new ResProductDto(product);
   }
   async updateProduct(
     productProps: ReqUpdateProduct,
-    producId: string,
+    productId: string,
   ): Promise<ResProductDto> {
-    const oldProduct = await this.findProductById(producId);
+    const oldProduct: ProductEntity | null = await this.findProductById(
+      productId,
+    );
 
-    if (oldProduct.user.id !== productProps.userId) {
-      UserException.permission();
-    }
-    if (!oldProduct) {
-      ProductException.productNotFound();
-    }
+    if (oldProduct.user.id !== productProps.userId) UserException.permission();
+    if (!oldProduct) ProductException.productNotFound();
+
     if (oldProduct.category.categoryId !== productProps.categoryId) {
       const category = await this.categoryRepo.findOne({
         where: { categoryId: productProps.categoryId },
@@ -149,6 +156,7 @@ export class ProductService {
     oldProduct.price = productProps.price ?? oldProduct.price;
     oldProduct.quantityInStock =
       productProps.quantityInStock ?? oldProduct.quantityInStock;
+
     this.productRepo.save(oldProduct);
     return new ResProductDto(oldProduct);
   }

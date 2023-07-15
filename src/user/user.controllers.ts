@@ -23,7 +23,6 @@ import { UserServices } from './user.services';
 export class UserController {
   constructor(private readonly userService: UserServices) {}
 
-  // another routes
   @UseGuards(AdminGuard)
   @Post('/get-all-users')
   async getAllUser(@Body() body: ReqFindAllUserDto): Promise<ResUserDto[]> {
@@ -69,10 +68,11 @@ export class UserController {
     return this.userService.getUserById(id);
   }
 
+  // confused
   @UseGuards(AuthGuard)
   @Post('/delete-address/:id')
-  async deleteAddress(@Param() param, @Body() body) {
-    const addressId = param.id;
+  async deleteAddress(@Param() param: any, @Body() body: any) {
+    const addressId: string = param.id;
     const { userId } = body;
     return this.userService.deleteAddress(addressId, userId);
   }

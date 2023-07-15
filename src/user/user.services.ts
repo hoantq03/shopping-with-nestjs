@@ -123,9 +123,8 @@ export class UserServices {
 
     // find user
     const user: UsersEntity = await this.findUserByEmail(updatedData.email);
-    if (!user) {
-      UserException.userNotFound();
-    }
+
+    if (!user) UserException.userNotFound();
 
     user.role = updatedData.role ?? user.role;
     user.password = hashPassword ?? user.password;
@@ -145,6 +144,7 @@ export class UserServices {
     body: ReqUserStatusDto,
   ): Promise<ResUserDto> {
     const user: UsersEntity = await this.findUserById(id);
+    if (!user) UserException.userNotFound();
     user.status = body.status;
     await this.userRepo.save(user);
     return new ResUserDto(user);
@@ -153,31 +153,28 @@ export class UserServices {
   async addAddress(address: ReqAddAddress): Promise<ResAddressDto> {
     const { userId, ...rest } = { ...address };
     const user = await this.findUserById(userId);
+
     const addressExisted = await this.userRepo.findOne({
       where: { address: { address_line: address.address_line } },
     });
-    if (addressExisted) {
-      AddressException.addressExisted();
-    }
+
+    if (addressExisted) AddressException.addressExisted();
+
     const id = AddressEntity.createAddressId();
     const addressEntitySave = { id, ...rest, user };
     await this.addressRepo.save(addressEntitySave);
     return new ResAddressDto(addressEntitySave);
   }
 
-  async findAddressById(id: string): Promise<ResAddressDto | null> {
-    return new ResAddressDto(
-      await this.addressRepo.findOne({ where: { id }, relations: ['user'] }),
-    );
+  async findAddressById(id: string): Promise<AddressEntity | null> {
+    return this.addressRepo.findOne({ where: { id }, relations: ['user'] });
   }
 
-  async findAddressByUser(user: UsersEntity): Promise<ResAddressDto | null> {
-    return new ResAddressDto(
-      await this.addressRepo.findOne({
-        where: { user: user },
-        relations: ['user'],
-      }),
-    );
+  async findAddressByUser(user: UsersEntity): Promise<AddressEntity | null> {
+    return this.addressRepo.findOne({
+      where: { user: user },
+      relations: ['user'],
+    });
   }
 
   async getAllAddress(): Promise<ResAddressDto[]> {
@@ -185,7 +182,7 @@ export class UserServices {
       where: {},
       relations: ['user'],
     });
-    if (isEmpty(result)) AddressException.addressNotFound();
+
     const resAddress: ResAddressDto[] = [];
     result.forEach((res) => {
       resAddress.push(new ResAddressDto(res));
@@ -198,13 +195,13 @@ export class UserServices {
     if (!address) {
       AddressException.addressNotFound();
     }
-    if (address.userId !== userId) {
+    if (address.user.id !== userId) {
       AuthException.forbidden();
     }
-    await this.addressRepo.delete(address);
+    await this.addressRepo.remove(address);
     return {
       message: 'successfully deleted',
-      status: 204,
+      status: 200,
     };
   }
 }

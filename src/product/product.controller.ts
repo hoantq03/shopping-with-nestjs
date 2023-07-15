@@ -39,7 +39,7 @@ export class ProductController {
   @Put('/update-product/:id')
   async updateProduct(
     @Body() productProps: ReqUpdateProduct,
-    @Param() param,
+    @Param() param: any,
   ): Promise<ResProductDto> {
     const { id } = param;
     return this.productServices.updateProduct(productProps, id);
@@ -47,14 +47,16 @@ export class ProductController {
 
   // get product with category
   @Get('/get-all-products')
-  async getAllProductsWithCategory(@Query() query): Promise<ResProductDto[]> {
+  async getAllProductsWithCategory(
+    @Query() query: any,
+  ): Promise<ResProductDto[]> {
     const page = query.page ?? 0;
     return this.productServices.getAllProducts(page);
   }
 
   //get one product
   @Get('/get-product/:productId')
-  async getOneProduct(@Param() param): Promise<ResProductDto> {
+  async getOneProduct(@Param() param: any): Promise<ResProductDto> {
     const { productId } = param;
     return this.productServices.getOneProduct(productId);
   }
@@ -71,7 +73,7 @@ export class ProductController {
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard)
   @Delete('/delete-category/:categoryId')
-  async deleteCategory(@Param() param) {
+  async deleteCategory(@Param() param: any): Promise<object> {
     const { categoryId } = param;
     return this.productServices.deleteCategory(categoryId);
   }

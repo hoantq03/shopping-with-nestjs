@@ -34,10 +34,10 @@ export class ReqUpdateProduct {
   quantityInStock: number;
 
   @IsString()
-  @IsOptional()
+  @IsOptional({ always: false })
   categoryId: string;
 
   @IsString()
-  @IsOptional()
+  @IsOptional({ always: false })
   userId: string;
 }
