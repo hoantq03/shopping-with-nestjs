@@ -14,7 +14,7 @@ export class AddTableShippers1689498492375 implements MigrationInterface {
         "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
         "updated_by" character varying NOT NULL DEFAULT '1',
         
-        CONSTRAINT "PK_a3ffb1c0c8416b97433f907fc6b" PRIMARY KEY ("shipperId"),
+        CONSTRAINT "PK_a3fb9fb1c0c84167433f907fc6b" PRIMARY KEY ("shipperId")
         );
         `);
   }

@@ -3,6 +3,9 @@ import {
   AddCategoryTable1689062464491,
   AddProductTable1689061983172,
   AddRoleColumn1688870468614,
+  AddTableOrderDetails1689496769580,
+  AddTableOrders1689497232880,
+  AddTableShippers1689498492375,
   AddressTable1688958021742,
   CreateUser1687788815349,
 } from '../migrations';
@@ -21,5 +24,8 @@ export default new DataSource({
     AddressTable1688958021742,
     AddCategoryTable1689062464491,
     AddProductTable1689061983172,
+    AddTableShippers1689498492375,
+    AddTableOrders1689497232880,
+    AddTableOrderDetails1689496769580,
   ],
 });

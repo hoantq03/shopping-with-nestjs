@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('shippers')
-export class OrderDetail {
+export class ShipperEntity {
   @PrimaryColumn('character varying', { name: 'orderId' })
   shipperId!: string;
 

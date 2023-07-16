@@ -17,8 +17,7 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
             
             CONSTRAINT "PK_a3ffb1c0c8416b97433f907fc6b" PRIMARY KEY ("orderId"),
             CONSTRAINT "FK_a70c3f5cfb18416b9fc6fb43907" FOREIGN KEY ("userId") REFERENCES users("id"),
-            CONSTRAINT "FK_a70c3f5cfb18416b9fc690fb437" FOREIGN KEY ("shipperId") REFERENCES shipper("shipperId"),
-
+            CONSTRAINT "FK_a70c3f5cfb18416b9fc690fb437" FOREIGN KEY ("shipperId") REFERENCES shippers("shipperId")
             );
             `);
   }

@@ -1,7 +1,8 @@
 import { UsersEntity } from 'src/user/entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CategoryEntity } from './categories.entity';
+import { OrderDetailEntity } from 'src/orders/entity';
 
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')
@@ -35,6 +36,9 @@ export class ProductEntity {
 
   @ManyToOne(() => CategoryEntity, (category) => category.products)
   category!: CategoryEntity;
+
+  @ManyToOne(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
+  orderDetails!: OrderDetailEntity[];
 
   @Column({
     type: 'timestamptz',

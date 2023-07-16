@@ -20,7 +20,7 @@ export class AddTableOrderDetails1689496769580 implements MigrationInterface {
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_by" character varying NOT NULL DEFAULT '1',
             
-            CONSTRAINT "PK_a3ffb1c0c8416b97433f907fc6b" PRIMARY KEY ("orderDetailId"),
+            CONSTRAINT "PK_a3ffc8416b1c0b97433f907fc6b" PRIMARY KEY ("orderDetailId"),
             CONSTRAINT "FK_a3f5cfb170c8416b9fc6fb43907" FOREIGN KEY ("orderId") REFERENCES orders("orderId"),
             CONSTRAINT "FK_a3fb416b35c6f907fb170c849fc" FOREIGN KEY ("productId") REFERENCES products("id")
             );

@@ -1,7 +1,9 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { OrderEntity } from './orders.entity';
+import { ProductEntity } from 'src/product/entity';
 
 @Entity('orderDetails')
-export class OrderDetail {
+export class OrderDetailEntity {
   @PrimaryColumn('character varying', { name: 'orderDetailId' })
   orderDetailId!: string;
 
@@ -36,6 +38,12 @@ export class OrderDetail {
     name: 'billDate',
   })
   billDate?: Date;
+
+  @ManyToOne(() => OrderEntity, (order) => order.orderDetail)
+  order!: OrderEntity;
+
+  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
+  product!: ProductEntity;
 
   @Column({
     type: 'timestamptz',
