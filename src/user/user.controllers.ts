@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Put,
+  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard, AuthGuard } from 'src/guard';
@@ -70,8 +71,8 @@ export class UserController {
 
   // confused
   @UseGuards(AuthGuard)
-  @Post('/delete-address/:id')
-  async deleteAddress(@Param() param: any, @Body() body: any) {
+  @Delete('/delete-address/:id')
+  async deleteAddress(@Param() param: any, @Body() body: any): Promise<object> {
     const addressId: string = param.id;
     const { userId } = body;
     return this.userService.deleteAddress(addressId, userId);

@@ -12,7 +12,6 @@ export class AuthControllers {
   constructor(
     private authServices: AuthServices,
     private userServices: UserServices,
-    private jwtService: JwtService,
   ) {}
 
   @Post('/signin')
