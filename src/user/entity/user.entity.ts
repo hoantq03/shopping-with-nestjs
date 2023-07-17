@@ -1,3 +1,4 @@
+import { OrderEntity } from 'src/orders/entity';
 import { ProductEntity } from 'src/product/entity';
 import { AddressEntity } from 'src/user/entity';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
@@ -58,6 +59,9 @@ export class UsersEntity {
 
   @OneToMany(() => ProductEntity, (products) => products.user)
   products: ProductEntity[];
+
+  @OneToMany(() => OrderEntity, (orders) => orders.user)
+  orders!: OrderEntity[];
 
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

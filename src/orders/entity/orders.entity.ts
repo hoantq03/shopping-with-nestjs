@@ -1,5 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { OrderDetailEntity } from './order-detail.entity';
+import { ShipperEntity } from './shippers.entity';
+import { UsersEntity } from 'src/user/entity';
 
 @Entity('orders')
 export class OrderEntity {
@@ -19,8 +21,14 @@ export class OrderEntity {
   })
   orderDate?: Date;
 
-  @ManyToOne(() => OrderDetailEntity, (orderDetail) => orderDetail.order)
+  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order)
   orderDetail!: OrderDetailEntity[];
+
+  @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)
+  shipper!: ShipperEntity;
+
+  @ManyToOne(() => UsersEntity, (user) => user.orders)
+  user!: UsersEntity;
 
   @Column({
     type: 'timestamptz',

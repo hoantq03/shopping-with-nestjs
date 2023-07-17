@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { AdminGuard, AuthGuard } from 'src/guard';
+import { AdminGuard, CustomerGuard } from 'src/guard';
 import {
   ReqAddAddress,
   ReqFindAllUserDto,
@@ -50,27 +50,27 @@ export class UserController {
     return this.userService.updateUser(body);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(CustomerGuard)
   @Post('/add-address')
   async newAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
     return this.userService.addAddress(body);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(CustomerGuard)
   @Get('/get-all-address')
   async getAllAddress(): Promise<ResAddressDto[]> {
     return this.userService.getAllAddress();
   }
 
   //  /:id
-  @UseGuards(AuthGuard)
+  @UseGuards(CustomerGuard)
   @Get('/:id')
   getById(@Param('id') id: string): Promise<ResUserDto> {
     return this.userService.getUserById(id);
   }
 
   // confused
-  @UseGuards(AuthGuard)
+  @UseGuards(CustomerGuard)
   @Delete('/delete-address/:id')
   async deleteAddress(@Param() param: any, @Body() body: any): Promise<object> {
     const addressId: string = param.id;

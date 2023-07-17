@@ -1,10 +1,17 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { RoleUser } from 'src/common';
 import { AuthException } from 'src/exception';
+import { UsersEntity } from 'src/user/entity';
+import { UserServices } from 'src/user/user.services';
+
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class ShopGuard implements CanActivate {
+  constructor(
+    private jwtService: JwtService,
+    private userServices: UserServices,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -15,6 +22,11 @@ export class AuthGuard implements CanActivate {
     try {
       const payload = await this.jwtService.verifyAsync(token);
       request.body.userId = payload.userId;
+      const user: UsersEntity = await this.userServices.findUserByEmail(
+        payload.email,
+      );
+      request.body.userId = payload.userId;
+      if (user.role === RoleUser.SHOP) return true;
       return true;
     } catch (e) {
       AuthException.unauthorized();

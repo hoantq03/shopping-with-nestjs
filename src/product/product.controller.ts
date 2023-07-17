@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AdminGuard, AuthGuard } from 'src/guard';
+import { AdminGuard, ShopGuard } from 'src/guard';
 import {
   ReqAddCategory,
   ReqAddProduct,
@@ -22,7 +22,7 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private productServices: ProductService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(ShopGuard)
   @Post('/add-product')
   async addProduct(@Body() productInfo: ReqAddProduct): Promise<ResProductDto> {
     return this.productServices.addProduct(productInfo);
@@ -34,8 +34,7 @@ export class ProductController {
     return this.productServices.getAllProducts(page);
   }
 
-  // update prod
-  @UseGuards(AuthGuard)
+  @UseGuards(ShopGuard)
   @Put('/update-product/:id')
   async updateProduct(
     @Body() productProps: ReqUpdateProduct,
@@ -45,7 +44,6 @@ export class ProductController {
     return this.productServices.updateProduct(productProps, id);
   }
 
-  // get product with category
   @Get('/get-all-products')
   async getAllProductsWithCategory(
     @Query() query: any,
@@ -54,7 +52,6 @@ export class ProductController {
     return this.productServices.getAllProducts(page);
   }
 
-  //get one product
   @Get('/get-product/:productId')
   async getOneProduct(@Param() param: any): Promise<ResProductDto> {
     const { productId } = param;
@@ -62,7 +59,6 @@ export class ProductController {
   }
 
   @UseGuards(AdminGuard)
-  @UseGuards(AuthGuard)
   @Post('/add-category')
   async addCategory(
     @Body() categoryInfo: ReqAddCategory,
@@ -71,7 +67,6 @@ export class ProductController {
   }
 
   @UseGuards(AdminGuard)
-  @UseGuards(AuthGuard)
   @Delete('/delete-category/:categoryId')
   async deleteCategory(@Param() param: any): Promise<object> {
     const { categoryId } = param;

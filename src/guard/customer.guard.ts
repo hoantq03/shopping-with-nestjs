@@ -6,7 +6,7 @@ import { AuthException } from 'src/exception';
 import { UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class CustomerGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private userServices: UserServices,
@@ -17,19 +17,21 @@ export class AdminGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) AuthException.unauthorized();
+
     try {
-      const payLoad = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync(token);
+      request.body.userId = payload.userId;
       const user: UsersEntity = await this.userServices.findUserByEmail(
-        payLoad.email,
+        payload.email,
       );
-      request.body.userId = payLoad.userId;
-      if (user.role === RoleUser.ADMIN) return true;
+      request.body.userId = payload.userId;
+      if (user.role === RoleUser.CUSTOMER) return true;
+      return true;
     } catch (e) {
-      throw new Error(`Invalid Token ${JSON.stringify({ message: e })}`);
+      AuthException.unauthorized();
     }
     return false;
   }
-
   extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request?.headers['authorization']?.split(' ') ?? [];
     const tokenFromCookies = request?.cookies?.token?.access_token;

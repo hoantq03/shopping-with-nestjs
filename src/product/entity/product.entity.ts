@@ -38,7 +38,7 @@ export class ProductEntity {
   category!: CategoryEntity;
 
   @ManyToOne(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
-  orderDetails!: OrderDetailEntity[];
+  orderDetails?: OrderDetailEntity[];
 
   @Column({
     type: 'timestamptz',

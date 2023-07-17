@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { OrderEntity } from './orders.entity';
 
 @Entity('shippers')
 export class ShipperEntity {
@@ -10,6 +11,9 @@ export class ShipperEntity {
 
   @Column('integer', { name: 'phone' })
   phone!: number;
+
+  @OneToMany(() => OrderEntity, (orders) => orders.shipper)
+  orders!: OrderEntity[];
 
   @Column({
     type: 'timestamptz',

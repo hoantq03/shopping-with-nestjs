@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import {
+  OrderDetailEntity,
+  OrderEntity,
+  ShipperEntity,
+} from 'src/orders/entity';
 import { CategoryEntity } from 'src/product/entity/categories.entity';
 import { ProductEntity } from 'src/product/entity/product.entity';
 import { AddressEntity } from 'src/user/entity';
@@ -16,7 +21,15 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [UsersEntity, AddressEntity, ProductEntity, CategoryEntity],
+      entities: [
+        UsersEntity,
+        AddressEntity,
+        ProductEntity,
+        CategoryEntity,
+        OrderEntity,
+        OrderDetailEntity,
+        ShipperEntity,
+      ],
       synchronize: false,
       logging: false,
     };
