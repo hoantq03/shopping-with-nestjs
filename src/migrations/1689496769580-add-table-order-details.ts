@@ -5,8 +5,8 @@ export class AddTableOrderDetails1689496769580 implements MigrationInterface {
     queryRunner.query(`
         CREATE TABLE "order_details" (
             "order_detail_id" character varying NOT NULL,
-            "price" numeric(2,0) NOT NULL,
-            "quantity" integer NOT NULL,
+            "price" decimal NOT NULL DEFAULT 0,
+            "quantity" integer NOT NULL DEFAULT 0,
             
             "product_id" character varying NOT NULL,
             "order_id" character varying NOT NULL,

@@ -5,7 +5,7 @@ export class AddTableCart1689740834829 implements MigrationInterface {
     queryRunner.query(`
         CREATE TABLE "carts" (
             "cart_id" character varying NOT NULL,
-            "amount_total" numeric(2,0) NOT NULL,
+            "amount_total" decimal NOT NULL DEFAULT 0,
             
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',

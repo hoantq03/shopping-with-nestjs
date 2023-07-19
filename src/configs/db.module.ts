@@ -10,6 +10,7 @@ import {
   OrderEntity,
   ShipperEntity,
 } from 'src/orders/entity';
+import { CartEntity, CartItemsEntity } from 'src/cart/entity';
 
 export const dbSourceOption: DataSourceOptions = {
   type: process.env.DB_TYPE as any,
@@ -28,6 +29,8 @@ export const dbSourceOption: DataSourceOptions = {
     OrderDetailEntity,
     OrderEntity,
     ShipperEntity,
+    CartEntity,
+    CartItemsEntity,
   ],
 };
 

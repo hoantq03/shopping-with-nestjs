@@ -6,8 +6,8 @@ export class AddTableCartItems1689743971067 implements MigrationInterface {
         CREATE TABLE "cart_items" (
             "cart_id" character varying NOT NULL,
             "product_id" character varying NOT NULL,
-            "quantity" integer NOT NULL,
-            "amount_total" numeric(2,0) NOT NULL,
+            "quantity" integer NOT NULL DEFAULT 0,
+            "amount_total" decimal NOT NULL DEFAULT 0,
 
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',

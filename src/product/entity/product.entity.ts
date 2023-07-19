@@ -10,6 +10,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { CategoryEntity } from './categories.entity';
 import { OrderDetailEntity } from 'src/orders/entity';
+import { CartItemsEntity } from 'src/cart/entity';
 
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')
@@ -40,7 +41,7 @@ export class ProductEntity {
   })
   color!: string;
 
-  @Column('decimal', { precision: 2, name: 'discount' })
+  @Column({ type: 'decimal', precision: 2, name: 'discount' })
   discount!: number;
 
   @Column({
@@ -67,6 +68,9 @@ export class ProductEntity {
 
   @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
   orderDetails?: OrderDetailEntity[];
+
+  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.product)
+  cartItems?: CartItemsEntity[];
 
   @Column({
     type: 'timestamptz',

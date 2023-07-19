@@ -6,13 +6,13 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
         CREATE TABLE "orders" (
             "order_id" character varying NOT NULL,
             "order_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-            "amount_total" numeric(2,0) NOT NULL,
-            "discount" numeric(2,0) NOT NULL,
+            "amount_total" decimal NOT NULL DEFAULT 0,
+            "discount" decimal NOT NULL DEFAULT 0,
             "billDate" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "shipDate" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "status" character varying(100) NOT NULL,
-            "tax" numeric(2,0) NOT NULL,
-            "ship_cost" numeric(2,0) NOT NULL,
+            "tax" decimal NOT NULL DEFAULT 0,
+            "ship_cost" decimal NOT NULL DEFAULT 0,
             
             "shipper_id" character varying NOT NULL,            
             "user_id" character varying NOT NULL,

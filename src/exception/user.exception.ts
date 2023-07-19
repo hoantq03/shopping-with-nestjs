@@ -28,4 +28,11 @@ export class UserException {
     };
     throw new HttpException(res, HttpStatus.FORBIDDEN);
   }
+  static NotEnoughQuantity() {
+    const res = {
+      code: 'NOT ENOUGH QUANTITY',
+      message: 'The quantity in stock of this products not enough',
+    };
+    throw new HttpException(res, HttpStatus.BAD_REQUEST);
+  }
 }

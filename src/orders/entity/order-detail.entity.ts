@@ -1,5 +1,4 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { OrderEntity } from './orders.entity';
 import { ProductEntity } from 'src/product/entity';
 
 @Entity('orderDetails')
@@ -13,16 +12,16 @@ export class OrderDetailEntity {
   @Column({ type: 'character varying', name: 'product_id' })
   product_id!: string;
 
-  @Column({ type: 'decimal', precision: 2, name: 'price' })
+  @Column({ type: 'decimal', name: 'price' })
   price!: string;
 
   @Column({ type: 'integer', name: 'quantity' })
   quantity!: number;
 
-  @Column({ type: 'decimal', precision: 2, name: 'discount' })
+  @Column({ type: 'decimal', name: 'discount' })
   discount!: string;
 
-  @Column({ type: 'decimal', precision: 2, name: 'total' })
+  @Column({ type: 'decimal', name: 'total' })
   total!: string;
 
   @Column({

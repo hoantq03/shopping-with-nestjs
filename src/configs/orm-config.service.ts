@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { CartEntity, CartItemsEntity } from 'src/cart/entity';
 import {
   OrderDetailEntity,
   OrderEntity,
@@ -29,6 +30,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         OrderEntity,
         OrderDetailEntity,
         ShipperEntity,
+        CartEntity,
+        CartItemsEntity,
       ],
       synchronize: false,
       logging: false,

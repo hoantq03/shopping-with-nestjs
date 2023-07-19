@@ -1,7 +1,15 @@
+import { CartEntity } from 'src/cart/entity';
 import { OrderEntity } from 'src/orders/entity';
 import { ProductEntity } from 'src/product/entity';
 import { AddressEntity } from 'src/user/entity';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 const USER_PREFIX = 'user_';
 
@@ -57,13 +65,6 @@ export class UsersEntity {
   @Column({
     type: 'character varying',
     nullable: false,
-    name: 'cart_id',
-  })
-  cart_id!: string;
-
-  @Column({
-    type: 'character varying',
-    nullable: false,
     length: 20,
     name: 'phone',
   })
@@ -109,6 +110,9 @@ export class UsersEntity {
   @OneToMany(() => OrderEntity, (orders) => orders.user)
   orders?: OrderEntity[];
 
+  @OneToOne(() => CartEntity)
+  @JoinColumn({ name: 'cart_id' })
+  cart!: CartEntity;
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

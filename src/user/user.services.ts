@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { isEmpty } from 'lodash';
 import { AddressException, AuthException, UserException } from 'src/exception';
 import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { Repository } from 'typeorm';
@@ -16,6 +15,8 @@ import {
   ResAddressDto,
   ResUserDto,
 } from './dto';
+import { CartService } from 'src/cart/cart.service';
+import { CartEntity } from 'src/cart/entity';
 
 @Injectable()
 export class UserServices {
@@ -25,6 +26,8 @@ export class UserServices {
     @InjectRepository(AddressEntity)
     private addressRepo: Repository<AddressEntity>,
     private jwtService: JwtService,
+    @InjectRepository(CartEntity)
+    private cartRepo: Repository<CartEntity>,
   ) {}
 
   async getAllUser(body: ReqFindAllUserDto): Promise<ResUserDto[]> {
@@ -59,13 +62,19 @@ export class UserServices {
     );
 
     // test
-    const cartId = '123';
+    const cartId = CartEntity.createCartId();
+    const cart: CartEntity = this.cartRepo.create({
+      cart_id: cartId,
+      amount_total: 0,
+    });
+    await this.cartRepo.save(cart);
 
     const userSignUp: UsersEntity = this.userRepo.create({
       ...props,
+
       user_id: userId,
       status: UserStatus.ACTIVE,
-      cart_id: cartId,
+      cart: cart,
     });
     await this.userRepo.save(userSignUp);
 
@@ -88,7 +97,7 @@ export class UserServices {
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
       where: { user_id: id },
-      relations: ['address'],
+      relations: ['address', 'cart'],
     });
     return user ? user : null;
   }
