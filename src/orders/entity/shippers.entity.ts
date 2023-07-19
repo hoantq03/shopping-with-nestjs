@@ -3,13 +3,13 @@ import { OrderEntity } from './orders.entity';
 
 @Entity('shippers')
 export class ShipperEntity {
-  @PrimaryColumn('character varying', { name: 'orderId' })
-  shipperId!: string;
+  @PrimaryColumn({ type: 'character varying', name: 'shipper_id' })
+  shipper_id!: string;
 
-  @Column('character varying', { length: 100, name: 'orderId' })
-  companyName!: string;
+  @Column({ type: 'character varying', length: 100, name: 'company_name' })
+  company_name!: string;
 
-  @Column('integer', { name: 'phone' })
+  @Column({ type: 'integer', name: 'phone' })
   phone!: number;
 
   @OneToMany(() => OrderEntity, (orders) => orders.shipper)

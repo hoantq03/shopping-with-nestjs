@@ -1,5 +1,12 @@
 import { UsersEntity } from 'src/user/entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { CategoryEntity } from './categories.entity';
 import { OrderDetailEntity } from 'src/orders/entity';
@@ -7,37 +14,58 @@ import { OrderDetailEntity } from 'src/orders/entity';
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')
 export class ProductEntity {
-  @PrimaryColumn({ name: 'id' })
+  @PrimaryColumn({
+    type: 'character varying',
+    nullable: false,
+    name: 'product_id',
+  })
   id!: string;
 
-  @Column({ length: 100, name: 'name' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'name',
+  })
   name!: string;
 
-  @Column({ name: 'description' })
+  @Column({ type: 'character varying', nullable: false, name: 'description' })
   description!: string;
 
-  @Column({ length: 100, name: 'color' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'color',
+  })
   color!: string;
 
   @Column('decimal', { precision: 2, name: 'discount' })
   discount!: number;
 
-  @Column({ length: 100, name: 'imageUrl' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'imageUrl',
+  })
   imageUrl!: string;
 
   @Column('decimal', { precision: 2, name: 'price' })
   price!: number;
 
-  @Column({ name: 'quantityInStock' })
-  quantityInStock!: number;
+  @Column({ type: 'integer', nullable: false, name: 'stock' })
+  stock!: number;
 
   @ManyToOne(() => UsersEntity, (user) => user.products)
+  @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
   @ManyToOne(() => CategoryEntity, (category) => category.products)
+  @JoinColumn({ name: 'category_id' })
   category!: CategoryEntity;
 
-  @ManyToOne(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
+  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
   orderDetails?: OrderDetailEntity[];
 
   @Column({

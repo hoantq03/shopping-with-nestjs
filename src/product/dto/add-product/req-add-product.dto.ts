@@ -6,37 +6,29 @@ export class ReqAddProduct {
   id: string;
 
   @IsString()
-  @IsOptional({ always: false })
   name: string;
 
   @IsString()
-  @IsOptional({ always: false })
   description: string;
 
   @IsString()
-  @IsOptional({ always: false })
   color: string;
 
   @IsNumber()
-  @IsOptional({ always: false })
   discount: number;
 
   @IsUrl()
-  @IsOptional({ always: false })
   imageUrl: string;
 
   @IsNumber()
-  @IsOptional({ always: false })
   price: number;
 
   @IsNumber()
-  @IsOptional({ always: false })
-  quantityInStock: number;
+  stock: number;
 
   @IsString()
   categoryId: string;
 
   @IsString()
-  @IsOptional({ always: false })
   userId: string;
 }

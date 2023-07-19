@@ -2,7 +2,8 @@ import { DataSource } from 'typeorm';
 import {
   AddCategoryTable1689062464491,
   AddProductTable1689061983172,
-  AddRoleColumn1688870468614,
+  AddTableCart1689740834829,
+  AddTableCartItems1689743971067,
   AddTableOrderDetails1689496769580,
   AddTableOrders1689497232880,
   AddTableShippers1689498492375,
@@ -19,13 +20,14 @@ export default new DataSource({
   database: process.env.DB_NAME,
   logging: false,
   migrations: [
+    AddTableCart1689740834829,
     CreateUser1687788815349,
-    AddRoleColumn1688870468614,
     AddressTable1688958021742,
     AddCategoryTable1689062464491,
     AddProductTable1689061983172,
     AddTableShippers1689498492375,
     AddTableOrders1689497232880,
     AddTableOrderDetails1689496769580,
+    AddTableCartItems1689743971067,
   ],
 });

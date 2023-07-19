@@ -5,17 +5,27 @@ import { ProductEntity } from './product.entity';
 const CATEGORY_PREFIX = 'category_';
 @Entity('categories')
 export class CategoryEntity {
-  @PrimaryColumn({ name: 'categoryId' })
+  @PrimaryColumn({
+    type: 'character varying',
+    nullable: false,
+    name: 'category_id',
+  })
   categoryId!: string;
 
-  @Column({ length: 100, name: 'name' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'name',
+  })
   name!: string;
 
-  @Column({ name: 'description' })
+  @Column({ type: 'character varying', nullable: false, name: 'description' })
   description!: string;
 
   @OneToMany(() => ProductEntity, (products) => products.category)
   products: ProductEntity[];
+
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',

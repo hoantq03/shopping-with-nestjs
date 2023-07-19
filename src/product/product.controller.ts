@@ -74,7 +74,7 @@ export class ProductController {
   }
 
   // this route is for test, not in production
-  @Get('/get-all-category')
+  @Get('/getAllCategory')
   async getAllCategory(): Promise<ResCategoryDto[]> {
     return this.productServices.getAllCategory();
   }

@@ -1,27 +1,32 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersEntity } from './user.entity';
 
 const ADDRESS_PREFIX = 'address_';
 
-@Entity('address_info')
+@Entity('addresses_info')
 export class AddressEntity {
-  @PrimaryColumn({ name: 'id' })
+  @PrimaryColumn({
+    type: 'character varying',
+    nullable: false,
+    name: 'address_id',
+  })
   id!: string;
 
   @ManyToOne(() => UsersEntity, (user) => user.address)
+  @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
-  @Column({ name: 'address_line' })
+  @Column({ type: 'character varying', nullable: false, name: 'address_line' })
   address_line!: string;
 
-  @Column({ name: 'city' })
+  @Column({ type: 'character varying', nullable: false, name: 'city' })
   city!: string;
 
-  @Column({ name: 'postal_code' })
+  @Column({ type: 'character varying', nullable: false, name: 'postal_code' })
   postal_code!: string;
 
-  @Column({ name: 'country' })
+  @Column({ type: 'character varying', nullable: false, name: 'country' })
   country!: string;
 
   @Column({

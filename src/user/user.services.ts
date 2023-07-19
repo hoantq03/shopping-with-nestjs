@@ -58,10 +58,14 @@ export class UserServices {
       Number.parseInt(process.env.SALT, 10),
     );
 
+    // test
+    const cartId = '123';
+
     const userSignUp: UsersEntity = this.userRepo.create({
       ...props,
-      id: userId,
+      user_id: userId,
       status: UserStatus.ACTIVE,
+      cart_id: cartId,
     });
     await this.userRepo.save(userSignUp);
 
@@ -83,7 +87,7 @@ export class UserServices {
 
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
-      where: { id },
+      where: { user_id: id },
       relations: ['address'],
     });
     return user ? user : null;
@@ -161,7 +165,8 @@ export class UserServices {
     if (addressExisted) AddressException.addressExisted();
 
     const id = AddressEntity.createAddressId();
-    const addressEntitySave = { id, ...rest, user };
+    //test
+    const addressEntitySave: AddressEntity = { id, ...rest, user };
     await this.addressRepo.save(addressEntitySave);
     return new ResAddressDto(addressEntitySave);
   }
@@ -195,7 +200,7 @@ export class UserServices {
     if (!address) {
       AddressException.addressNotFound();
     }
-    if (address.user.id !== userId) {
+    if (address.user.user_id !== userId) {
       AuthException.forbidden();
     }
     await this.addressRepo.remove(address);

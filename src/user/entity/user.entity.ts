@@ -1,37 +1,83 @@
 import { OrderEntity } from 'src/orders/entity';
 import { ProductEntity } from 'src/product/entity';
 import { AddressEntity } from 'src/user/entity';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 const USER_PREFIX = 'user_';
 
 @Entity('users')
 export class UsersEntity {
-  @PrimaryColumn()
-  id!: string;
+  @PrimaryColumn({
+    type: 'character varying',
+    nullable: false,
+    name: 'user_id',
+  })
+  user_id!: string;
 
-  @Column({ length: 100, name: 'first_name' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'first_name',
+  })
   firstName!: string;
 
-  @Column({ length: 100, name: 'last_name' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    name: 'last_name',
+  })
   lastName!: string;
 
-  @Column({ length: 100, unique: true, name: 'email' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 100,
+    unique: true,
+    name: 'email',
+  })
   email!: string;
 
-  @Column({ name: 'password' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    name: 'password',
+  })
   password!: string;
 
-  @Column({ default: 'user', name: 'role' })
+  @Column({
+    type: 'character varying',
+    length: 100,
+    default: 'user',
+    name: 'role',
+  })
   role!: string;
 
-  @Column({ length: 20, name: 'phone' })
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    name: 'cart_id',
+  })
+  cart_id!: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: false,
+    length: 20,
+    name: 'phone',
+  })
   phone!: string;
 
-  @Column({ name: 'birthday' })
+  @Column({ type: 'timestamp', nullable: false, name: 'birthday' })
   birthday!: Date;
 
-  @Column('smallint', { name: 'status' })
+  @Column({
+    type: 'smallint',
+    nullable: false,
+    name: 'status',
+    default: 1,
+  })
   status!: number;
 
   @Column({
@@ -55,13 +101,13 @@ export class UsersEntity {
   updatedBy?: string;
 
   @OneToMany(() => AddressEntity, (address) => address.user)
-  address: AddressEntity[];
+  address?: AddressEntity[];
 
   @OneToMany(() => ProductEntity, (products) => products.user)
-  products: ProductEntity[];
+  products?: ProductEntity[];
 
   @OneToMany(() => OrderEntity, (orders) => orders.user)
-  orders!: OrderEntity[];
+  orders?: OrderEntity[];
 
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

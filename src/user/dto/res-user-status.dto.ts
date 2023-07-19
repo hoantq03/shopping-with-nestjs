@@ -14,7 +14,7 @@ export class ResUserDto {
 
   constructor(user: UsersEntity) {
     Object.assign(this, {
-      id: user.id,
+      id: user.user_id,
       status: user.status,
       firstName: user.firstName,
       lastName: user.lastName,

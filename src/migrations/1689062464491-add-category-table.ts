@@ -4,7 +4,7 @@ export class AddCategoryTable1689062464491 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
     CREATE TABLE "categories" (
-        "categoryId" character varying NOT NULL,
+        "category_id" character varying NOT NULL,
         "name" character varying(100) NOT NULL,
         "description" character varying NOT NULL,
 
@@ -13,7 +13,7 @@ export class AddCategoryTable1689062464491 implements MigrationInterface {
         "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
         "updated_by" character varying NOT NULL DEFAULT '1',
         
-        CONSTRAINT "PK_a3ffb1c0c8416b9fc6b7433saf4" PRIMARY KEY ("categoryId")
+        CONSTRAINT "PK_a3ffb1c0c8416b9fc6b7433saf4" PRIMARY KEY ("category_id")
 
         );
         `);

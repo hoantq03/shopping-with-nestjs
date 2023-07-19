@@ -5,13 +5,16 @@ import { UsersEntity } from 'src/user/entity';
 
 @Entity('orders')
 export class OrderEntity {
-  @PrimaryColumn('character varying', { name: 'orderId' })
-  orderId!: string;
+  @PrimaryColumn({
+    type: 'character varying',
+    name: 'order_id',
+  })
+  order_id!: string;
 
-  @Column('character varying', { name: 'userId' })
-  userId!: string;
+  @Column({ type: 'character varying', name: 'userId' })
+  user_id!: string;
 
-  @Column('character varying', { name: 'shipperId' })
+  @Column({ type: 'character varying', name: 'shipperId' })
   shipperId!: string;
 
   @Column({
@@ -21,7 +24,7 @@ export class OrderEntity {
   })
   orderDate?: Date;
 
-  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.order)
+  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.orderDetail)
   orderDetail!: OrderDetailEntity[];
 
   @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)

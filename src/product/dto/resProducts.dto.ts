@@ -10,7 +10,7 @@ export class ResProductDto {
   discount: number;
   imageUrl: string;
   price: number;
-  quantityInStock: number;
+  stock: number;
   category: ResCategoryDto;
   user: ResUserDto;
 
@@ -23,7 +23,7 @@ export class ResProductDto {
       discount: product.discount,
       imageUrl: product.imageUrl,
       price: product.price,
-      quantityInStock: product.quantityInStock,
+      stock: product.stock,
       category: new ResCategoryDto(product.category),
       user: new ResUserDto(product.user),
     });

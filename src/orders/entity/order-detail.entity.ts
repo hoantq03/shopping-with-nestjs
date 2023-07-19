@@ -1,28 +1,28 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { OrderEntity } from './orders.entity';
 import { ProductEntity } from 'src/product/entity';
 
 @Entity('orderDetails')
 export class OrderDetailEntity {
-  @PrimaryColumn('character varying', { name: 'orderDetailId' })
-  orderDetailId!: string;
+  @PrimaryColumn({ type: 'character varying', name: 'order_detail_id' })
+  order_detail_id!: string;
 
-  @Column('character varying', { name: 'orderId' })
-  orderId!: string;
+  // @Column({ type: 'character varying', name: 'order_id' })
+  // order_id!: string;
 
-  @Column('character varying', { name: 'productId' })
-  productId!: string;
+  @Column({ type: 'character varying', name: 'product_id' })
+  product_id!: string;
 
-  @Column('decimal', { precision: 2, name: 'price' })
+  @Column({ type: 'decimal', precision: 2, name: 'price' })
   price!: string;
 
-  @Column({ name: 'quantity' })
+  @Column({ type: 'integer', name: 'quantity' })
   quantity!: number;
 
-  @Column('decimal', { precision: 2, name: 'discount' })
+  @Column({ type: 'decimal', precision: 2, name: 'discount' })
   discount!: string;
 
-  @Column('decimal', { precision: 2, name: 'total' })
+  @Column({ type: 'decimal', precision: 2, name: 'total' })
   total!: string;
 
   @Column({
@@ -39,10 +39,11 @@ export class OrderDetailEntity {
   })
   billDate?: Date;
 
-  @ManyToOne(() => OrderEntity, (order) => order.orderDetail)
-  order!: OrderEntity;
+  @ManyToOne(() => OrderDetailEntity, (order) => order.orderDetail)
+  orderDetail!: OrderDetailEntity;
 
   @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
+  @JoinColumn({ name: 'product_id' })
   product!: ProductEntity;
 
   @Column({

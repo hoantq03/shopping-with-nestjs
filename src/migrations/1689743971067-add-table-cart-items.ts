@@ -1,24 +1,22 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddTableOrderDetails1689496769580 implements MigrationInterface {
+export class AddTableCartItems1689743971067 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-        CREATE TABLE "order_details" (
-            "order_detail_id" character varying NOT NULL,
-            "price" numeric(2,0) NOT NULL,
-            "quantity" integer NOT NULL,
-            
+        CREATE TABLE "cart_items" (
+            "cart_id" character varying NOT NULL,
             "product_id" character varying NOT NULL,
-            "order_id" character varying NOT NULL,
+            "quantity" integer NOT NULL,
+            "amount_total" numeric(2,0) NOT NULL,
 
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_by" character varying NOT NULL DEFAULT '1',
             
-            CONSTRAINT "PK_a3ffc8416b1c0b97433f907fc6b" PRIMARY KEY ("order_detail_id"),
-            CONSTRAINT "FK_a3f5cfb170c8416b9fc6fb43907" FOREIGN KEY ("order_id") REFERENCES orders("order_id"),
-            CONSTRAINT "FK_a3fb416b35c6f907fb170c849fc" FOREIGN KEY ("product_id") REFERENCES products("product_id")
+            CONSTRAINT "PK_a3674fb9fb1c0c84133f907fc6b" PRIMARY KEY ("cart_id","product_id"),
+            CONSTRAINT "FK_a3fc6f9fb07bf1c0cb984167433" FOREIGN KEY ("cart_id") REFERENCES carts("cart_id"),
+            CONSTRAINT "FK_a3fc6f9fb07bf17433c0cb98416" FOREIGN KEY ("product_id") REFERENCES products("product_id")
             );
             `);
   }

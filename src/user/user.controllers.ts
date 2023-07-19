@@ -25,13 +25,15 @@ export class UserController {
   constructor(private readonly userService: UserServices) {}
 
   @UseGuards(AdminGuard)
-  @Post('/get-all-users')
+  @Post('/getAllUsers')
   async getAllUser(@Body() body: ReqFindAllUserDto): Promise<ResUserDto[]> {
     return this.userService.getAllUser(body);
   }
 
-  @Post('/find-by-email')
-  async findByEmail(@Body() body: ReqFindUserByEmailDto): Promise<ResUserDto> {
+  @Post('/getByEmail')
+  async getUserByEmail(
+    @Body() body: ReqFindUserByEmailDto,
+  ): Promise<ResUserDto> {
     return await this.userService.getUserByEmail(body.email);
   }
 
@@ -51,13 +53,13 @@ export class UserController {
   }
 
   @UseGuards(CustomerGuard)
-  @Post('/add-address')
-  async newAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
+  @Post('/addAddress')
+  async addAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
     return this.userService.addAddress(body);
   }
 
   @UseGuards(CustomerGuard)
-  @Get('/get-all-address')
+  @Get('/getAllAddress')
   async getAllAddress(): Promise<ResAddressDto[]> {
     return this.userService.getAllAddress();
   }
@@ -71,7 +73,7 @@ export class UserController {
 
   // confused
   @UseGuards(CustomerGuard)
-  @Delete('/delete-address/:id')
+  @Delete('/deleteAddress/:id')
   async deleteAddress(@Param() param: any, @Body() body: any): Promise<object> {
     const addressId: string = param.id;
     const { userId } = body;

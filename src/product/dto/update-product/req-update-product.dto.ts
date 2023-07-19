@@ -31,7 +31,7 @@ export class ReqUpdateProduct {
 
   @IsNumber()
   @IsOptional({ always: false })
-  quantityInStock: number;
+  stock: number;
 
   @IsString()
   @IsOptional({ always: false })

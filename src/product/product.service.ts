@@ -30,7 +30,7 @@ export class ProductService {
 
   async addProduct(productInfo: ReqAddProduct): Promise<ResProductDto> {
     const user: UsersEntity = await this.userRepo.findOne({
-      where: { id: productInfo.userId },
+      where: { user_id: productInfo.userId },
     });
 
     if (!user) ProductException.ownerNotExist();
@@ -138,7 +138,8 @@ export class ProductService {
       productId,
     );
 
-    if (oldProduct.user.id !== productProps.userId) UserException.permission();
+    if (oldProduct.user.user_id !== productProps.userId)
+      UserException.permission();
     if (!oldProduct) ProductException.productNotFound();
 
     if (oldProduct.category.categoryId !== productProps.categoryId) {
@@ -154,8 +155,7 @@ export class ProductService {
     oldProduct.discount = productProps.discount ?? oldProduct.discount;
     oldProduct.imageUrl = productProps.imageUrl ?? oldProduct.imageUrl;
     oldProduct.price = productProps.price ?? oldProduct.price;
-    oldProduct.quantityInStock =
-      productProps.quantityInStock ?? oldProduct.quantityInStock;
+    oldProduct.stock = productProps.stock ?? oldProduct.stock;
 
     this.productRepo.save(oldProduct);
     return new ResProductDto(oldProduct);
