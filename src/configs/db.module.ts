@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 
-import { TypeOrmConfigService } from './orm-config.service';
-import { AddressEntity, UsersEntity } from 'src/user/entity';
-import { CategoryEntity, ProductEntity } from 'src/product/entity';
+import { CartEntity, CartItemsEntity } from 'src/cart/entity';
 import {
   OrderDetailEntity,
   OrderEntity,
   ShipperEntity,
 } from 'src/orders/entity';
-import { CartEntity, CartItemsEntity } from 'src/cart/entity';
+import { CategoryEntity } from 'src/product/entity/categories.entity';
+import { ProductEntity } from 'src/product/entity/product.entity';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
+import { TypeOrmConfigService } from './orm-config.service';
 
 export const dbSourceOption: DataSourceOptions = {
   type: process.env.DB_TYPE as any,

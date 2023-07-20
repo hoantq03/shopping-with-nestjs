@@ -1,5 +1,5 @@
+import { ProductEntity } from 'src/product/entity/product.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { ProductEntity } from 'src/product/entity';
 
 @Entity('orderDetails')
 export class OrderDetailEntity {

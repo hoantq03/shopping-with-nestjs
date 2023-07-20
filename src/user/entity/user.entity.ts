@@ -1,6 +1,6 @@
 import { CartEntity } from 'src/cart/entity';
 import { OrderEntity } from 'src/orders/entity';
-import { ProductEntity } from 'src/product/entity';
+import { ProductEntity } from 'src/product/entity/product.entity';
 import { AddressEntity } from 'src/user/entity';
 import {
   Column,

@@ -5,3 +5,4 @@ export * from './category.exception';
 export * from './address.exception';
 export * from './product.exception';
 export * from './address.exception';
+export * from './cart.exception';
