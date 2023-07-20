@@ -1,37 +1,69 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { OrderDetailEntity } from './order-detail.entity';
 import { ShipperEntity } from './shippers.entity';
-import { UsersEntity } from 'src/user/entity';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
 
 @Entity('orders')
 export class OrderEntity {
   @PrimaryColumn({
     type: 'character varying',
     name: 'order_id',
+    nullable: false,
   })
   order_id!: string;
 
-  @Column({ type: 'character varying', name: 'userId' })
-  user_id!: string;
+  @Column({
+    type: 'decimal',
+    name: 'amount_total',
+    nullable: false,
+    default: 0,
+  })
+  amount_total!: number;
 
-  @Column({ type: 'character varying', name: 'shipperId' })
-  shipperId!: string;
+  @Column({
+    type: 'decimal',
+    name: 'discount',
+    nullable: false,
+    default: 0,
+  })
+  discount!: number;
 
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
-    name: 'orderDate',
+    name: 'billDate',
+    nullable: true,
   })
-  orderDate?: Date;
+  billDate?: Date;
 
-  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.orderDetail)
-  orderDetail!: OrderDetailEntity[];
+  @Column({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'shipDate',
+    nullable: true,
+  })
+  shipDate?: Date;
 
-  @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)
-  shipper!: ShipperEntity;
+  @Column({
+    name: 'status',
+    type: 'character varying',
+    length: 100,
+    nullable: false,
+  })
+  status!: string;
 
-  @ManyToOne(() => UsersEntity, (user) => user.orders)
-  user!: UsersEntity;
+  @Column({ name: 'tax', nullable: false, type: 'decimal', default: 0 })
+  tax!: number;
+
+  @Column({ name: 'ship_cost', nullable: false, type: 'decimal', default: 0 })
+  shipCost!: number;
 
   @Column({
     type: 'timestamptz',
@@ -52,4 +84,16 @@ export class OrderEntity {
 
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
+
+  @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)
+  @JoinColumn({ name: 'shipper_id' })
+  shipper?: ShipperEntity;
+
+  @ManyToOne(() => UsersEntity, (user) => user.orders)
+  @JoinColumn({ name: 'user_id' })
+  user!: UsersEntity;
+
+  @ManyToOne(() => AddressEntity, (address) => address.orders)
+  @JoinColumn({ name: 'address_id' })
+  address!: AddressEntity;
 }

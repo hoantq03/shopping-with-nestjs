@@ -13,7 +13,7 @@ export class ShipperEntity {
   phone!: number;
 
   @OneToMany(() => OrderEntity, (orders) => orders.shipper)
-  orders!: OrderEntity[];
+  orders?: OrderEntity[];
 
   @Column({
     type: 'timestamptz',

@@ -1,6 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersEntity } from './user.entity';
+import { OrderEntity } from 'src/orders/entity';
 
 const ADDRESS_PREFIX = 'address_';
 
@@ -28,6 +36,9 @@ export class AddressEntity {
 
   @Column({ type: 'character varying', nullable: false, name: 'country' })
   country!: string;
+
+  @OneToMany(() => OrderEntity, (orders) => orders.address)
+  orders?: OrderEntity[];
 
   @Column({
     type: 'timestamptz',

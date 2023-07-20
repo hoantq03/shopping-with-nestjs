@@ -15,8 +15,8 @@ import {
   ResCategoryDto,
   ResProductDto,
 } from './dto';
-import { ProductEntity } from './entity/product.entity';
 import { CategoryEntity } from './entity/categories.entity';
+import { ProductEntity } from './entity/product.entity';
 
 @Injectable()
 export class ProductService {

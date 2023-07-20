@@ -14,7 +14,7 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
             "tax" decimal NOT NULL DEFAULT 0,
             "ship_cost" decimal NOT NULL DEFAULT 0,
             
-            "shipper_id" character varying NOT NULL,            
+            "shipper_id" character varying,            
             "user_id" character varying NOT NULL,
             "address_id" character varying NOT NULL,
 
