@@ -23,7 +23,6 @@ export class CartService {
   ) {}
 
   async addProductToCart(props: ReqAddProductToCartDto): Promise<object> {
-    console.log(props);
     const product: ProductEntity = await this.productServices.findProductById(
       props.productId,
     );
@@ -85,7 +84,6 @@ export class CartService {
       cartItems: cartItems,
       totalAmount: totalAmount,
     };
-    console.log(cart);
     return cart;
   }
 

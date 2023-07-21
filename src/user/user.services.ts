@@ -15,7 +15,6 @@ import {
   ResAddressDto,
   ResUserDto,
 } from './dto';
-import { CartService } from 'src/cart/cart.service';
 import { CartEntity } from 'src/cart/entity';
 
 @Injectable()
