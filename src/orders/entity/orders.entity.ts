@@ -1,7 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { ShipperEntity } from './shippers.entity';
 import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { v4 as uuidv4 } from 'uuid';
+import { OrderDetailEntity } from './order-detail.entity';
 
 const ORDER_PREFIX = 'order_';
 @Entity('orders')
@@ -90,6 +98,9 @@ export class OrderEntity {
   @ManyToOne(() => AddressEntity, (address) => address.orders)
   @JoinColumn({ name: 'address_id' })
   address!: AddressEntity;
+
+  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
+  orderDetails: OrderDetailEntity[];
 
   static createOrderId(id?: string): string {
     return id ? id : `${ORDER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

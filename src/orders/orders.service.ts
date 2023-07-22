@@ -36,6 +36,7 @@ export class OrdersService {
       status: OrderStatus.ORDERED,
       user: user,
       tax: orderProps.tax,
+      orderDetails: cart.cartItems,
     };
     await this.orderRepo.save(order);
 

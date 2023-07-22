@@ -1,13 +1,11 @@
 import { ProductEntity } from 'src/product/entity/product.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { OrderEntity } from './orders.entity';
 
 @Entity('orderDetails')
 export class OrderDetailEntity {
   @PrimaryColumn({ type: 'character varying', name: 'order_detail_id' })
   order_detail_id!: string;
-
-  // @Column({ type: 'character varying', name: 'order_id' })
-  // order_id!: string;
 
   @Column({ type: 'character varying', name: 'product_id' })
   product_id!: string;
@@ -38,8 +36,8 @@ export class OrderDetailEntity {
   })
   billDate?: Date;
 
-  @ManyToOne(() => OrderDetailEntity, (order) => order.orderDetail)
-  orderDetail!: OrderDetailEntity;
+  @ManyToOne(() => OrderDetailEntity, (order) => order.order)
+  order!: OrderEntity;
 
   @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
   @JoinColumn({ name: 'product_id' })
