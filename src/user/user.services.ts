@@ -146,7 +146,8 @@ export class UserServices {
     user.phone = updatedData.phone ?? user.phone;
     user.birthday = updatedData.birthday ?? user.birthday;
     user.updatedAt = new Date();
-    //updated by later
+    user.updatedBy = updatedData.userId;
+
     await this.userRepo.save(user);
     return new ResUserDto(user);
   }

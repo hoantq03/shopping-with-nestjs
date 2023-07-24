@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsEnum,
   IsOptional,
+  IsString,
   MinLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -43,4 +44,8 @@ export class ReqUpdateUserDto {
   @IsDate()
   @Type(() => Date)
   birthday?: Date;
+
+  @IsString()
+  @IsOptional({ always: false })
+  userId?: string;
 }

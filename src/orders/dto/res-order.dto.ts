@@ -6,9 +6,9 @@ import { CartEntity } from 'src/cart/entity';
 export class ResOrderDto {
   order_id: string;
   amount_total: number;
-  discount: number;
+  discount?: number;
   billDate: Date;
-  shipDate: Date;
+  shipDate?: Date;
   status: OrderStatus;
   tax: number;
   shipCost: number;
@@ -21,10 +21,12 @@ export class ResOrderDto {
   address: AddressEntity;
   orderDetails: OrderDetailEntity[];
 
-  constructor(cartProps: CartEntity) {
+  constructor(cartProps: CartEntity, discount?: number) {
     Object.assign(this, {
       amount_total: cartProps.amount_total,
-      discount: this.discount,
+      discount,
+      billDate: new Date(),
+      status: OrderStatus.ORDERED,
     });
   }
 }

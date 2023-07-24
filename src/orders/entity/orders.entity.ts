@@ -1,3 +1,5 @@
+import { ResAddressDto, ResUserDto } from 'src/user/dto';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
 import {
   Column,
   Entity,
@@ -6,11 +8,9 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { ShipperEntity } from './shippers.entity';
-import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderDetailEntity } from './order-detail.entity';
-import { ResCartDto } from 'src/cart/dto';
+import { ShipperEntity } from './shippers.entity';
 
 const ORDER_PREFIX = 'order_';
 @Entity('orders')
@@ -94,11 +94,11 @@ export class OrderEntity {
 
   @ManyToOne(() => UsersEntity, (user) => user.orders)
   @JoinColumn({ name: 'user_id' })
-  user!: UsersEntity;
+  user!: ResUserDto;
 
   @ManyToOne(() => AddressEntity, (address) => address.orders)
   @JoinColumn({ name: 'address_id' })
-  address!: AddressEntity;
+  address!: ResAddressDto;
 
   @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
   orderDetails: OrderDetailEntity[];

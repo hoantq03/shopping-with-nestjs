@@ -113,6 +113,7 @@ export class UsersEntity {
   @OneToOne(() => CartEntity)
   @JoinColumn({ name: 'cart_id' })
   cart!: CartEntity;
+
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

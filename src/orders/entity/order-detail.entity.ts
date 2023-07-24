@@ -44,7 +44,7 @@ export class OrderDetailEntity {
   })
   discount!: number;
 
-  @ManyToOne(() => OrderDetailEntity, (order) => order.order)
+  @ManyToOne(() => OrderEntity, (order) => order.orderDetails)
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
 
