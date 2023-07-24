@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CartException, UserException } from 'src/exception';
+import { CartException, ProductException, UserException } from 'src/exception';
 import { ProductEntity } from 'src/product/entity/product.entity';
 import { ProductService } from 'src/product/product.service';
 import { UsersEntity } from 'src/user/entity';
@@ -26,6 +26,7 @@ export class CartService {
     const product: ProductEntity = await this.productServices.findProductById(
       props.productId,
     );
+    if (!product) ProductException.productNotFound();
     if (props.quantity > product.stock) UserException.NotEnoughQuantity();
 
     const user: UsersEntity = await this.userServices.findUserById(
@@ -37,30 +38,36 @@ export class CartService {
       where: { cart_id: user.cart.cart_id },
     });
 
-    const cart = await this.cartRepo.findOne({
+    const cart: CartEntity = await this.cartRepo.findOne({
       where: { cart_id: user.cart.cart_id },
     });
     if (!cart) CartException.cartNotFound();
 
-    const cartItemSave = {
-      cart: cart,
-      cart_id: user.cart.cart_id,
-      product: product,
-      product_id: product.id,
-      quantity: props.quantity,
-      amount_total: product.price * props.quantity,
-    };
+    const item: CartItemsEntity = cartItems.find((cartItem) => {
+      return String(cartItem?.product_id) == String(props.productId);
+    });
 
-    product.stock -= props.quantity;
-
-    if (user && product) {
-      cartItems.forEach((cartItem) => {
-        cartItemSave.quantity += cartItem.quantity;
-      });
-      cartItemSave.amount_total = cartItemSave.quantity * product.price;
+    let cartItemSave: CartItemsEntity;
+    if (item) {
+      item.quantity += props.quantity;
+      item.amount_total = item.quantity * product.price;
+      await this.cartItemsRepo.save(item);
+      product.stock -= props.quantity;
+    } else {
+      cartItemSave = {
+        cart: cart,
+        cart_id: user.cart.cart_id,
+        product: product,
+        product_id: product.id,
+        quantity: props.quantity,
+        amount_total: product.price * props.quantity,
+      };
+      await this.cartItemsRepo.save(cartItemSave);
+      product.stock -= props.quantity;
     }
-    await this.cartItemsRepo.save(cartItemSave);
+
     await this.productRepo.save(product);
+    await this.cartRepo.save(cart);
 
     return {
       message: 'add product to cart successfully',

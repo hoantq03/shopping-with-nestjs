@@ -10,6 +10,7 @@ import { ShipperEntity } from './shippers.entity';
 import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderDetailEntity } from './order-detail.entity';
+import { ResCartDto } from 'src/cart/dto';
 
 const ORDER_PREFIX = 'order_';
 @Entity('orders')

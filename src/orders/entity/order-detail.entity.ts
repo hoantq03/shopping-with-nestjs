@@ -1,42 +1,51 @@
 import { ProductEntity } from 'src/product/entity/product.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { OrderEntity } from './orders.entity';
+import { v4 as uuidv4 } from 'uuid';
 
+const ORDER_DETAIL_PREFIX = 'order_detail_';
 @Entity('orderDetails')
 export class OrderDetailEntity {
-  @PrimaryColumn({ type: 'character varying', name: 'order_detail_id' })
-  order_detail_id!: string;
-
-  @Column({ type: 'character varying', name: 'product_id' })
+  @PrimaryColumn({
+    type: 'character varying',
+    name: 'product_id',
+    nullable: false,
+  })
   product_id!: string;
 
-  @Column({ type: 'decimal', name: 'price' })
-  price!: string;
+  @PrimaryColumn({
+    type: 'character varying',
+    name: 'order_id',
+    nullable: false,
+  })
+  order_id!: string;
 
-  @Column({ type: 'integer', name: 'quantity' })
+  @Column({
+    type: 'decimal',
+    name: 'price',
+    default: 0,
+    nullable: false,
+  })
+  price!: number;
+
+  @Column({
+    type: 'integer',
+    name: 'quantity',
+    default: 0,
+    nullable: false,
+  })
   quantity!: number;
 
-  @Column({ type: 'decimal', name: 'discount' })
-  discount!: string;
-
-  @Column({ type: 'decimal', name: 'total' })
-  total!: string;
-
   @Column({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'shipDate',
+    type: 'decimal',
+    name: 'discount',
+    default: 0,
+    nullable: false,
   })
-  shipDate?: Date;
-
-  @Column({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'billDate',
-  })
-  billDate?: Date;
+  discount!: number;
 
   @ManyToOne(() => OrderDetailEntity, (order) => order.order)
+  @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
 
   @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
@@ -62,4 +71,10 @@ export class OrderDetailEntity {
 
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
+
+  static createOrderDetailId(id?: string): string {
+    return id
+      ? id
+      : `${ORDER_DETAIL_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  }
 }
