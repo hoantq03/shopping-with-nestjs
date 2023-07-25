@@ -15,8 +15,8 @@ export class AddTableCartItems1689743971067 implements MigrationInterface {
             "updated_by" character varying NOT NULL DEFAULT '1',
             
             CONSTRAINT "PK_a3674fb9fb1c0c84133f907fc6b" PRIMARY KEY ("cart_id","product_id"),
-            CONSTRAINT "FK_a3fc6f9fb07bf1c0cb984167433" FOREIGN KEY ("cart_id") REFERENCES carts("cart_id"),
-            CONSTRAINT "FK_a3fc6f9fb07bf17433c0cb98416" FOREIGN KEY ("product_id") REFERENCES products("product_id")
+            CONSTRAINT "FK_a3fc6f9fb07bf1c0cb984167433" FOREIGN KEY ("cart_id") REFERENCES carts("id"),
+            CONSTRAINT "FK_a3fc6f9fb07bf17433c0cb98416" FOREIGN KEY ("product_id") REFERENCES products("id")
             );
             `);
   }

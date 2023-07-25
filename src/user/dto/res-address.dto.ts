@@ -16,7 +16,7 @@ export class ResAddressDto {
       country: address.country,
       postal_code: address.postal_code,
       city: address.city,
-      userId: address.user.user_id,
+      userId: address.user.id,
     });
   }
 }

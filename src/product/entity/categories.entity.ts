@@ -8,9 +8,9 @@ export class CategoryEntity {
   @PrimaryColumn({
     type: 'character varying',
     nullable: false,
-    name: 'category_id',
+    name: 'id',
   })
-  categoryId!: string;
+  id!: string;
 
   @Column({
     type: 'character varying',
@@ -22,9 +22,6 @@ export class CategoryEntity {
 
   @Column({ type: 'character varying', nullable: false, name: 'description' })
   description!: string;
-
-  @OneToMany(() => ProductEntity, (products) => products.category)
-  products: ProductEntity[];
 
   @Column({
     type: 'timestamptz',
@@ -46,6 +43,11 @@ export class CategoryEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  //relations
+  @OneToMany(() => ProductEntity, (products) => products.category)
+  products: ProductEntity[];
+
+  //methods
   static createCategoryId(id?: string): string {
     return id ? id : `${CATEGORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

@@ -4,7 +4,7 @@ export class AddProductTable1689061983172 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
     CREATE TABLE "products" (
-        "product_id" character varying NOT NULL,
+        "id" character varying NOT NULL,
         "name" character varying(100) NOT NULL,
         "description" character varying NOT NULL,
         "color" character varying(100) NOT NULL,
@@ -21,9 +21,9 @@ export class AddProductTable1689061983172 implements MigrationInterface {
         "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
         "updated_by" character varying NOT NULL DEFAULT '1',
         
-        CONSTRAINT "PK_a3ffb1c0c8416b9fc6b7433f907" PRIMARY KEY ("product_id"),
-        CONSTRAINT "FK_a3fb435cfb170c8416b9fc6f907" FOREIGN KEY ("category_id") REFERENCES categories("category_id"),
-        CONSTRAINT "FK_a3fb435c6f907fb170c8416b9fc" FOREIGN KEY ("user_id") REFERENCES users("user_id")
+        CONSTRAINT "PK_a3ffb1c0c8416b9fc6b7433f907" PRIMARY KEY ("id"),
+        CONSTRAINT "FK_a3fb435cfb170c8416b9fc6f907" FOREIGN KEY ("category_id") REFERENCES categories("id"),
+        CONSTRAINT "FK_a3fb435c6f907fb170c8416b9fc" FOREIGN KEY ("user_id") REFERENCES users("id")
         );
         `);
   }

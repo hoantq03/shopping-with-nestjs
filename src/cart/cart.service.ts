@@ -35,11 +35,11 @@ export class CartService {
     if (!user) UserException.userNotFound();
 
     const cartItems: CartItemsEntity[] = await this.cartItemsRepo.find({
-      where: { cart_id: user.cart.cart_id },
+      where: { cart_id: user.cart.id },
     });
 
     const cart: CartEntity = await this.cartRepo.findOne({
-      where: { cart_id: user.cart.cart_id },
+      where: { id: user.cart.id },
     });
     if (!cart) CartException.cartNotFound();
 
@@ -56,7 +56,7 @@ export class CartService {
     } else {
       cartItemSave = {
         cart: cart,
-        cart_id: user.cart.cart_id,
+        cart_id: user.cart.id,
         product: product,
         product_id: product.id,
         quantity: props.quantity,
@@ -78,7 +78,7 @@ export class CartService {
   async getCart(userId: string): Promise<ResCartDto> {
     const user: UsersEntity = await this.userServices.findUserById(userId);
     const cartItems: CartItemsEntity[] = await this.cartItemsRepo.find({
-      where: { cart_id: user.cart.cart_id },
+      where: { cart_id: user.cart.id },
     });
 
     let totalAmount = 0;
@@ -100,7 +100,7 @@ export class CartService {
   ): Promise<object> {
     const user: UsersEntity = await this.userServices.findUserById(userId);
     const cartItems: CartItemsEntity = await this.cartItemsRepo.findOne({
-      where: { product_id: productId, cart_id: user.cart.cart_id },
+      where: { product_id: productId, cart_id: user.cart.id },
     });
     if (!cartItems) CartException.cartNotFound();
     await this.cartItemsRepo.remove(cartItems);

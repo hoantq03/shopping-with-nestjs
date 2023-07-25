@@ -37,7 +37,7 @@ export class OrdersService {
     // transfer products from cart to order detail
     const orderId = OrderEntity.createOrderId();
     const order: OrderEntity = {
-      order_id: orderId,
+      id: orderId,
       address: new ResAddressDto(address),
       discount: orderProps.discount,
       amount_total: cart.totalAmount * (1 - orderProps.discount / 100),

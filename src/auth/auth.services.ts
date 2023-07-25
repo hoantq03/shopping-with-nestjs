@@ -19,7 +19,7 @@ export class AuthServices {
     if (!isMatchPassword) {
       AuthException.unauthorized();
     }
-    const payLoad = { userId: user.user_id, email: user.email };
+    const payLoad = { userId: user.id, email: user.email };
 
     const token = await this.jwtService.signAsync(payLoad);
 

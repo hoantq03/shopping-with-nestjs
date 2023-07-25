@@ -63,7 +63,7 @@ export class UserServices {
     // test
     const cartId = CartEntity.createCartId();
     const cart: CartEntity = this.cartRepo.create({
-      cart_id: cartId,
+      id: cartId,
       amount_total: 0,
     });
     await this.cartRepo.save(cart);
@@ -71,7 +71,7 @@ export class UserServices {
     const userSignUp: UsersEntity = this.userRepo.create({
       ...props,
 
-      user_id: userId,
+      id: userId,
       status: UserStatus.ACTIVE,
       cart: cart,
     });
@@ -95,7 +95,7 @@ export class UserServices {
 
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
-      where: { user_id: id },
+      where: { id },
       relations: ['address', 'cart'],
     });
     return user ? user : null;
@@ -209,7 +209,7 @@ export class UserServices {
     if (!address) {
       AddressException.addressNotFound();
     }
-    if (address.user.user_id !== userId) {
+    if (address.user.id !== userId) {
       AuthException.forbidden();
     }
     await this.addressRepo.remove(address);

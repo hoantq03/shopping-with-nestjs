@@ -18,9 +18,9 @@ export class UsersEntity {
   @PrimaryColumn({
     type: 'character varying',
     nullable: false,
-    name: 'user_id',
+    name: 'id',
   })
-  user_id!: string;
+  id!: string;
 
   @Column({
     type: 'character varying',
@@ -57,7 +57,7 @@ export class UsersEntity {
   @Column({
     type: 'character varying',
     length: 100,
-    default: 'user',
+    default: 'customer',
     name: 'role',
   })
   role!: string;
@@ -101,6 +101,7 @@ export class UsersEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  // relations
   @OneToMany(() => AddressEntity, (address) => address.user)
   address?: AddressEntity[];
 
@@ -114,6 +115,7 @@ export class UsersEntity {
   @JoinColumn({ name: 'cart_id' })
   cart!: CartEntity;
 
+  // methods
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

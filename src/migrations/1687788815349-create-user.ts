@@ -5,7 +5,7 @@ export class CreateUser1687788815349 implements MigrationInterface {
     await queryRunner.query(
       `
         CREATE TABLE "users" (
-          "user_id" character varying NOT NULL,
+          "id" character varying NOT NULL,
           "first_name" character varying(100) NOT NULL,
           "last_name" character varying(100) NOT NULL,
           "email" character varying(100) NOT NULL,
@@ -23,8 +23,8 @@ export class CreateUser1687788815349 implements MigrationInterface {
           "updated_by" character varying NOT NULL DEFAULT '1',
           
           CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"),
-          CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("user_id"),
-          CONSTRAINT "FK_a3fc6f907bfb9fb1c0c84167433" FOREIGN KEY ("cart_id") REFERENCES carts("cart_id")
+          CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"),
+          CONSTRAINT "FK_a3fc6f907bfb9fb1c0c84167433" FOREIGN KEY ("cart_id") REFERENCES carts("id")
           );
       `,
     );

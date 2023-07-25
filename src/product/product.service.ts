@@ -31,13 +31,13 @@ export class ProductService {
 
   async addProduct(productInfo: ReqAddProduct): Promise<ResProductDto> {
     const user: UsersEntity = await this.userRepo.findOne({
-      where: { user_id: productInfo.userId },
+      where: { id: productInfo.userId },
     });
 
     if (!user) ProductException.ownerNotExist();
 
     const category = await this.categoryRepo.findOne({
-      where: { categoryId: productInfo.categoryId },
+      where: { id: productInfo.categoryId },
     });
 
     if (!category) ProductException.categoryNotExist();
@@ -63,12 +63,12 @@ export class ProductService {
 
     if (!isEmpty(categories)) CategoryException.categoryExisted();
 
-    const categoryId: string = CategoryEntity.createCategoryId();
+    const id: string = CategoryEntity.createCategoryId();
     const createdBy: string = categoryInfo.userId;
     const updatedBy: string = categoryInfo.userId;
 
     const categoryProps: CategoryEntity = {
-      categoryId,
+      id,
       ...categoryInfo,
       createdBy,
       updatedBy,
@@ -86,9 +86,9 @@ export class ProductService {
     return this.categoryRepo.find();
   }
 
-  async deleteCategory(categoryId: string) {
+  async deleteCategory(id: string) {
     const category: CategoryEntity = await this.categoryRepo.findOne({
-      where: { categoryId },
+      where: { id },
     });
     if (!category) CategoryException.categoryNotFound();
 
@@ -139,13 +139,12 @@ export class ProductService {
       productId,
     );
 
-    if (oldProduct.user.user_id !== productProps.userId)
-      UserException.permission();
+    if (oldProduct.user.id !== productProps.userId) UserException.permission();
     if (!oldProduct) ProductException.productNotFound();
 
-    if (oldProduct.category.categoryId !== productProps.categoryId) {
+    if (oldProduct.category.id !== productProps.categoryId) {
       const category = await this.categoryRepo.findOne({
-        where: { categoryId: productProps.categoryId },
+        where: { id: productProps.categoryId },
       });
       oldProduct.category = category;
     }

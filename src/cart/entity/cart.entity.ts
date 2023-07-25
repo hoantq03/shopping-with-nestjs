@@ -8,11 +8,11 @@ const CART_PREFIX = 'cart_';
 @Entity('carts')
 export class CartEntity {
   @PrimaryColumn({
-    name: 'cart_id',
+    name: 'id',
     type: 'character varying',
     nullable: false,
   })
-  cart_id!: string;
+  id!: string;
 
   @Column({
     name: 'amount_total',
@@ -27,28 +27,32 @@ export class CartEntity {
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'created_at',
+    nullable: false,
   })
   createdAt?: Date;
 
-  @Column({ name: 'created_by', default: () => '1' })
+  @Column({ name: 'created_by', default: () => '1', nullable: false })
   createdBy?: string;
 
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'updated_at',
+    nullable: false,
   })
   updatedAt?: Date;
 
-  @Column({ name: 'updated_by', default: () => '1' })
+  @Column({ name: 'updated_by', default: () => '1', nullable: false })
   updatedBy?: string;
 
+  //relations
   @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.cart)
   cartItems!: CartItemsEntity[];
 
   @OneToOne(() => UsersEntity)
   user!: UsersEntity;
 
+  //methods
   static createCartId(id?: string): string {
     return id ? id : `${CART_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

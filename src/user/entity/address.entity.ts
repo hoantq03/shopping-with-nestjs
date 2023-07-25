@@ -12,7 +12,7 @@ import { OrderEntity } from 'src/orders/entity';
 
 const ADDRESS_PREFIX = 'address_';
 
-@Entity('addresses_info')
+@Entity('addresses')
 export class AddressEntity {
   @PrimaryColumn({
     type: 'character varying',
@@ -20,10 +20,6 @@ export class AddressEntity {
     name: 'address_id',
   })
   id!: string;
-
-  @ManyToOne(() => UsersEntity, (user) => user.address)
-  @JoinColumn({ name: 'user_id' })
-  user!: UsersEntity;
 
   @Column({ type: 'character varying', nullable: false, name: 'address_line' })
   address_line!: string;
@@ -36,9 +32,6 @@ export class AddressEntity {
 
   @Column({ type: 'character varying', nullable: false, name: 'country' })
   country!: string;
-
-  @OneToMany(() => OrderEntity, (orders) => orders.address)
-  orders?: OrderEntity[];
 
   @Column({
     type: 'timestamptz',
@@ -60,6 +53,15 @@ export class AddressEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  // relations
+  @ManyToOne(() => UsersEntity, (user) => user.address)
+  @JoinColumn({ name: 'user_id' })
+  user!: UsersEntity;
+
+  @OneToMany(() => OrderEntity, (orders) => orders.address)
+  orders?: OrderEntity[];
+
+  //methods
   static createAddressId(id?: string): string {
     return id ? id : `${ADDRESS_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

@@ -23,6 +23,7 @@ export class OrderDetailEntity {
   @Column({
     type: 'decimal',
     name: 'price',
+    precision: 2,
     default: 0,
     nullable: false,
   })
@@ -35,22 +36,6 @@ export class OrderDetailEntity {
     nullable: false,
   })
   quantity!: number;
-
-  @Column({
-    type: 'decimal',
-    name: 'discount',
-    default: 0,
-    nullable: false,
-  })
-  discount!: number;
-
-  @ManyToOne(() => OrderEntity, (order) => order.orderDetails)
-  @JoinColumn({ name: 'order_id' })
-  order!: OrderEntity;
-
-  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
-  @JoinColumn({ name: 'product_id' })
-  product!: ProductEntity;
 
   @Column({
     type: 'timestamptz',
@@ -72,6 +57,16 @@ export class OrderDetailEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  // relations
+  @ManyToOne(() => OrderEntity, (order) => order.orderDetails)
+  @JoinColumn({ name: 'order_id' })
+  order!: OrderEntity;
+
+  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
+  @JoinColumn({ name: 'product_id' })
+  product!: ProductEntity;
+
+  // methods
   static createOrderDetailId(id?: string): string {
     return id
       ? id

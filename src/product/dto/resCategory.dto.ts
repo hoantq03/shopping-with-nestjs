@@ -1,7 +1,7 @@
 import { CategoryEntity } from '../entity/categories.entity';
 
 export class ResCategoryDto {
-  categoryId: string;
+  id: string;
   name: string;
   description: string;
   createdAt?: Date;
@@ -11,7 +11,7 @@ export class ResCategoryDto {
 
   constructor(Category: CategoryEntity) {
     Object.assign(this, {
-      categoryId: Category.categoryId,
+      categoryId: Category.id,
       name: Category.name,
       description: Category.description,
       createdAt: Category.createdAt,

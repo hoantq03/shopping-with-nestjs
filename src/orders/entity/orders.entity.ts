@@ -17,13 +17,14 @@ const ORDER_PREFIX = 'order_';
 export class OrderEntity {
   @PrimaryColumn({
     type: 'character varying',
-    name: 'order_id',
+    name: 'id',
     nullable: false,
   })
-  order_id!: string;
+  id!: string;
 
   @Column({
     type: 'decimal',
+    precision: 2,
     name: 'amount_total',
     nullable: false,
     default: 0,
@@ -32,11 +33,20 @@ export class OrderEntity {
 
   @Column({
     type: 'decimal',
+    precision: 2,
     name: 'discount',
     nullable: false,
     default: 0,
   })
   discount!: number;
+
+  @Column({
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'orderDate',
+    nullable: true,
+  })
+  orderDate?: Date;
 
   @Column({
     type: 'timestamptz',
@@ -62,10 +72,22 @@ export class OrderEntity {
   })
   status!: string;
 
-  @Column({ name: 'tax', nullable: false, type: 'decimal', default: 0 })
+  @Column({
+    name: 'tax',
+    nullable: false,
+    type: 'decimal',
+    precision: 2,
+    default: 0,
+  })
   tax!: number;
 
-  @Column({ name: 'ship_cost', nullable: false, type: 'decimal', default: 0 })
+  @Column({
+    name: 'ship_cost',
+    nullable: false,
+    type: 'decimal',
+    precision: 2,
+    default: 0,
+  })
   shipCost!: number;
 
   @Column({
@@ -88,6 +110,7 @@ export class OrderEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  // relations
   @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)
   @JoinColumn({ name: 'shipper_id' })
   shipper?: ShipperEntity;
@@ -103,6 +126,7 @@ export class OrderEntity {
   @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
   orderDetails: OrderDetailEntity[];
 
+  //methods
   static createOrderId(id?: string): string {
     return id ? id : `${ORDER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

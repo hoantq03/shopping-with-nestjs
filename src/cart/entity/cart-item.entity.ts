@@ -24,6 +24,7 @@ export class CartItemsEntity {
   @Column({
     name: 'amount_total',
     type: 'decimal',
+    precision: 2,
     nullable: false,
     default: 0,
   })

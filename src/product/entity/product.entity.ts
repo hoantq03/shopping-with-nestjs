@@ -18,7 +18,7 @@ export class ProductEntity {
   @PrimaryColumn({
     type: 'character varying',
     nullable: false,
-    name: 'product_id',
+    name: 'id',
   })
   id!: string;
 
@@ -41,7 +41,7 @@ export class ProductEntity {
   })
   color!: string;
 
-  @Column({ type: 'decimal', precision: 2, name: 'discount' })
+  @Column({ type: 'decimal', precision: 2, name: 'discount', default: 0 })
   discount!: number;
 
   @Column({
@@ -52,25 +52,11 @@ export class ProductEntity {
   })
   imageUrl!: string;
 
-  @Column('decimal', { precision: 2, name: 'price' })
+  @Column({ type: 'decimal', precision: 2, name: 'price', default: 0 })
   price!: number;
 
-  @Column({ type: 'integer', nullable: false, name: 'stock' })
+  @Column({ type: 'integer', nullable: false, name: 'stock', default: 0 })
   stock!: number;
-
-  @ManyToOne(() => UsersEntity, (user) => user.products)
-  @JoinColumn({ name: 'user_id' })
-  user!: UsersEntity;
-
-  @ManyToOne(() => CategoryEntity, (category) => category.products)
-  @JoinColumn({ name: 'category_id' })
-  category!: CategoryEntity;
-
-  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
-  orderDetails?: OrderDetailEntity[];
-
-  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.product)
-  cartItems?: CartItemsEntity[];
 
   @Column({
     type: 'timestamptz',
@@ -92,6 +78,22 @@ export class ProductEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
+  //relations
+  @ManyToOne(() => UsersEntity, (user) => user.products)
+  @JoinColumn({ name: 'user_id' })
+  user!: UsersEntity;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.products)
+  @JoinColumn({ name: 'category_id' })
+  category!: CategoryEntity;
+
+  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
+  orderDetails?: OrderDetailEntity[];
+
+  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.product)
+  cartItems?: CartItemsEntity[];
+
+  // methods
   static createProductId(id?: string): string {
     return id ? id : `${PRODUCT_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }

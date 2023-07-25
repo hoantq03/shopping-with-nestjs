@@ -4,7 +4,7 @@ export class AddTableCart1689740834829 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
         CREATE TABLE "carts" (
-            "cart_id" character varying NOT NULL,
+            "id" character varying NOT NULL,
             "amount_total" decimal NOT NULL DEFAULT 0,
             
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
@@ -12,7 +12,7 @@ export class AddTableCart1689740834829 implements MigrationInterface {
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_by" character varying NOT NULL DEFAULT '1',
             
-            CONSTRAINT "PK_a3fc6bfb9fb1c0c84167433f907" PRIMARY KEY ("cart_id")
+            CONSTRAINT "PK_a3fc6bfb9fb1c0c84167433f907" PRIMARY KEY ("id")
             );
             `);
   }
