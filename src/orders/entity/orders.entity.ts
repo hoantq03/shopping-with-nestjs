@@ -43,7 +43,7 @@ export class OrderEntity {
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
-    name: 'orderDate',
+    name: 'order_date',
     nullable: true,
   })
   orderDate?: Date;
@@ -124,7 +124,7 @@ export class OrderEntity {
   address!: ResAddressDto;
 
   @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
-  orderDetails: OrderDetailEntity[];
+  orderDetails!: OrderDetailEntity[];
 
   //methods
   static createOrderId(id?: string): string {

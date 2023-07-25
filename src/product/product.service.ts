@@ -42,6 +42,11 @@ export class ProductService {
 
     if (!category) ProductException.categoryNotExist();
 
+    const productFind: ProductEntity[] = await this.productRepo.find({
+      where: { name: productInfo.name },
+    });
+    if (!isEmpty(productFind)) ProductException.productExisted();
+
     const productId: string = ProductEntity.createProductId();
 
     const productProps: ProductEntity = {
@@ -138,14 +143,14 @@ export class ProductService {
     const oldProduct: ProductEntity | null = await this.findProductById(
       productId,
     );
-
-    if (oldProduct.user.id !== productProps.userId) UserException.permission();
     if (!oldProduct) ProductException.productNotFound();
+    if (oldProduct.user.id !== productProps.userId) UserException.permission();
 
     if (oldProduct.category.id !== productProps.categoryId) {
       const category = await this.categoryRepo.findOne({
         where: { id: productProps.categoryId },
       });
+      if (!category) CategoryException.categoryNotFound();
       oldProduct.category = category;
     }
 

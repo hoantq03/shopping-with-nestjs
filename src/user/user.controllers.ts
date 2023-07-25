@@ -13,6 +13,7 @@ import {
   ReqAddAddress,
   ReqFindAllUserDto,
   ReqFindUserByEmailDto,
+  ReqSetAddressDefault,
   ReqUpdateUserDto,
   ReqUserStatusDto,
   ResAddressDto,
@@ -78,5 +79,12 @@ export class UserController {
     const addressId: string = param.id;
     const { userId } = body;
     return this.userService.deleteAddress(addressId, userId);
+  }
+
+  @UseGuards(CustomerGuard)
+  @Put('/address/setDefaultAddress')
+  async setDefaultAddress(@Body() body: ReqSetAddressDefault): Promise<any> {
+    console.log(body);
+    // return this.userService.setDefaultAddress();
   }
 }

@@ -1,11 +1,10 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthException } from 'src/exception';
 import { RegisterUserDto } from 'src/user/dto';
 import { UserServices } from 'src/user/user.services';
 import { AuthServices } from './auth.services';
 import { ReqLoginDto } from './dto/login';
-import { Response } from 'express';
-import { JwtService } from '@nestjs/jwt';
 
 @Controller('/auth')
 export class AuthControllers {

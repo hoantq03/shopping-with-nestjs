@@ -5,3 +5,4 @@ export * from './status-user/index';
 export * from './update-user/index';
 export * from './add-address';
 export * from './res-address.dto';
+export * from './set-address-default';

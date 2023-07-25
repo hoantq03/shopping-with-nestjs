@@ -33,7 +33,7 @@ export class UserServices {
     const ResUsers: ResUserDto[] = [];
     const users: UsersEntity[] = await this.userRepo.find({
       where: { status: body.status },
-      relations: ['address'],
+      relations: ['addresses'],
     });
 
     users.forEach((user) => {
@@ -88,7 +88,7 @@ export class UserServices {
   async findUserByEmail(email: string): Promise<UsersEntity | null> {
     const user = await this.userRepo.findOne({
       where: { email },
-      relations: ['address'],
+      relations: ['addresses'],
     });
     return user ? user : null;
   }
@@ -96,7 +96,7 @@ export class UserServices {
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
       where: { id },
-      relations: ['address', 'cart'],
+      relations: ['addresses', 'cart'],
     });
     return user ? user : null;
   }
@@ -168,7 +168,7 @@ export class UserServices {
     const user = await this.findUserById(userId);
 
     const addressExisted = await this.userRepo.findOne({
-      where: { address: { address_line: address.address_line } },
+      where: { addresses: { addressLine: address.addressLine } },
     });
 
     if (addressExisted) AddressException.addressExisted();

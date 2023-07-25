@@ -82,6 +82,13 @@ export class UsersEntity {
   status!: number;
 
   @Column({
+    type: 'character varying',
+    nullable: true,
+    name: 'default_address_id',
+  })
+  defaultAddressId?: string;
+
+  @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'created_at',
@@ -102,8 +109,8 @@ export class UsersEntity {
   updatedBy?: string;
 
   // relations
-  @OneToMany(() => AddressEntity, (address) => address.user)
-  address?: AddressEntity[];
+  @OneToMany(() => AddressEntity, (addresses) => addresses.user)
+  addresses?: AddressEntity[];
 
   @OneToMany(() => ProductEntity, (products) => products.user)
   products?: ProductEntity[];

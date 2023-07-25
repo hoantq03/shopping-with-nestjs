@@ -2,22 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartService } from 'src/cart/cart.service';
 import { ResCartDto } from 'src/cart/dto';
+import { AddressException, CartException, UserException } from 'src/exception';
 import { ProductService } from 'src/product/product.service';
-import { AddressEntity, UsersEntity } from 'src/user/entity';
+import { ResAddressDto, ResUserDto } from 'src/user/dto';
+import { AddressEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
 import { Repository } from 'typeorm';
 import { ReqCreateOrder } from './dto/create-order/req-create-order.dto';
-import { OrderEntity } from './entity';
+import { OrderDetailEntity, OrderEntity } from './entity';
 import { OrderStatus } from 'src/common';
-import { ResAddressDto, ResUserDto } from 'src/user/dto';
-import { AddressException, CartException, UserException } from 'src/exception';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private userServices: UserServices,
     private cartServices: CartService,
-    @InjectRepository(UsersEntity)
+    @InjectRepository(OrderEntity)
     private orderRepo: Repository<OrderEntity>,
     private productServices: ProductService,
   ) {}
@@ -48,32 +48,48 @@ export class OrdersService {
       orderDetails: [],
     };
 
-    console.log(order);
     await this.orderRepo.save(order);
 
-    // await this.transferProductFromCartToOrderDetail(cart, orderProps, orderId);
-    // // delete all product from cart
-    // cart.cartItems = [];
-    // // update cart and order
-    // cart.totalAmount = 0;
-    // return order;
+    const orderDetailsList = this.transferProductFromCartToOrderDetail(
+      cart,
+      orderProps,
+      orderId,
+    );
+
+    // delete all product from cart
+    cart.cartItems = [];
+    // update cart and order
+    cart.totalAmount = 0;
+    return order;
+
+    // impacts : cart, cartItems,user,order,orderDetail
   }
 
   async transferProductFromCartToOrderDetail(
     cart: ResCartDto,
     orderProps: ReqCreateOrder,
     orderId: string,
-  ) {
-    console.log(orderId);
-    // console.log(orderProps);
-    // const orderDetailList: OrderDetailEntity[] = [];
-    // cart.cartItems.forEach(async (cartItem) => {
-    //   const product: ProductEntity = await this.productServices.findProductById(
-    //     cartItem.product_id,
-    //   );
-    //   orderDetailList.push({
-    //     discount: orderProps.discount,
-    //   });
-    // });
+  ): Promise<any> {
+    const orderDetailList: any = [];
+    cart.cartItems.forEach((cartItem) => {
+      orderDetailList.push({
+        productId: cartItem.product_id,
+        quantity: cartItem.quantity,
+      });
+    });
+
+    const order: OrderEntity = await this.orderRepo.findOne({
+      where: { id: orderId },
+    });
+    if (!order) console.log('order not exist');
+    const orderDetailEntityList: OrderDetailEntity[] = [];
+    orderDetailList.forEach((orderDetail) => {
+      orderDetailEntityList.push({
+        order: order,
+        order_id: orderId,
+        // rest
+      });
+    });
+    return orderDetailList;
   }
 }

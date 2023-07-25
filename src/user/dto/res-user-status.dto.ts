@@ -1,3 +1,4 @@
+import { OrderDetailEntity, OrderEntity } from 'src/orders/entity';
 import { AddressEntity } from '../entity';
 import { UsersEntity } from '../entity/user.entity';
 
@@ -10,7 +11,9 @@ export class ResUserDto {
   birthDay: Date;
   email: string;
   role: string;
-  address: AddressEntity[];
+  defaultAddressId?: string;
+  orders?: OrderEntity[];
+  addresses?: AddressEntity[];
 
   constructor(user: UsersEntity) {
     Object.assign(this, {
@@ -22,7 +25,9 @@ export class ResUserDto {
       birthday: user.birthday,
       email: user.email,
       role: user.role,
-      address: user.address,
+      addresses: user.addresses,
+      orders: user.orders,
+      defaultAddressId: user.defaultAddressId,
     });
   }
 }

@@ -79,13 +79,13 @@ export class ProductEntity {
   updatedBy?: string;
 
   //relations
-  @ManyToOne(() => UsersEntity, (user) => user.products)
-  @JoinColumn({ name: 'user_id' })
-  user!: UsersEntity;
-
   @ManyToOne(() => CategoryEntity, (category) => category.products)
   @JoinColumn({ name: 'category_id' })
   category!: CategoryEntity;
+
+  @ManyToOne(() => UsersEntity, (user) => user.products)
+  @JoinColumn({ name: 'user_id' })
+  user!: UsersEntity;
 
   @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
   orderDetails?: OrderDetailEntity[];

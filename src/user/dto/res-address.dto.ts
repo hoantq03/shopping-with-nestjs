@@ -1,20 +1,19 @@
-import { UsersEntity } from 'src/user/entity';
 import { AddressEntity } from 'src/user/entity';
 
 export class ResAddressDto {
   id: string;
-  address_line: string;
+  addressLine: string;
   country: string;
-  postal_code: string;
+  postalCode: string;
   city: string;
   userId: string;
 
   constructor(address: AddressEntity) {
     Object.assign(this, {
       id: address.id,
-      address_line: address.address_line,
+      addressLine: address.addressLine,
       country: address.country,
-      postal_code: address.postal_code,
+      postalCode: address.postalCode,
       city: address.city,
       userId: address.user.id,
     });

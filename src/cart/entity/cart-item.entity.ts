@@ -30,14 +30,6 @@ export class CartItemsEntity {
   })
   amount_total!: number;
 
-  @ManyToOne(() => CartEntity, (cart) => cart.cartItems)
-  @JoinColumn({ name: 'cart_id' })
-  cart!: CartEntity;
-
-  @ManyToOne(() => ProductEntity, (product) => product.cartItems)
-  @JoinColumn({ name: 'product_id' })
-  product!: ProductEntity;
-
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
@@ -57,4 +49,13 @@ export class CartItemsEntity {
 
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
+
+  //relations
+  @ManyToOne(() => CartEntity, (cart) => cart.cartItems)
+  @JoinColumn({ name: 'cart_id' })
+  cart!: CartEntity;
+
+  @ManyToOne(() => ProductEntity, (product) => product.cartItems)
+  @JoinColumn({ name: 'product_id' })
+  product!: ProductEntity;
 }

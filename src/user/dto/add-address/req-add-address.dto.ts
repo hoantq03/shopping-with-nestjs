@@ -7,7 +7,7 @@ export class ReqAddAddress {
 
   @IsString()
   @IsNotEmpty()
-  address_line: string;
+  addressLine: string;
 
   @IsString()
   @IsNotEmpty()
@@ -15,7 +15,7 @@ export class ReqAddAddress {
 
   @IsString()
   @IsNotEmpty()
-  postal_code: string;
+  postalCode: string;
 
   @IsString()
   @IsNotEmpty()

@@ -17,18 +17,18 @@ export class AddressEntity {
   @PrimaryColumn({
     type: 'character varying',
     nullable: false,
-    name: 'address_id',
+    name: 'id',
   })
   id!: string;
 
   @Column({ type: 'character varying', nullable: false, name: 'address_line' })
-  address_line!: string;
+  addressLine!: string;
 
   @Column({ type: 'character varying', nullable: false, name: 'city' })
   city!: string;
 
   @Column({ type: 'character varying', nullable: false, name: 'postal_code' })
-  postal_code!: string;
+  postalCode!: string;
 
   @Column({ type: 'character varying', nullable: false, name: 'country' })
   country!: string;
@@ -54,7 +54,7 @@ export class AddressEntity {
   updatedBy?: string;
 
   // relations
-  @ManyToOne(() => UsersEntity, (user) => user.address)
+  @ManyToOne(() => UsersEntity, (user) => user.addresses)
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 

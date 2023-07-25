@@ -8,6 +8,15 @@ export class ProductException {
     };
     throw new HttpException(res, HttpStatus.BAD_REQUEST);
   }
+
+  static productExisted() {
+    const res = {
+      code: 'THE PRODUCT IS EXISTED',
+      message: 'the product is existed,please try another one !',
+    };
+    throw new HttpException(res, HttpStatus.BAD_REQUEST);
+  }
+
   static categoryNotExist() {
     const res = {
       code: 'THE CATEGORY DOES NOT EXIST',

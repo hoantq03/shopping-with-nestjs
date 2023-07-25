@@ -99,11 +99,20 @@ export class CartService {
     productId: string,
   ): Promise<object> {
     const user: UsersEntity = await this.userServices.findUserById(userId);
-    const cartItems: CartItemsEntity = await this.cartItemsRepo.findOne({
+    const cartItem: CartItemsEntity = await this.cartItemsRepo.findOne({
       where: { product_id: productId, cart_id: user.cart.id },
     });
-    if (!cartItems) CartException.cartNotFound();
-    await this.cartItemsRepo.remove(cartItems);
+    if (!cartItem) CartException.cartNotFound();
+
+    const product: ProductEntity = await this.productServices.findProductById(
+      productId,
+    );
+    if (!product) ProductException.productNotFound();
+
+    await this.cartItemsRepo.remove(cartItem);
+
+    product.stock = +product.stock + +cartItem.quantity;
+    await this.productRepo.save(product);
     return {
       message: 'remove product in cart successfully',
       status: 200,

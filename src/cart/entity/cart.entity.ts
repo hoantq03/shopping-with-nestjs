@@ -47,7 +47,7 @@ export class CartEntity {
 
   //relations
   @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.cart)
-  cartItems!: CartItemsEntity[];
+  cartItems?: CartItemsEntity[];
 
   @OneToOne(() => UsersEntity)
   user!: UsersEntity;
