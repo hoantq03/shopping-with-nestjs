@@ -12,6 +12,7 @@ import { ReqCreateOrder } from './dto/create-order/req-create-order.dto';
 import { OrderDetailEntity, OrderEntity } from './entity';
 import { OrderStatus } from 'src/common';
 import { ProductEntity } from 'src/product/entity';
+import { CartEntity, CartItemsEntity } from 'src/cart/entity';
 
 @Injectable()
 export class OrdersService {
@@ -23,8 +24,10 @@ export class OrdersService {
     private productServices: ProductService,
     @InjectRepository(OrderDetailEntity)
     private orderDetailRepo: Repository<OrderDetailEntity>,
-    @InjectRepository(UsersEntity)
-    private userRepo: Repository<UsersEntity>,
+    @InjectRepository(CartEntity)
+    private cartRepo: Repository<CartEntity>,
+    @InjectRepository(CartItemsEntity)
+    private cartItemsRepo: Repository<CartItemsEntity>,
   ) {}
   async createOrder(orderProps: ReqCreateOrder): Promise<any> {
     // get all product of user from cart
@@ -60,15 +63,10 @@ export class OrdersService {
       await this.transferProductFromCartToOrderDetail(cart, orderId);
 
     order.orderDetails = orderDetailsList;
+    await this.orderRepo.save(order);
 
-    // // await this.userRepo.save(user);
-    // // await this.orderRepo.save(order);
     // // delete all product from cart
-    // cart.cartItems = [];
-    // // update cart and order
-    // cart.totalAmount = 0;
-    console.log(user);
-    console.log(order);
+    await this.cartItemsRepo.delete({ cart: { id: user.cart.id } });
     return order;
   }
 
