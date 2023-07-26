@@ -5,12 +5,13 @@ import { ResCartDto } from 'src/cart/dto';
 import { AddressException, CartException, UserException } from 'src/exception';
 import { ProductService } from 'src/product/product.service';
 import { ResAddressDto, ResUserDto } from 'src/user/dto';
-import { AddressEntity } from 'src/user/entity';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
 import { Repository } from 'typeorm';
 import { ReqCreateOrder } from './dto/create-order/req-create-order.dto';
 import { OrderDetailEntity, OrderEntity } from './entity';
 import { OrderStatus } from 'src/common';
+import { ProductEntity } from 'src/product/entity';
 
 @Injectable()
 export class OrdersService {
@@ -20,10 +21,14 @@ export class OrdersService {
     @InjectRepository(OrderEntity)
     private orderRepo: Repository<OrderEntity>,
     private productServices: ProductService,
+    @InjectRepository(OrderDetailEntity)
+    private orderDetailRepo: Repository<OrderDetailEntity>,
   ) {}
   async createOrder(orderProps: ReqCreateOrder): Promise<any> {
     // get all product of user from cart
-    const user = await this.userServices.findUserById(orderProps.userId);
+    const user: UsersEntity = await this.userServices.findUserById(
+      orderProps.userId,
+    );
     if (!user) UserException.userNotFound();
 
     const cart: ResCartDto = await this.cartServices.getCart(orderProps.userId);
@@ -35,7 +40,7 @@ export class OrdersService {
     if (!address) AddressException.addressNotFound();
 
     // transfer products from cart to order detail
-    const orderId = OrderEntity.createOrderId();
+    const orderId: string = OrderEntity.createOrderId();
     const order: OrderEntity = {
       id: orderId,
       address: new ResAddressDto(address),
@@ -50,16 +55,17 @@ export class OrdersService {
 
     await this.orderRepo.save(order);
 
-    const orderDetailsList = this.transferProductFromCartToOrderDetail(
-      cart,
-      orderProps,
-      orderId,
-    );
+    const orderDetailsList: OrderDetailEntity[] =
+      await this.transferProductFromCartToOrderDetail(cart, orderId);
 
+    order.orderDetails = orderDetailsList;
+    console.log(order);
+    await this.orderRepo.save(order);
     // delete all product from cart
     cart.cartItems = [];
     // update cart and order
     cart.totalAmount = 0;
+
     return order;
 
     // impacts : cart, cartItems,user,order,orderDetail
@@ -67,9 +73,8 @@ export class OrdersService {
 
   async transferProductFromCartToOrderDetail(
     cart: ResCartDto,
-    orderProps: ReqCreateOrder,
     orderId: string,
-  ): Promise<any> {
+  ): Promise<OrderDetailEntity[]> {
     const orderDetailList: any = [];
     cart.cartItems.forEach((cartItem) => {
       orderDetailList.push({
@@ -81,15 +86,26 @@ export class OrdersService {
     const order: OrderEntity = await this.orderRepo.findOne({
       where: { id: orderId },
     });
+
     if (!order) console.log('order not exist');
     const orderDetailEntityList: OrderDetailEntity[] = [];
-    orderDetailList.forEach((orderDetail) => {
-      orderDetailEntityList.push({
-        order: order,
-        order_id: orderId,
-        // rest
-      });
-    });
-    return orderDetailList;
+    await Promise.all(
+      orderDetailList.map(async (orderDetail: any) => {
+        const product: ProductEntity =
+          await this.productServices.findProductById(orderDetail.productId);
+        const orderDetailSave: OrderDetailEntity = {
+          order: order,
+          order_id: orderId,
+          price: product.price,
+          product: product,
+          product_id: orderDetail.productId,
+          quantity: orderDetail.quantity,
+        };
+
+        orderDetailEntityList.push(orderDetailSave);
+        await this.orderDetailRepo.save(orderDetailSave);
+      }),
+    );
+    return orderDetailEntityList;
   }
 }

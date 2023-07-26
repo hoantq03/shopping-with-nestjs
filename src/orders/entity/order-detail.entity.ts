@@ -4,7 +4,7 @@ import { OrderEntity } from './orders.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 const ORDER_DETAIL_PREFIX = 'order_detail_';
-@Entity('orderDetails')
+@Entity('order_details')
 export class OrderDetailEntity {
   @PrimaryColumn({
     type: 'character varying',
