@@ -35,7 +35,8 @@ export class CartService {
     if (!user) UserException.userNotFound();
 
     const cartItems: CartItemsEntity[] = await this.cartItemsRepo.find({
-      where: { cart_id: user.cart.id },
+      where: { cart: { id: user.cart.id } },
+      relations: ['product'],
     });
 
     const cart: CartEntity = await this.cartRepo.findOne({
@@ -44,9 +45,8 @@ export class CartService {
     if (!cart) CartException.cartNotFound();
 
     const item: CartItemsEntity = cartItems.find((cartItem) => {
-      return String(cartItem?.product_id) == String(props.productId);
+      return String(cartItem?.product?.id) == String(props.productId);
     });
-
     let cartItemSave: CartItemsEntity;
     if (item) {
       item.quantity += props.quantity;
@@ -55,12 +55,11 @@ export class CartService {
       product.stock -= props.quantity;
     } else {
       cartItemSave = {
+        id: CartEntity.createCartId(),
         cart: cart,
-        cart_id: user.cart.id,
         product: product,
-        product_id: product.id,
-        quantity: props.quantity,
         amount_total: product.price * props.quantity,
+        quantity: props.quantity,
       };
       await this.cartItemsRepo.save(cartItemSave);
       product.stock -= props.quantity;
@@ -78,9 +77,9 @@ export class CartService {
   async getCart(userId: string): Promise<ResCartDto> {
     const user: UsersEntity = await this.userServices.findUserById(userId);
     const cartItems: CartItemsEntity[] = await this.cartItemsRepo.find({
-      where: { cart_id: user.cart.id },
+      where: { cart: { id: user.cart.id } },
+      relations: ['product'],
     });
-
     let totalAmount = 0;
     cartItems.forEach((cartItem) => {
       totalAmount += +cartItem.amount_total;
@@ -100,7 +99,7 @@ export class CartService {
   ): Promise<object> {
     const user: UsersEntity = await this.userServices.findUserById(userId);
     const cartItem: CartItemsEntity = await this.cartItemsRepo.findOne({
-      where: { product_id: productId, cart_id: user.cart.id },
+      where: { product: { id: productId }, cart: { id: user.cart.id } },
     });
     if (!cartItem) CartException.cartNotFound();
 

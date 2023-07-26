@@ -16,7 +16,6 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
             
             "shipper_id" character varying,            
             "user_id" character varying NOT NULL,
-            "address_id" character varying NOT NULL,
 
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',
@@ -25,8 +24,7 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
             
             CONSTRAINT "PK_a3ffb1c0c8416b97433f907fc6b" PRIMARY KEY ("id"),
             CONSTRAINT "FK_a70c3f5cfb18416b9fc6fb43907" FOREIGN KEY ("user_id") REFERENCES users("id"),
-            CONSTRAINT "FK_a70c3f5cfb18416b9fc690fb437" FOREIGN KEY ("shipper_id") REFERENCES shippers("id"),
-            CONSTRAINT "FK_a70c3f5cfc69fb0fb418416b937" FOREIGN KEY ("address_id") REFERENCES addresses("id")
+            CONSTRAINT "FK_a70c3f5cfb18416b9fc690fb437" FOREIGN KEY ("shipper_id") REFERENCES shippers("id")
 
             );
             `);

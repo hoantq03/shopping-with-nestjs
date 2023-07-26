@@ -109,14 +109,14 @@ export class UsersEntity {
   updatedBy?: string;
 
   // relations
-  @OneToMany(() => AddressEntity, (addresses) => addresses.user)
-  addresses?: AddressEntity[];
+  @OneToMany(() => OrderEntity, (orders) => orders.user)
+  orders!: OrderEntity[];
 
   @OneToMany(() => ProductEntity, (products) => products.user)
-  products?: ProductEntity[];
+  products!: ProductEntity[];
 
-  @OneToMany(() => OrderEntity, (orders) => orders.user)
-  orders?: OrderEntity[];
+  @OneToMany(() => AddressEntity, (addresses) => addresses.user)
+  addresses!: AddressEntity[];
 
   @OneToOne(() => CartEntity)
   @JoinColumn({ name: 'cart_id' })

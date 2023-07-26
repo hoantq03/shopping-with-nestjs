@@ -119,10 +119,6 @@ export class OrderEntity {
   @JoinColumn({ name: 'user_id' })
   user!: ResUserDto;
 
-  @ManyToOne(() => AddressEntity, (address) => address.orders)
-  @JoinColumn({ name: 'address_id' })
-  address!: ResAddressDto;
-
   @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
   orderDetails!: OrderDetailEntity[];
 

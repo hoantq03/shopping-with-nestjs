@@ -5,18 +5,11 @@ import { ProductEntity } from 'src/product/entity/product.entity';
 @Entity('cart_items')
 export class CartItemsEntity {
   @PrimaryColumn({
-    name: 'cart_id',
+    name: 'id',
     type: 'character varying',
     nullable: false,
   })
-  cart_id!: string;
-
-  @PrimaryColumn({
-    name: 'product_id',
-    type: 'character varying',
-    nullable: false,
-  })
-  product_id!: string;
+  id!: string;
 
   @Column({ name: 'quantity', type: 'integer', default: 0, nullable: false })
   quantity!: number;

@@ -58,9 +58,6 @@ export class AddressEntity {
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
-  @OneToMany(() => OrderEntity, (orders) => orders.address)
-  orders?: OrderEntity[];
-
   //methods
   static createAddressId(id?: string): string {
     return id ? id : `${ADDRESS_PREFIX}${new Date().getTime()}_${uuidv4()}`;

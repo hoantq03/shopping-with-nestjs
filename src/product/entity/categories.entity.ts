@@ -45,7 +45,7 @@ export class CategoryEntity {
 
   //relations
   @OneToMany(() => ProductEntity, (products) => products.category)
-  products?: ProductEntity[];
+  products!: ProductEntity[];
 
   //methods
   static createCategoryId(id?: string): string {

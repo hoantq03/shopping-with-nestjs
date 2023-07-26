@@ -79,6 +79,12 @@ export class ProductEntity {
   updatedBy?: string;
 
   //relations
+  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.product)
+  orderDetails!: OrderDetailEntity[];
+
+  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.product)
+  cartItems!: CartItemsEntity[];
+
   @ManyToOne(() => CategoryEntity, (category) => category.products)
   @JoinColumn({ name: 'category_id' })
   category!: CategoryEntity;
@@ -86,12 +92,6 @@ export class ProductEntity {
   @ManyToOne(() => UsersEntity, (user) => user.products)
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
-
-  @OneToMany(() => OrderDetailEntity, (orderDetail) => orderDetail.product)
-  orderDetails?: OrderDetailEntity[];
-
-  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.product)
-  cartItems?: CartItemsEntity[];
 
   // methods
   static createProductId(id?: string): string {

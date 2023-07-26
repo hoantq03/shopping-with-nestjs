@@ -54,6 +54,8 @@ export class ProductService {
       ...productInfo,
       user,
       category,
+      cartItems: [],
+      orderDetails: [],
     };
 
     const product: ProductEntity = this.productRepo.create(productProps);

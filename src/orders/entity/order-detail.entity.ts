@@ -8,17 +8,10 @@ const ORDER_DETAIL_PREFIX = 'order_detail_';
 export class OrderDetailEntity {
   @PrimaryColumn({
     type: 'character varying',
-    name: 'product_id',
+    name: 'id',
     nullable: false,
   })
-  productId!: string;
-
-  @PrimaryColumn({
-    type: 'character varying',
-    name: 'order_id',
-    nullable: false,
-  })
-  orderId!: string;
+  id!: string;
 
   @Column({
     type: 'decimal',
@@ -62,8 +55,8 @@ export class OrderDetailEntity {
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
   @JoinColumn({ name: 'product_id' })
+  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
   product!: ProductEntity;
 
   // methods
