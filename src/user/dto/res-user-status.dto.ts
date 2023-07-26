@@ -11,9 +11,9 @@ export class ResUserDto {
   birthDay: Date;
   email: string;
   role: string;
-  defaultAddressId?: string;
-  orders?: OrderEntity[];
-  addresses?: AddressEntity[];
+  defaultAddressId: string;
+  orders: OrderEntity[];
+  addresses: AddressEntity[];
 
   constructor(user: UsersEntity) {
     Object.assign(this, {

@@ -65,6 +65,13 @@ export class UserController {
     return this.userService.getAllAddress();
   }
 
+  @UseGuards(CustomerGuard)
+  @Get('/getAddress')
+  async getAddress(@Body() body: any): Promise<ResAddressDto[]> {
+    const { userId } = body;
+    return this.userService.getAddress(userId);
+  }
+
   //  /:id
   @UseGuards(CustomerGuard)
   @Get('/:id')

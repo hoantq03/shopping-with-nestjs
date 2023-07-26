@@ -74,6 +74,7 @@ export class UserServices {
       id: userId,
       status: UserStatus.ACTIVE,
       cart: cart,
+      orders: [],
     });
     await this.userRepo.save(userSignUp);
 
@@ -163,15 +164,15 @@ export class UserServices {
     return new ResUserDto(user);
   }
 
-  async addAddress(address: ReqAddAddress): Promise<ResAddressDto> {
-    const { userId, ...rest } = { ...address };
+  async addAddress(addressInfo: ReqAddAddress): Promise<ResAddressDto> {
+    const { userId, ...rest } = { ...addressInfo };
     const user = await this.findUserById(userId);
-
-    const addressExisted = await this.userRepo.findOne({
-      where: { addresses: { addressLine: address.addressLine } },
+    user.addresses.forEach((address) => {
+      if (address.addressLine === addressInfo.addressLine)
+        if (address.city === addressInfo.city)
+          if (address.country === address.country)
+            AddressException.addressExisted();
     });
-
-    if (addressExisted) AddressException.addressExisted();
 
     const id = AddressEntity.createAddressId();
     //test
@@ -194,6 +195,19 @@ export class UserServices {
   async getAllAddress(): Promise<ResAddressDto[]> {
     const result = await this.addressRepo.find({
       where: {},
+      relations: ['user'],
+    });
+
+    const resAddress: ResAddressDto[] = [];
+    result.forEach((res) => {
+      resAddress.push(new ResAddressDto(res));
+    });
+    return resAddress;
+  }
+
+  async getAddress(userId: string): Promise<ResAddressDto[]> {
+    const result = await this.addressRepo.find({
+      where: { user: { id: userId } },
       relations: ['user'],
     });
 

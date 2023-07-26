@@ -23,6 +23,8 @@ export class OrdersService {
     private productServices: ProductService,
     @InjectRepository(OrderDetailEntity)
     private orderDetailRepo: Repository<OrderDetailEntity>,
+    @InjectRepository(UsersEntity)
+    private userRepo: Repository<UsersEntity>,
   ) {}
   async createOrder(orderProps: ReqCreateOrder): Promise<any> {
     // get all product of user from cart
@@ -59,7 +61,11 @@ export class OrdersService {
       await this.transferProductFromCartToOrderDetail(cart, orderId);
 
     order.orderDetails = orderDetailsList;
-    console.log(order);
+
+    user.orders.push(order);
+
+    await this.userRepo.save(user);
+
     await this.orderRepo.save(order);
     // delete all product from cart
     cart.cartItems = [];
@@ -67,8 +73,6 @@ export class OrdersService {
     cart.totalAmount = 0;
 
     return order;
-
-    // impacts : cart, cartItems,user,order,orderDetail
   }
 
   async transferProductFromCartToOrderDetail(
@@ -89,16 +93,17 @@ export class OrdersService {
 
     if (!order) console.log('order not exist');
     const orderDetailEntityList: OrderDetailEntity[] = [];
+
     await Promise.all(
       orderDetailList.map(async (orderDetail: any) => {
         const product: ProductEntity =
           await this.productServices.findProductById(orderDetail.productId);
         const orderDetailSave: OrderDetailEntity = {
           order: order,
-          order_id: orderId,
+          orderId: orderId,
           price: product.price,
           product: product,
-          product_id: orderDetail.productId,
+          productId: orderDetail.productId,
           quantity: orderDetail.quantity,
         };
 

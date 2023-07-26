@@ -11,14 +11,14 @@ export class OrderDetailEntity {
     name: 'product_id',
     nullable: false,
   })
-  product_id!: string;
+  productId!: string;
 
   @PrimaryColumn({
     type: 'character varying',
     name: 'order_id',
     nullable: false,
   })
-  order_id!: string;
+  orderId!: string;
 
   @Column({
     type: 'decimal',
