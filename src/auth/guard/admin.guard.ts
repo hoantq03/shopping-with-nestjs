@@ -1,12 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { UserJwtPayload } from 'src/auth/interfaces';
 import { RoleUser } from 'src/common';
 import { AuthException } from 'src/exception';
 import { UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
-import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AdminGuard extends AuthGuard('jwt') {

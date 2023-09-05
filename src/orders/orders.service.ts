@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartService } from 'src/cart/cart.service';
 import { ResCartDto } from 'src/cart/dto';
@@ -15,7 +15,7 @@ import { ProductService } from 'src/product/product.service';
 import { ResUserDto } from 'src/user/dto';
 import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { ReqCreateOrder } from './dto/create-order/req-create-order.dto';
 import { OrderDetailEntity, OrderEntity } from './entity';
 
@@ -31,6 +31,7 @@ export class OrdersService {
     private orderDetailRepo: Repository<OrderDetailEntity>,
     @InjectRepository(CartItemsEntity)
     private cartItemsRepo: Repository<CartItemsEntity>,
+    private dataSource: DataSource,
   ) {}
   async createOrder(orderProps: ReqCreateOrder): Promise<any> {
     // get all product of user from cart
@@ -50,7 +51,8 @@ export class OrdersService {
 
     // transfer products from cart to order detail
     const orderId: string = OrderEntity.createOrderId();
-    const order: OrderEntity = {
+
+    const order: OrderEntity = this.orderRepo.create({
       id: orderId,
       discount: orderProps.discount,
       amount_total: cart.totalAmount * (1 - orderProps.discount / 100),
@@ -59,18 +61,33 @@ export class OrdersService {
       user: new ResUserDto(user),
       tax: orderProps.tax,
       orderDetails: [],
-    };
+    });
 
     await this.orderRepo.save(order);
-    const orderDetailsList: OrderDetailEntity[] =
-      await this.transferProductFromCartToOrderDetail(cart, orderId);
 
-    order.orderDetails = orderDetailsList;
-    await this.orderRepo.save(order);
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const orderDetailsList: OrderDetailEntity[] =
+        await this.transferProductFromCartToOrderDetail(cart, orderId);
 
-    // // delete all product from cart
-    await this.cartItemsRepo.delete({ cart: { id: user.cart.id } });
-    return order;
+      order.orderDetails = orderDetailsList;
+
+      await queryRunner.manager.save(order);
+
+      // // delete all product from cart
+      await this.cartItemsRepo.delete({ cart: { id: user.cart.id } });
+
+      await queryRunner.commitTransaction();
+      return order;
+    } catch (err) {
+      await this.orderRepo.remove(order);
+      await queryRunner.rollbackTransaction();
+      console.log(err);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async transferProductFromCartToOrderDetail(
