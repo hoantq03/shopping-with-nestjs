@@ -29,7 +29,7 @@ export class AuthControllers {
     @Body() body: RegisterUserDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<object> {
-    const token = await this.userServices.signUp(body);
+    const token = await this.authServices.signUp(body);
     if (!token) AuthException.unauthorized();
     res.cookie('token', token);
     return token;

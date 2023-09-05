@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { AdminGuard, ShopGuard } from 'src/guard';
+import { AdminGuard, ShopGuard } from 'src/auth/guard';
 import {
   ReqAddCategory,
   ReqAddProduct,

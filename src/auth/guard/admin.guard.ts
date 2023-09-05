@@ -1,38 +1,40 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { UserJwtPayload } from 'src/auth/interfaces';
 import { RoleUser } from 'src/common';
 import { AuthException } from 'src/exception';
 import { UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class ShopGuard implements CanActivate {
+export class AdminGuard extends AuthGuard('jwt') {
   constructor(
     private jwtService: JwtService,
     private userServices: UserServices,
-  ) {}
+  ) {
+    super();
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-
+    console.log(request);
     if (!token) AuthException.unauthorized();
-
     try {
-      const payload = await this.jwtService.verifyAsync(token);
-      request.body.userId = payload.userId;
+      const payLoad: UserJwtPayload = await this.jwtService.verifyAsync(token);
       const user: UsersEntity = await this.userServices.findUserByEmail(
-        payload.email,
+        payLoad.email,
       );
-      request.body.userId = payload.userId;
-      if (user.role === RoleUser.SHOP) return true;
-      return true;
+      request.body.userId = payLoad.userId;
+      if (user.role === RoleUser.ADMIN) return true;
     } catch (e) {
-      AuthException.unauthorized();
+      throw new Error(`Invalid Token ${JSON.stringify({ message: e })}`);
     }
     return false;
   }
+
   extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request?.headers['authorization']?.split(' ') ?? [];
     const tokenFromCookies = request?.cookies?.token?.access_token;

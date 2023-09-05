@@ -6,3 +6,4 @@ export * from './address.exception';
 export * from './product.exception';
 export * from './address.exception';
 export * from './cart.exception';
+export * from './order.exception';

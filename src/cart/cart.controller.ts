@@ -7,7 +7,7 @@ import {
   Delete,
   Param,
 } from '@nestjs/common';
-import { CustomerGuard } from 'src/guard';
+import { CustomerGuard } from 'src/auth/guard';
 import { CartService } from './cart.service';
 import { ReqAddProductToCartDto } from './dto';
 

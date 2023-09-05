@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { AdminGuard, CustomerGuard } from 'src/guard';
+import { AdminGuard, CustomerGuard } from 'src/auth/guard';
 import {
   ReqAddAddress,
   ReqFindAllUserDto,

@@ -2,17 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartService } from 'src/cart/cart.service';
 import { ResCartDto } from 'src/cart/dto';
-import { AddressException, CartException, UserException } from 'src/exception';
+import { CartItemsEntity } from 'src/cart/entity';
+import { OrderStatus } from 'src/common';
+import {
+  AddressException,
+  CartException,
+  OrderException,
+  UserException,
+} from 'src/exception';
+import { ProductEntity } from 'src/product/entity';
 import { ProductService } from 'src/product/product.service';
-import { ResAddressDto, ResUserDto } from 'src/user/dto';
+import { ResUserDto } from 'src/user/dto';
 import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
 import { Repository } from 'typeorm';
 import { ReqCreateOrder } from './dto/create-order/req-create-order.dto';
 import { OrderDetailEntity, OrderEntity } from './entity';
-import { OrderStatus } from 'src/common';
-import { ProductEntity } from 'src/product/entity';
-import { CartEntity, CartItemsEntity } from 'src/cart/entity';
 
 @Injectable()
 export class OrdersService {
@@ -24,8 +29,6 @@ export class OrdersService {
     private productServices: ProductService,
     @InjectRepository(OrderDetailEntity)
     private orderDetailRepo: Repository<OrderDetailEntity>,
-    @InjectRepository(CartEntity)
-    private cartRepo: Repository<CartEntity>,
     @InjectRepository(CartItemsEntity)
     private cartItemsRepo: Repository<CartItemsEntity>,
   ) {}
@@ -85,7 +88,7 @@ export class OrdersService {
       where: { id: orderId },
     });
 
-    if (!order) console.log('order not exist');
+    if (!order) OrderException.orderNotExist();
     const orderDetailEntityList: OrderDetailEntity[] = [];
 
     await Promise.all(
