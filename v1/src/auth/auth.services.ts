@@ -9,8 +9,8 @@ import { AuthException, UserException } from '../exception';
 import { RegisterUserDto, ResUserDto } from '../user/dto';
 import { UsersEntity } from '../user/entity';
 import { UserServices } from '../user/user.services';
-import { UserJwtPayload } from './interfaces';
-
+import { UserJwtPayload } from './types';
+import { ResLoginDto } from './dto/login';
 @Injectable()
 export class AuthServices {
   constructor(
@@ -22,7 +22,7 @@ export class AuthServices {
     private cartRepo: Repository<CartEntity>,
   ) {}
 
-  async signIn(email: string, password: string): Promise<object> {
+  async signIn(email: string, password: string): Promise<ResLoginDto> {
     const user = await this.userServices.findUserByEmail(email);
     if (!user) {
       AuthException.emailNotExist();
@@ -32,11 +32,11 @@ export class AuthServices {
       AuthException.unauthorized();
     }
     const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
-
-    const token = await this.jwtService.signAsync(payLoad);
-
+    const access_token = await this.jwtService.signAsync(payLoad, {
+      algorithm: 'RS256',
+    });
     return {
-      access_token: token,
+      access_token,
     };
   }
 
@@ -77,8 +77,13 @@ export class AuthServices {
     const user = new ResUserDto(userSignUp);
     const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
 
+    const access_token = await this.jwtService.signAsync(payLoad, {
+      expiresIn: '60s',
+      secret: process.env.ACCESS_PVT_KEY,
+    });
+
     return {
-      access_token: await this.jwtService.signAsync(payLoad),
+      access_token,
     };
   }
 }

@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { AuthException } from '../exception';
 import { RegisterUserDto } from '../user/dto';
 import { AuthServices } from './auth.services';
-import { ReqLoginDto } from './dto/login';
+import { ReqLoginDto, ResLoginDto } from './dto/login';
 import { ApiKeyV1 } from 'src/guards/checkApiKey';
 @UseGuards(ApiKeyV1)
 @Controller('/apiV1/auth')
@@ -15,11 +15,17 @@ export class AuthControllers {
   async signIn(
     @Res({ passthrough: true }) res: Response,
     @Body() body: ReqLoginDto,
-  ): Promise<object> {
-    const token = await this.authServices.signIn(body.email, body.password);
-    if (!token) AuthException.unauthorized();
-    res.cookie('token', token);
-    return token;
+  ): Promise<ResLoginDto> {
+    console.log(`${process.env.ACCESS_PUB_KEY}`);
+    const { access_token } = await this.authServices.signIn(
+      body.email,
+      body.password,
+    );
+    if (!access_token) AuthException.unauthorized();
+
+    res.cookie('access_token', access_token);
+
+    return { access_token };
   }
 
   @Post('/register')
