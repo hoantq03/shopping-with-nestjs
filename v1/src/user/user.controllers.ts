@@ -14,7 +14,6 @@ import {
   ReqAddAddress,
   ReqFindAllUserDto,
   ReqFindUserByEmailDto,
-  ReqSetAddressDefault,
   ReqUpdateUserDto,
   ReqUserStatusDto,
   ResAddressDto,
