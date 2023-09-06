@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { UsersEntity } from 'v1/src/user/entity';
+import { UsersEntity } from 'src/user/entity';
 import { CartItemsEntity } from './cart-item.entity';
 
 const CART_PREFIX = 'cart_';

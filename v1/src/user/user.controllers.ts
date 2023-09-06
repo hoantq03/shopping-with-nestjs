@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard, CustomerGuard } from '../auth/guard';
+import { ApiKeyV1 } from '../guards/checkApiKey';
 import {
   ReqAddAddress,
   ReqFindAllUserDto,
@@ -21,6 +22,7 @@ import {
 } from './dto';
 import { UserServices } from './user.services';
 
+@UseGuards(ApiKeyV1)
 @Controller('apiV1/users')
 export class UserController {
   constructor(private readonly userService: UserServices) {}
@@ -86,12 +88,5 @@ export class UserController {
     const addressId: string = param.id;
     const { userId } = body;
     return this.userService.deleteAddress(addressId, userId);
-  }
-
-  @UseGuards(CustomerGuard)
-  @Put('/address/setDefaultAddress')
-  async setDefaultAddress(@Body() body: ReqSetAddressDefault): Promise<any> {
-    console.log(body);
-    // return this.userService.setDefaultAddress();
   }
 }

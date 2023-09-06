@@ -1,6 +1,6 @@
-import { CartEntity } from 'v1/src/cart/entity';
-import { OrderStatus } from 'v1/src/common';
-import { AddressEntity, UsersEntity } from 'v1/src/user/entity';
+import { CartEntity } from 'src/cart/entity';
+import { OrderStatus } from 'src/common';
+import { AddressEntity, UsersEntity } from 'src/user/entity';
 import { OrderDetailEntity, ShipperEntity } from '../entity';
 
 export class ResOrderDto {

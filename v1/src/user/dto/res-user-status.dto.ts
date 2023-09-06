@@ -1,4 +1,4 @@
-import { OrderEntity } from 'v1/src/orders/entity';
+import { OrderEntity } from 'src/orders/entity';
 import { AddressEntity } from '../entity';
 import { UsersEntity } from '../entity/user.entity';
 

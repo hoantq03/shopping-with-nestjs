@@ -21,7 +21,6 @@ export class JwtAuthStrategy extends PassportStrategy(
   // Passport builds a user object on the return value and attaches it to the request object
   async validate(payload: UserJwtPayload) {
     const { email, userId } = payload;
-    console.log('valid');
     return {
       email,
       userId,

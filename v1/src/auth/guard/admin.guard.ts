@@ -2,10 +2,10 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { RoleUser } from 'v1/src/common';
-import { AuthException } from 'v1/src/exception';
-import { UsersEntity } from 'v1/src/user/entity';
-import { UserServices } from 'v1/src/user/user.services';
+import { RoleUser } from 'src/common';
+import { AuthException } from 'src/exception';
+import { UsersEntity } from 'src/user/entity';
+import { UserServices } from 'src/user/user.services';
 import { UserJwtPayload } from '../interfaces';
 
 @Injectable()
@@ -20,7 +20,6 @@ export class AdminGuard extends AuthGuard('jwt') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    console.log(request);
     if (!token) AuthException.unauthorized();
     try {
       const payLoad: UserJwtPayload = await this.jwtService.verifyAsync(token);

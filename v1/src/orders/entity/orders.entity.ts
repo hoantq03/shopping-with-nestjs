@@ -7,8 +7,8 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { ResUserDto } from 'v1/src/user/dto';
-import { UsersEntity } from 'v1/src/user/entity';
+import { ResUserDto } from 'src/user/dto';
+import { UsersEntity } from 'src/user/entity';
 import { OrderDetailEntity } from './order-detail.entity';
 import { ShipperEntity } from './shippers.entity';
 

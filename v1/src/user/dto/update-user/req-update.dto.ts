@@ -7,7 +7,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { RoleUser, UserStatus } from 'v1/src/common';
+import { RoleUser, UserStatus } from 'src/common';
 
 export class ReqUpdateUserDto {
   @IsOptional()

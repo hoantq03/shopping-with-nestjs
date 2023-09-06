@@ -6,7 +6,7 @@ import {
   IsNotEmpty,
   MinLength,
 } from 'class-validator';
-import { RoleUser } from 'v1/src/common';
+import { RoleUser } from 'src/common';
 
 export class RegisterUserDto {
   @IsEmail()

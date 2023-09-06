@@ -1,4 +1,3 @@
-import { UsersEntity } from 'src/user/entity';
 import {
   Column,
   Entity,
@@ -11,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CategoryEntity } from './categories.entity';
 import { OrderDetailEntity } from 'src/orders/entity';
 import { CartItemsEntity } from 'src/cart/entity';
+import { UsersEntity } from 'src/user/entity';
 
 const PRODUCT_PREFIX = 'product_';
 @Entity('products')

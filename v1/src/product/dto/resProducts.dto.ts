@@ -1,4 +1,4 @@
-import { ResUserDto } from 'v1/src/user/dto';
+import { ResUserDto } from 'src/user/dto';
 import { ProductEntity } from '../entity/product.entity';
 import { ResCategoryDto } from './resCategory.dto';
 

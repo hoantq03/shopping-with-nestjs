@@ -10,7 +10,8 @@ import {
 import { CustomerGuard } from '../auth/guard';
 import { CartService } from './cart.service';
 import { ReqAddProductToCartDto } from './dto';
-
+import { ApiKeyV1 } from 'src/guards/checkApiKey';
+@UseGuards(ApiKeyV1)
 @Controller('cart')
 export class CartController {
   constructor(private cartServices: CartService) {}

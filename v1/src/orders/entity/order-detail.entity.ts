@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { ProductEntity } from 'v1/src/product/entity';
+import { ProductEntity } from 'src/product/entity';
 import { OrderEntity } from './orders.entity';
 
 const ORDER_DETAIL_PREFIX = 'order_detail_';

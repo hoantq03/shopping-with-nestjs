@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { OrderStatus } from 'v1/src/common';
+import { OrderStatus } from 'src/common';
 
 export class ReqCreateOrder {
   @IsString()

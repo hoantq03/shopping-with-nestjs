@@ -1,11 +1,12 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { AuthException } from '../exception';
 import { RegisterUserDto } from '../user/dto';
 import { AuthServices } from './auth.services';
 import { ReqLoginDto } from './dto/login';
-
+import { ApiKeyV1 } from 'src/guards/checkApiKey';
+@UseGuards(ApiKeyV1)
 @Controller('/apiV1/auth')
 export class AuthControllers {
   constructor(private authServices: AuthServices) {}

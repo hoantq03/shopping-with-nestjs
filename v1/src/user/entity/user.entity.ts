@@ -1,3 +1,6 @@
+import { CartEntity } from 'src/cart/entity';
+import { OrderEntity } from 'src/orders/entity';
+import { ProductEntity } from 'src/product/entity';
 import {
   Column,
   Entity,
@@ -7,10 +10,7 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { CartEntity } from 'v1/src/cart/entity';
-import { OrderEntity } from 'v1/src/orders/entity';
-import { ProductEntity } from 'v1/src/product/entity/product.entity';
-import { AddressEntity } from 'v1/src/user/entity';
+import { AddressEntity } from './address.entity';
 
 const USER_PREFIX = 'user_';
 

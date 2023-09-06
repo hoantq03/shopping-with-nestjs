@@ -18,7 +18,9 @@ import {
   ResProductDto,
 } from './dto';
 import { ProductService } from './product.service';
+import { ApiKeyV1 } from 'src/guards/checkApiKey';
 
+@UseGuards(ApiKeyV1)
 @Controller('apiV1/products')
 export class ProductController {
   constructor(private productServices: ProductService) {}

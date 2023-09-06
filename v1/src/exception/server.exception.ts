@@ -7,4 +7,11 @@ export class ServerException {
     };
     throw new HttpException(res, HttpStatus.INTERNAL_SERVER_ERROR);
   }
+  static ForbiddenException() {
+    const res = {
+      code: 'Forbidden_Resources',
+      message: 'This resource is forbidden',
+    };
+    throw new HttpException(res, HttpStatus.FORBIDDEN);
+  }
 }
