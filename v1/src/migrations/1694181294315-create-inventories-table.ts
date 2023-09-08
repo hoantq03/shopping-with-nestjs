@@ -1,18 +1,24 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateCartsTable1694166821871 implements MigrationInterface {
+export class CreateInventoriesTable1694181294315 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-            CREATE TABLE "carts" (
+            CREATE TABLE "inventories" (
                 "id" character varying NOT NULL,
-                "total_amount" decimal NOT NULL DEFAULT 0,
+    
+                "product_id" character varying NOT NULL,
+                "user_id" character varying NOT NULL,
+                "stock" integer NOT NULL,
+                "location" character varying NOT NULL,
                 
                 "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
                 "created_by" character varying NOT NULL DEFAULT '1',
                 "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
                 "updated_by" character varying NOT NULL DEFAULT '1',
                 
-                CONSTRAINT "PK_a3fc6bfb9fb1c0c84167433f907" PRIMARY KEY ("id")
+                CONSTRAINT "PK_b9fb1c6a3fb0c84167433f907fc" PRIMARY KEY ("id"),
+                CONSTRAINT "FK_f0c37a7069f4cb85fb4161cb9f3" FOREIGN KEY ("product_id") REFERENCES products("id"),
+                CONSTRAINT "FK_f9f4cb85f0c37a7b9f306b4161c" FOREIGN KEY ("user_id") REFERENCES users("id")
                 );
                 `);
   }

@@ -5,10 +5,14 @@ export class CreateAddressesTable1694166999572 implements MigrationInterface {
     await queryRunner.query(`
         CREATE TABLE addresses (
             "id" character varying NOT NULL,
+            
             "address_line" character varying NOT NULL,
+            "district" character varying NOT NULL,
+            "ward" character varying NOT NULL,
             "city" character varying NOT NULL,
             "postal_code" character varying NOT NULL,
             "country" character varying NOT NULL,
+
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

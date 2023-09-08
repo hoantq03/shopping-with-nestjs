@@ -1,25 +1,28 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateProductsTable1694167041002 implements MigrationInterface {
+export class CreateDiscountUsedDetailTable1694180808758
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-        CREATE TABLE "products" (
+        CREATE TABLE "discount_used_detail" (
             "id" character varying NOT NULL,
 
-            "name" character varying(100) NOT NULL,
-            "imageUrl" character varying(100) NOT NULL ,
-            "price" decimal NOT NULL DEFAULT 0,
-            "description" character varying NOT NULL,
-            "type" character varying NOT NULL,
             "user_id" character varying NOT NULL,
-    
+            "discount_id" character varying NOT NULL,
+            "order_id" character varying NOT NULL,
+            
+            "used_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_by" character varying NOT NULL DEFAULT '1',
             
-            CONSTRAINT "PK_a3ffb1c0c8416b9fc6b7433f907" PRIMARY KEY ("id"),
-            CONSTRAINT "FK_a3fb435c6f907fb170c8416b9fc" FOREIGN KEY ("user_id") REFERENCES users("id")
+            CONSTRAINT "PK_a07fc6c90b841b9fb1c674333ff" PRIMARY KEY ("id"),
+            CONSTRAINT "FK_c69f5fb437a70c3b1cf08416b9f" FOREIGN KEY ("user_id") REFERENCES users("id"),
+            CONSTRAINT "FK_b9fc69f437a70c3b1cf085fb416" FOREIGN KEY ("discount_id") REFERENCES discounts("id"),
+            CONSTRAINT "FK_c37a70cb9f3b85fb41669f41cf0" FOREIGN KEY ("order_id") REFERENCES orders("id")
             );
             `);
   }

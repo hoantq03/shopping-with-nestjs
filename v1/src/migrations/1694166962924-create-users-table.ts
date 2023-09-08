@@ -16,7 +16,6 @@ export class CreateUsersTable1694166962924 implements MigrationInterface {
               "status" smallint DEFAULT 1,
     
               "cart_id" character varying NOT NULL,
-              "address_id" character varying DEFAULT NULL,
               
               "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
               "created_by" character varying NOT NULL DEFAULT '1',

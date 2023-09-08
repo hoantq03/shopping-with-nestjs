@@ -10,7 +10,7 @@ export class CreateCartDetailsTable1694168521169 implements MigrationInterface {
                 "product_id" character varying NOT NULL,
     
                 "quantity" integer NOT NULL DEFAULT 0,
-                "amount_total" decimal NOT NULL DEFAULT 0,
+                "total_amount" decimal NOT NULL DEFAULT 0,
     
                 "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
                 "created_by" character varying NOT NULL DEFAULT '1',
