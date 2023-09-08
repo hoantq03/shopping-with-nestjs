@@ -1,9 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { ProductEntity } from 'src/product/entity';
 import { CartEntity } from './cart.entity';
+import { v4 as uuidv4 } from 'uuid';
 
-@Entity('cart_items')
-export class CartItemsEntity {
+const CART_DETAIL_PREFIX = 'cart_detail_';
+
+@Entity('cart_details')
+export class CartDetailEntity {
   @PrimaryColumn({
     name: 'id',
     type: 'character varying',
@@ -21,7 +24,7 @@ export class CartItemsEntity {
     nullable: false,
     default: 0,
   })
-  amount_total!: number;
+  total_amount!: number;
 
   @Column({
     type: 'timestamptz',
@@ -51,4 +54,9 @@ export class CartItemsEntity {
   @ManyToOne(() => ProductEntity, (product) => product.cartItems)
   @JoinColumn({ name: 'product_id' })
   product!: ProductEntity;
+
+  //methods
+  static createCartId(id?: string): string {
+    return id ? id : `${CART_DETAIL_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  }
 }

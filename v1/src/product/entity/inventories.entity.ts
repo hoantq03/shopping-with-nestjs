@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { ProductEntity } from './product.entity';
 
-const CATEGORY_PREFIX = 'category_';
-@Entity('categories')
-export class CategoryEntity {
+const INVENTORY_PREFIX = 'inventories_';
+
+@Entity('inventories')
+export class InventoryEntity {
   @PrimaryColumn({
     type: 'character varying',
     nullable: false,
@@ -15,13 +15,12 @@ export class CategoryEntity {
   @Column({
     type: 'character varying',
     nullable: false,
-    length: 100,
-    name: 'name',
+    name: 'location',
   })
-  name!: string;
+  location!: string;
 
-  @Column({ type: 'character varying', nullable: false, name: 'description' })
-  description!: string;
+  @Column({ type: 'integer', nullable: false, name: 'stock' })
+  stock!: number;
 
   @Column({
     type: 'timestamptz',
@@ -44,11 +43,9 @@ export class CategoryEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => ProductEntity, (products) => products.category)
-  products!: ProductEntity[];
 
-  //methods
-  static createCategoryId(id?: string): string {
-    return id ? id : `${CATEGORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  // methods
+  static createProductId(id?: string): string {
+    return id ? id : `${INVENTORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

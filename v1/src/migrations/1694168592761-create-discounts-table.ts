@@ -14,8 +14,8 @@ export class CreateDiscountsTable1694168592761 implements MigrationInterface {
                 "start_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
                 "end_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
                 "number_of_use" integer NOT NULL,
-                "discount_min_order_value" decimal NOT NULL,
-                "discount_status" character varying(100) NOT NULL,
+                "min_order_value" decimal NOT NULL,
+                "status" character varying(100) NOT NULL,
 
                 "user_id" character varying NOT NULL,
 

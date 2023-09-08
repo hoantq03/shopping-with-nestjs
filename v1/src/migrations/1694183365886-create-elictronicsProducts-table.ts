@@ -5,7 +5,7 @@ export class CreateElictronicsProductsTable1694183365886
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     queryRunner.query(`
-        CREATE TABLE "categories" (
+        CREATE TABLE "electronics" (
             "id" character varying NOT NULL,
 
             "brand" character varying(100) NOT NULL,
@@ -14,7 +14,7 @@ export class CreateElictronicsProductsTable1694183365886
             "long_product" integer  NOT NULL,
             "wide_product" integer  NOT NULL,
             "high_product" integer  NOT NULL,
-            "weight" integer NOT NULL,
+            "weight_product" integer NOT NULL,
 
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',

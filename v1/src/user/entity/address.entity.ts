@@ -19,6 +19,12 @@ export class AddressEntity {
   @Column({ type: 'character varying', nullable: false, name: 'city' })
   city!: string;
 
+  @Column({ type: 'character varying', nullable: false, name: 'district' })
+  district!: string;
+
+  @Column({ type: 'character varying', nullable: false, name: 'ward' })
+  ward!: string;
+
   @Column({ type: 'character varying', nullable: false, name: 'postal_code' })
   postalCode!: string;
 

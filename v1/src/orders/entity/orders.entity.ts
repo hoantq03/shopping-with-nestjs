@@ -25,20 +25,11 @@ export class OrderEntity {
   @Column({
     type: 'decimal',
     precision: 2,
-    name: 'amount_total',
+    name: 'total_amount',
     nullable: false,
     default: 0,
   })
-  amount_total!: number;
-
-  @Column({
-    type: 'decimal',
-    precision: 2,
-    name: 'discount',
-    nullable: false,
-    default: 0,
-  })
-  discount!: number;
+  total_amount!: number;
 
   @Column({
     type: 'timestamptz',
@@ -46,7 +37,7 @@ export class OrderEntity {
     name: 'order_date',
     nullable: true,
   })
-  orderDate?: Date;
+  order_date?: Date;
 
   @Column({
     type: 'timestamptz',
@@ -54,15 +45,7 @@ export class OrderEntity {
     name: 'billDate',
     nullable: true,
   })
-  billDate?: Date;
-
-  @Column({
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'shipDate',
-    nullable: true,
-  })
-  shipDate?: Date;
+  bill_date?: Date;
 
   @Column({
     name: 'status',
@@ -71,15 +54,6 @@ export class OrderEntity {
     nullable: false,
   })
   status!: string;
-
-  @Column({
-    name: 'tax',
-    nullable: false,
-    type: 'decimal',
-    precision: 2,
-    default: 0,
-  })
-  tax!: number;
 
   @Column({
     name: 'ship_cost',

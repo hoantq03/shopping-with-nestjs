@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { UsersEntity } from 'src/user/entity';
-import { CartItemsEntity } from './cart-item.entity';
+import { CartDetailEntity } from './cart-details.entity';
 
 const CART_PREFIX = 'cart_';
 
@@ -21,7 +21,7 @@ export class CartEntity {
     nullable: false,
     default: 0,
   })
-  amount_total!: number;
+  total_amount!: number;
 
   @Column({
     type: 'timestamptz',
@@ -46,8 +46,8 @@ export class CartEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => CartItemsEntity, (cartItems) => cartItems.cart)
-  cartItems!: CartItemsEntity[];
+  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.cart)
+  cartItems!: CartDetailEntity[];
 
   @OneToOne(() => UsersEntity)
   user!: UsersEntity;
