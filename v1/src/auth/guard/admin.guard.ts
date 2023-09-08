@@ -23,12 +23,8 @@ export class AdminGuard extends AuthGuard('jwt') {
     if (!access_token) AuthException.unauthorized();
 
     try {
-      console.log('pay');
       const payLoad: UserJwtPayload = await this.jwtService.verifyAsync(
         access_token,
-        {
-          publicKey: `${process.env.ACCESS_PUB_KEY}`,
-        },
       );
       const user: UsersEntity = await this.userServices.findUserByEmail(
         payLoad.email,

@@ -25,9 +25,7 @@ export class ShopGuard extends AuthGuard('jwt') {
     try {
       const payLoad: UserJwtPayload = await this.jwtService.verifyAsync(
         access_token,
-        { publicKey: `${process.env.ACCESS_PUB_KEY}` },
       );
-      console.log(payLoad);
       const user: UsersEntity = await this.userServices.findUserByEmail(
         payLoad.email,
       );

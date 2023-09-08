@@ -5,6 +5,7 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
     queryRunner.query(`
         CREATE TABLE "orders" (
             "id" character varying NOT NULL,
+
             "amount_total" decimal NOT NULL DEFAULT 0,
             "discount" decimal NOT NULL DEFAULT 0,
             "order_date" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
@@ -13,10 +14,11 @@ export class AddTableOrders1689497232880 implements MigrationInterface {
             "status" character varying(100) NOT NULL,
             "tax" decimal NOT NULL DEFAULT 0,
             "ship_cost" decimal NOT NULL DEFAULT 0,
-            
+
             "shipper_id" character varying,            
             "user_id" character varying NOT NULL,
-
+            "voucher_id" character varying,
+            
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "created_by" character varying NOT NULL DEFAULT '1',
             "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

@@ -9,9 +9,6 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest:
         ExtractJwt.fromAuthHeaderAsBearerToken() || ExtractJwt.fromAuthHeader(),
-      ignoreExpiration: false,
-      algorithms: ['RS256'],
-      publicKey: `${process.env.ACCESS_PUB_KEY}`,
     });
   }
 

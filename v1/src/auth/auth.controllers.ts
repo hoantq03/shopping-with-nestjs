@@ -16,7 +16,6 @@ export class AuthControllers {
     @Res({ passthrough: true }) res: Response,
     @Body() body: ReqLoginDto,
   ): Promise<ResLoginDto> {
-    console.log(`${process.env.ACCESS_PUB_KEY}`);
     const { access_token } = await this.authServices.signIn(
       body.email,
       body.password,

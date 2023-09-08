@@ -4,14 +4,9 @@ import { ServerException } from 'src/exception';
 export class ApiKeyV1 implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-
     const apiKey = request.headers['x-api-key'];
 
-    if (!apiKey) {
-      throw ServerException.ForbiddenException();
-    }
-
-    if (apiKey !== process.env.API_V1_KEY) {
+    if (!apiKey && apiKey !== process.env.API_V1_KEY) {
       throw ServerException.ForbiddenException();
     }
 

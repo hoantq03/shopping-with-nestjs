@@ -84,7 +84,6 @@ export class OrdersService {
     } catch (err) {
       await this.orderRepo.remove(order);
       await queryRunner.rollbackTransaction();
-      console.log(err);
     } finally {
       await queryRunner.release();
     }

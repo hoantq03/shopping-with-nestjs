@@ -32,9 +32,7 @@ export class AuthServices {
       AuthException.unauthorized();
     }
     const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
-    const access_token = await this.jwtService.signAsync(payLoad, {
-      algorithm: 'RS256',
-    });
+    const access_token = await this.jwtService.signAsync(payLoad);
     return {
       access_token,
     };
@@ -77,10 +75,7 @@ export class AuthServices {
     const user = new ResUserDto(userSignUp);
     const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
 
-    const access_token = await this.jwtService.signAsync(payLoad, {
-      expiresIn: '60s',
-      secret: process.env.ACCESS_PVT_KEY,
-    });
+    const access_token = await this.jwtService.signAsync(payLoad);
 
     return {
       access_token,

@@ -47,13 +47,13 @@ export class ProductController {
     return this.productServices.updateProduct(productProps, id);
   }
 
-  @Get('/get-all-products')
-  async getAllProductsWithCategory(
-    @Query() query: any,
-  ): Promise<ResProductDto[]> {
-    const page = query.page ?? 0;
-    return this.productServices.getAllProducts(page);
-  }
+  // @Get('/get-all-products')
+  // async getAllProductsWithCategory(
+  //   @Query() query: any,
+  // ): Promise<ResProductDto[]> {
+  //   const page = query.page ?? 0;
+  //   // return this.productServices.getAllProducts(page);
+  // }
 
   @Get('/get-product/:productId')
   async getOneProduct(@Param() param: any): Promise<ResProductDto> {

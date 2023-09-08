@@ -6,16 +6,12 @@ export class AddProductTable1689061983172 implements MigrationInterface {
     CREATE TABLE "products" (
         "id" character varying NOT NULL,
         "name" character varying(100) NOT NULL,
-        "description" character varying NOT NULL,
-        "color" character varying(100) NOT NULL,
-        "discount" decimal NOT NULL DEFAULT 0,
         "imageUrl" character varying(100) NOT NULL ,
         "price" decimal NOT NULL DEFAULT 0,
-        "stock" integer NOT NULL DEFAULT 0,
 
         "category_id" character varying NOT NULL,
         "user_id" character varying NOT NULL,
-        
+
         "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
         "created_by" character varying NOT NULL DEFAULT '1',
         "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),

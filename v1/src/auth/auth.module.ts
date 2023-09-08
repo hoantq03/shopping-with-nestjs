@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CartModule } from '../cart/cart.module';
@@ -20,9 +20,8 @@ import { AuthServices } from './auth.services';
     PassportModule,
     JwtModule.register({
       global: true,
-      publicKey: `${process.env.ACCESS_PUB_KEY}`,
-      privateKey: `${process.env.ACCESS_PVT_KEY}`,
-      signOptions: { expiresIn: '24h', algorithm: 'RS256' },
+      secret: `${process.env.SECRET_ACCESS_JWT}`,
+      signOptions: { expiresIn: '24h' },
     }),
   ],
 })
