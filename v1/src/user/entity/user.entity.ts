@@ -12,8 +12,8 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { AddressEntity } from './address.entity';
 import { DiscountUsedDetailEntity } from './discount-used-detail.entity';
-import { DiscountsEntity } from './discount.entity';
 import { InventoryEntity } from 'src/product/entity/inventories.entity';
+import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
 
 const USER_PREFIX = 'user_';
 
@@ -129,7 +129,7 @@ export class UsersEntity {
   discount_used_detail!: DiscountUsedDetailEntity[];
 
   @OneToMany(() => DiscountsEntity, (discount) => discount.user)
-  discounts!: DiscountsEntity[];
+  discounts?: DiscountsEntity[];
   // methods
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

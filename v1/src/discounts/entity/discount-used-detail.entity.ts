@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { UsersEntity } from './user.entity';
+import { DiscountsEntity } from './discount.entity';
+import { UsersEntity } from 'src/user/entity';
 import { OrderEntity } from 'src/orders/entity';
-import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
 
 const DISCOUNT_USED_DETAIL_PREFIX = 'discount_used_detail_';
 

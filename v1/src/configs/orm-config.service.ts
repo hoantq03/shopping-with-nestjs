@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { CartEntity, CartDetailEntity } from '../cart/entity';
+import { CartDetailEntity, CartEntity } from '../cart/entity';
 import {
   OrderDetailEntity,
   OrderEntity,
   ShipperEntity,
 } from '../orders/entity';
 import {
-  ProductEntity,
   ElectronicsEntity,
   InventoryEntity,
+  ProductEntity,
 } from '../product/entity';
 import {
   AddressEntity,
-  UsersEntity,
   DiscountUsedDetailEntity,
-  DiscountsEntity,
+  UsersEntity,
 } from '../user/entity';
+import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

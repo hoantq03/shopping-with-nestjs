@@ -8,13 +8,10 @@ import {
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { ResUserDto } from 'src/user/dto';
-import {
-  DiscountUsedDetailEntity,
-  DiscountsEntity,
-  UsersEntity,
-} from 'src/user/entity';
+import { DiscountUsedDetailEntity, UsersEntity } from 'src/user/entity';
 import { OrderDetailEntity } from './order-detail.entity';
 import { ShipperEntity } from './shippers.entity';
+import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
 
 const ORDER_PREFIX = 'order_';
 @Entity('orders')

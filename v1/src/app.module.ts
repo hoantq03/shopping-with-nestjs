@@ -3,11 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CartModule } from './cart/cart.module';
 import { DatabaseModule } from './configs';
+import { DiscountModule } from './discounts/discount.module';
+import { DiscountsService } from './discounts/discounts.service';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { CartModule } from './cart/cart.module';
     ProductModule,
     OrdersModule,
     CartModule,
+    DiscountModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DiscountsService],
 })
 export class AppModule {}
