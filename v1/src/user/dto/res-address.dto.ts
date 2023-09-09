@@ -3,6 +3,8 @@ import { AddressEntity } from '../entity';
 export class ResAddressDto {
   id: string;
   addressLine: string;
+  district: string;
+  ward: string;
   country: string;
   postalCode: string;
   city: string;
@@ -12,6 +14,8 @@ export class ResAddressDto {
     Object.assign(this, {
       id: address.id,
       addressLine: address.addressLine,
+      district: this.district,
+      ward: this.ward,
       country: address.country,
       postalCode: address.postalCode,
       city: address.city,

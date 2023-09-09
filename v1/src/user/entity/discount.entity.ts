@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { DiscountUsedDetailEntity } from './discount-used-detail.entity';
+import { OrderEntity } from 'src/orders/entity';
+import { UsersEntity } from './user.entity';
 
 const DISCOUNT_PREFIX = 'discount_';
 
@@ -83,7 +86,17 @@ export class DiscountsEntity {
   updatedBy?: string;
 
   //relations
+  @OneToMany(
+    () => DiscountUsedDetailEntity,
+    (discount_used_detail) => discount_used_detail.discount,
+  )
+  discount_used_detail!: DiscountUsedDetailEntity[];
 
+  @OneToMany(() => OrderEntity, (orders) => orders.discount)
+  orders!: OrderEntity[];
+
+  @ManyToOne(() => UsersEntity, (user) => user.discounts)
+  user!: UsersEntity;
   // methods
   static createProductId(id?: string): string {
     return id ? id : `${DISCOUNT_PREFIX}${new Date().getTime()}_${uuidv4()}`;

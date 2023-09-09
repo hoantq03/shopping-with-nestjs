@@ -148,21 +148,10 @@ export class ProductService {
     if (!oldProduct) ProductException.productNotFound();
     if (oldProduct.user.id !== productProps.userId) UserException.permission();
 
-    if (oldProduct.category.id !== productProps.categoryId) {
-      const category = await this.categoryRepo.findOne({
-        where: { id: productProps.categoryId },
-      });
-      if (!category) CategoryException.categoryNotFound();
-      oldProduct.category = category;
-    }
-
     oldProduct.name = productProps.name ?? oldProduct.name;
     oldProduct.description = productProps.description ?? oldProduct.description;
-    oldProduct.color = productProps.color ?? oldProduct.color;
-    oldProduct.discount = productProps.discount ?? oldProduct.discount;
     oldProduct.imageUrl = productProps.imageUrl ?? oldProduct.imageUrl;
     oldProduct.price = productProps.price ?? oldProduct.price;
-    oldProduct.stock = productProps.stock ?? oldProduct.stock;
 
     this.productRepo.save(oldProduct);
     return new ResProductDto(oldProduct);

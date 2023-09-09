@@ -11,23 +11,11 @@ export class ReqAddProduct {
   @IsString()
   description: string;
 
-  @IsString()
-  color: string;
-
-  @IsNumber()
-  discount: number;
-
   @IsUrl()
   imageUrl: string;
 
   @IsNumber()
   price: number;
-
-  @IsNumber()
-  stock: number;
-
-  @IsString()
-  categoryId: string;
 
   @IsString()
   userId: string;

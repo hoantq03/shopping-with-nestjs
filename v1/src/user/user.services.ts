@@ -72,16 +72,17 @@ export class UserServices {
     let hashPassword: string;
     let status: number;
 
-    if (updatedData.password) {
-      if (updatedData.password === updatedData.confirmPassword) {
-        const hashPass: string = await bcrypt.hash(
-          updatedData.password,
-          Number.parseInt(process.env.SALT, 10),
-        );
-        hashPassword = hashPass;
-      } else {
-        UserException.passwordNotMatch();
-      }
+    if (
+      updatedData.password &&
+      updatedData.password === updatedData.confirmPassword
+    ) {
+      const hashPass: string = await bcrypt.hash(
+        updatedData.password,
+        Number.parseInt(process.env.SALT, 10),
+      );
+      hashPassword = hashPass;
+    } else {
+      UserException.passwordNotMatch();
     }
 
     // find user
@@ -118,10 +119,12 @@ export class UserServices {
     const { userId, ...rest } = { ...addressInfo };
     const user = await this.findUserById(userId);
     user.addresses.forEach((address) => {
-      if (address.addressLine === addressInfo.addressLine)
-        if (address.city === addressInfo.city)
-          if (address.country === address.country)
-            AddressException.addressExisted();
+      if (
+        address.addressLine === addressInfo.addressLine &&
+        address.city === addressInfo.city &&
+        address.country === address.country
+      )
+        AddressException.addressExisted();
     });
 
     const id = AddressEntity.createAddressId();

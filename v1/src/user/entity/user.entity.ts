@@ -11,6 +11,8 @@ import {
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { AddressEntity } from './address.entity';
+import { DiscountUsedDetailEntity } from './discount-used-detail.entity';
+import { DiscountsEntity } from './discount.entity';
 
 const USER_PREFIX = 'user_';
 
@@ -110,19 +112,27 @@ export class UsersEntity {
   updatedBy?: string;
 
   // relations
-  @OneToMany(() => OrderEntity, (orders) => orders.user)
-  orders!: OrderEntity[];
-
-  @OneToMany(() => ProductEntity, (products) => products.user)
-  products!: ProductEntity[];
-
-  @OneToMany(() => AddressEntity, (addresses) => addresses.user)
-  addresses!: AddressEntity[];
-
   @OneToOne(() => CartEntity)
   @JoinColumn({ name: 'cart_id' })
   cart!: CartEntity;
 
+  @OneToMany(() => ProductEntity, (products) => products.user)
+  products!: ProductEntity[];
+
+  @OneToMany(() => OrderEntity, (orders) => orders.user)
+  orders!: OrderEntity[];
+
+  @OneToMany(() => AddressEntity, (addresses) => addresses.user)
+  addresses!: AddressEntity[];
+
+  @OneToMany(
+    () => DiscountUsedDetailEntity,
+    (discount_used_detail) => discount_used_detail.user,
+  )
+  discount_used_detail!: DiscountUsedDetailEntity[];
+
+  @OneToMany(() => DiscountsEntity, (discount) => discount.user)
+  discounts!: DiscountsEntity[];
   // methods
   static createUserId(id?: string): string {
     return id ? id : `${USER_PREFIX}${new Date().getTime()}_${uuidv4()}`;

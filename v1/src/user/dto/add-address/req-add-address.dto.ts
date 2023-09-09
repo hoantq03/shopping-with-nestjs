@@ -11,6 +11,14 @@ export class ReqAddAddress {
 
   @IsString()
   @IsNotEmpty()
+  district: string;
+
+  @IsString()
+  @IsNotEmpty()
+  ward: string;
+
+  @IsString()
+  @IsNotEmpty()
   city: string;
 
   @IsString()
