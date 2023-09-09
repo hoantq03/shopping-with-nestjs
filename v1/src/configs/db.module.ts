@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
-import { CartEntity, CartItemsEntity } from '../cart/entity';
+import { CartEntity } from '../cart/entity';
 import {
   OrderDetailEntity,
   OrderEntity,
   ShipperEntity,
 } from '../orders/entity';
-import { CategoryEntity, ProductEntity } from '../product/entity';
+import { ProductEntity } from '../product/entity';
 import { AddressEntity, UsersEntity } from '../user/entity';
 import { TypeOrmConfigService } from './orm-config.service';
 
@@ -24,12 +24,10 @@ export const dbSourceOption: DataSourceOptions = {
     UsersEntity,
     AddressEntity,
     ProductEntity,
-    CategoryEntity,
     OrderDetailEntity,
     OrderEntity,
     ShipperEntity,
     CartEntity,
-    CartItemsEntity,
   ],
 };
 

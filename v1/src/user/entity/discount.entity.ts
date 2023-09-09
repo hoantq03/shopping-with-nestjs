@@ -89,14 +89,22 @@ export class DiscountsEntity {
   @OneToMany(
     () => DiscountUsedDetailEntity,
     (discount_used_detail) => discount_used_detail.discount,
+    {
+      cascade: true,
+    },
   )
-  discount_used_detail!: DiscountUsedDetailEntity[];
+  discount_used_detail: DiscountUsedDetailEntity[];
 
-  @OneToMany(() => OrderEntity, (orders) => orders.discount)
-  orders!: OrderEntity[];
+  @OneToMany(() => OrderEntity, (orders) => orders.discount, {
+    cascade: true,
+  })
+  orders: OrderEntity[];
 
-  @ManyToOne(() => UsersEntity, (user) => user.discounts)
-  user!: UsersEntity;
+  @ManyToOne(() => UsersEntity, (user) => user.discounts, {
+    cascade: true,
+  })
+  user: UsersEntity;
+
   // methods
   static createProductId(id?: string): string {
     return id ? id : `${DISCOUNT_PREFIX}${new Date().getTime()}_${uuidv4()}`;

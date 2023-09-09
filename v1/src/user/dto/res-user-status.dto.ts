@@ -11,7 +11,6 @@ export class ResUserDto {
   birthDay: Date;
   email: string;
   role: string;
-  defaultAddressId: string;
   orders: OrderEntity[];
   addresses: AddressEntity[];
 
@@ -27,7 +26,6 @@ export class ResUserDto {
       role: user.role,
       addresses: user.addresses,
       orders: user.orders,
-      defaultAddressId: user.defaultAddressId,
     });
   }
 }

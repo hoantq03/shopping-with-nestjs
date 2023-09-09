@@ -4,12 +4,15 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { OrderDetailEntity } from 'src/orders/entity';
 import { CartDetailEntity } from 'src/cart/entity';
 import { UsersEntity } from 'src/user/entity';
+import { InventoryEntity } from './inventories.entity';
+import { ElectronicsEntity } from './categories/electronics.entity';
 
 const PRODUCT_PREFIX = 'products_';
 @Entity('products')
@@ -44,6 +47,13 @@ export class ProductEntity {
   price!: number;
 
   @Column({
+    type: 'character varying',
+    nullable: false,
+    name: 'type',
+  })
+  type!: string;
+
+  @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'created_at',
@@ -65,14 +75,20 @@ export class ProductEntity {
 
   //relations
   @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.product)
-  orderDetails!: OrderDetailEntity[];
+  order_details?: OrderDetailEntity[];
 
   @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.product)
-  cartItems!: CartDetailEntity[];
+  cart_details?: CartDetailEntity[];
 
   @ManyToOne(() => UsersEntity, (user) => user.products)
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
+
+  @OneToOne(() => InventoryEntity, (inventory) => inventory.product)
+  inventory?: InventoryEntity;
+
+  @OneToOne(() => ElectronicsEntity, (category) => category.product)
+  category?: ElectronicsEntity;
 
   // methods
   static createProductId(id?: string): string {

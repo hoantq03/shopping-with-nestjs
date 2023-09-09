@@ -1,5 +1,15 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductEntity } from './product.entity';
+import { UsersEntity } from 'src/user/entity';
 
 const INVENTORY_PREFIX = 'inventories_';
 
@@ -43,9 +53,17 @@ export class InventoryEntity {
   updatedBy?: string;
 
   //relations
+  @OneToOne(() => ProductEntity, (product) => product.inventory, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'product_id' })
+  product?: ProductEntity;
 
+  @ManyToOne(() => UsersEntity, (user) => user.inventories)
+  @JoinColumn({ name: 'user_id' })
+  user!: UsersEntity;
   // methods
-  static createProductId(id?: string): string {
+  static createInventoryId(id?: string): string {
     return id ? id : `${INVENTORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

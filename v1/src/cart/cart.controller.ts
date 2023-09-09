@@ -20,14 +20,14 @@ export class CartController {
   @UseGuards(CustomerGuard)
   @Post('/addToCart')
   addProductToCart(@Body() body: ReqAddProductToCartDto) {
-    return this.cartServices.addProductToCart(body);
+    // return this.cartServices.addProductToCart(body);
   }
 
   @UseGuards(CustomerGuard)
   @Get('getCart')
   getCart(@Body() body: any) {
     const { userId } = body;
-    return this.cartServices.getCart(userId);
+    // return this.cartServices.getCart(userId);
   }
 
   // delete from cart
@@ -36,6 +36,6 @@ export class CartController {
   async removeProductFromCart(@Body() body: any, @Param() param: any) {
     const { productId } = param;
     const { userId } = body;
-    return this.cartServices.removeProductFromCart(userId, productId);
+    // return this.cartServices.removeProductFromCart(userId, productId);
   }
 }

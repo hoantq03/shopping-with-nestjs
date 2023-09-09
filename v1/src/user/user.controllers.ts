@@ -22,7 +22,7 @@ import {
 import { UserServices } from './user.services';
 
 @UseGuards(ApiKeyV1)
-@Controller('apiV1/users')
+@Controller('/apiV1/users')
 export class UserController {
   constructor(private readonly userService: UserServices) {}
 
@@ -60,7 +60,7 @@ export class UserController {
     return this.userService.addAddress(body);
   }
 
-  @UseGuards(CustomerGuard)
+  @UseGuards(AdminGuard)
   @Get('/getAllAddress')
   async getAllAddress(): Promise<ResAddressDto[]> {
     return this.userService.getAllAddress();
@@ -73,13 +73,6 @@ export class UserController {
     return this.userService.getAddress(userId);
   }
 
-  //  /:id
-  @UseGuards(CustomerGuard)
-  @Get('/:id')
-  getById(@Param('id') id: string): Promise<ResUserDto> {
-    return this.userService.getUserById(id);
-  }
-
   // confused
   @UseGuards(CustomerGuard)
   @Delete('/deleteAddress/:id')
@@ -87,5 +80,12 @@ export class UserController {
     const addressId: string = param.id;
     const { userId } = body;
     return this.userService.deleteAddress(addressId, userId);
+  }
+
+  //  /:id
+  @UseGuards(CustomerGuard)
+  @Get('/getAddress/:id')
+  getById(@Param('id') id: string): Promise<ResAddressDto> {
+    return this.userService.getOneAddress(id);
   }
 }

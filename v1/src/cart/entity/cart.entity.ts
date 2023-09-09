@@ -15,7 +15,7 @@ export class CartEntity {
   id!: string;
 
   @Column({
-    name: 'amount_total',
+    name: 'total_amount',
     type: 'decimal',
     precision: 2,
     nullable: false,
@@ -46,11 +46,15 @@ export class CartEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.cart)
-  cartItems!: CartDetailEntity[];
+  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.cart, {
+    cascade: true,
+  })
+  cartItems: CartDetailEntity[];
 
-  @OneToOne(() => UsersEntity)
-  user!: UsersEntity;
+  @OneToOne(() => UsersEntity, {
+    cascade: true,
+  })
+  user: UsersEntity;
 
   //methods
   static createCartId(id?: string): string {

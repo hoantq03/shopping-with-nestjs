@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ProductEntity } from 'src/product/entity';
 import { OrderEntity } from './orders.entity';
 
-const ORDER_DETAIL_PREFIX = 'order_detail_';
+const ORDER_DETAILS_PREFIX = 'order_detail_';
 @Entity('order_details')
 export class OrderDetailEntity {
   @PrimaryColumn({
@@ -55,14 +55,14 @@ export class OrderDetailEntity {
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
 
+  @ManyToOne(() => ProductEntity, (product) => product.order_details)
   @JoinColumn({ name: 'product_id' })
-  @ManyToOne(() => ProductEntity, (product) => product.orderDetails)
   product!: ProductEntity;
 
   // methods
   static createOrderDetailId(id?: string): string {
     return id
       ? id
-      : `${ORDER_DETAIL_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+      : `${ORDER_DETAILS_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

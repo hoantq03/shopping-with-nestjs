@@ -1,7 +1,7 @@
-import { CartItemsEntity } from '../entity';
+import { CartDetailEntity } from '../entity';
 
 export class ResCartDto {
   userId: string;
   totalAmount: number;
-  cartItems: CartItemsEntity[];
+  cartDetails: CartDetailEntity[];
 }

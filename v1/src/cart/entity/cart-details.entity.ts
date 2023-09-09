@@ -18,7 +18,7 @@ export class CartDetailEntity {
   quantity!: number;
 
   @Column({
-    name: 'amount_total',
+    name: 'total_amount',
     type: 'decimal',
     precision: 2,
     nullable: false,
@@ -51,7 +51,7 @@ export class CartDetailEntity {
   @JoinColumn({ name: 'cart_id' })
   cart!: CartEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.cartItems)
+  @ManyToOne(() => ProductEntity, (product) => product.cart_details)
   @JoinColumn({ name: 'product_id' })
   product!: ProductEntity;
 

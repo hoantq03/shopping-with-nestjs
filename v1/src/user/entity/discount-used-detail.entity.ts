@@ -45,15 +45,15 @@ export class DiscountUsedDetailEntity {
   //relations
   @ManyToOne(() => DiscountsEntity, (discount) => discount.discount_used_detail)
   @JoinColumn({ name: 'discount_id' })
-  discount: DiscountsEntity;
+  discount!: DiscountsEntity;
 
   @ManyToOne(() => UsersEntity, (user) => user.discount_used_detail)
   @JoinColumn({ name: 'user_id' })
-  user: UsersEntity;
+  user!: UsersEntity;
 
   @ManyToOne(() => OrderEntity, (order) => order.discount_used_detail)
   @JoinColumn({ name: 'order_id' })
-  order: OrderEntity;
+  order!: OrderEntity;
   // methods
   static createProductId(id?: string): string {
     return id

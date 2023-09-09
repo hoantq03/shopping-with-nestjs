@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AddressEntity } from './address.entity';
 import { DiscountUsedDetailEntity } from './discount-used-detail.entity';
 import { DiscountsEntity } from './discount.entity';
+import { InventoryEntity } from 'src/product/entity/inventories.entity';
 
 const USER_PREFIX = 'user_';
 
@@ -85,13 +86,6 @@ export class UsersEntity {
   status!: number;
 
   @Column({
-    type: 'character varying',
-    nullable: true,
-    name: 'default_address_id',
-  })
-  defaultAddressId?: string;
-
-  @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
     name: 'created_at',
@@ -117,13 +111,16 @@ export class UsersEntity {
   cart!: CartEntity;
 
   @OneToMany(() => ProductEntity, (products) => products.user)
-  products!: ProductEntity[];
+  products?: ProductEntity[];
 
   @OneToMany(() => OrderEntity, (orders) => orders.user)
-  orders!: OrderEntity[];
+  orders?: OrderEntity[];
 
   @OneToMany(() => AddressEntity, (addresses) => addresses.user)
-  addresses!: AddressEntity[];
+  addresses?: AddressEntity[];
+
+  @OneToMany(() => InventoryEntity, (inventory) => inventory.user)
+  inventories!: InventoryEntity[];
 
   @OneToMany(
     () => DiscountUsedDetailEntity,

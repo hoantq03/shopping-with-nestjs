@@ -1,6 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { OrderEntity } from './orders.entity';
+import { v4 as uuidv4 } from 'uuid';
 
+const SHIPPER_PREFIX = 'shiper_';
 @Entity('shippers')
 export class ShipperEntity {
   @PrimaryColumn({ type: 'character varying', name: 'id', nullable: false })
@@ -40,6 +42,13 @@ export class ShipperEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => OrderEntity, (orders) => orders.shipper)
-  orders?: OrderEntity[];
+  @OneToMany(() => OrderEntity, (orders) => orders.shipper, {
+    cascade: true,
+  })
+  orders: OrderEntity[];
+
+  // methods
+  static createInventoryId(id?: string): string {
+    return id ? id : `${SHIPPER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  }
 }

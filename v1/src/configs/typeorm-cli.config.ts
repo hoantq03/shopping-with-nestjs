@@ -13,6 +13,7 @@ import {
   CreateOrdersTable1694168652385,
   CreatePaymentDetailsTable1694168701944,
   CreatePaymentsTable1694168644040,
+  CreateOrderDetailsTable1694225557323,
 } from '../migrations';
 
 export default new DataSource({
@@ -35,5 +36,6 @@ export default new DataSource({
     CreateDiscountUsedDetailTable1694180808758,
     CreateInventoriesTable1694181294315,
     CreateElictronicsProductsTable1694183365886,
+    CreateOrderDetailsTable1694225557323,
   ],
 });

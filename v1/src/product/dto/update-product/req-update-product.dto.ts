@@ -1,43 +1,85 @@
-import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Min,
+} from 'class-validator';
 
 export class ReqUpdateProduct {
+  @IsNotEmpty()
+  @IsOptional({ always: false })
   @IsString()
-  @IsOptional({ always: false })
-  id: string;
+  name!: string;
 
+  @IsNotEmpty()
+  @IsOptional({ always: false })
   @IsString()
-  @IsOptional({ always: false })
-  name: string;
+  description!: string;
 
-  @IsString()
   @IsOptional({ always: false })
-  description: string;
-
-  @IsString()
-  @IsOptional({ always: false })
-  color: string;
-
-  @IsNumber()
-  @IsOptional({ always: false })
-  discount: number;
-
   @IsUrl()
-  @IsOptional({ always: false })
-  imageUrl: string;
+  imageUrl!: string;
 
   @IsNumber()
   @IsOptional({ always: false })
-  price: number;
+  @Min(0)
+  price!: number;
+
+  @IsNotEmpty()
+  @IsOptional({ always: false })
+  @IsString()
+  userId!: string;
+
+  @IsNotEmpty()
+  @IsOptional({ always: false })
+  @IsString()
+  type!: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsOptional({ always: false })
+  @Min(0)
+  stock!: number;
+
+  @IsNotEmpty()
+  @IsOptional({ always: false })
+  @IsString()
+  location!: string;
+
+  @IsNotEmpty()
+  @IsOptional({ always: false })
+  @IsString()
+  brand!: string;
 
   @IsNumber()
   @IsOptional({ always: false })
-  stock: number;
+  @Min(0)
+  high!: number;
 
-  @IsString()
+  @IsNumber()
   @IsOptional({ always: false })
-  categoryId: string;
+  @Min(0)
+  long!: number;
 
-  @IsString()
+  @IsNumber()
   @IsOptional({ always: false })
-  userId: string;
+  @Min(0)
+  wide!: number;
+
+  @IsNumber()
+  @IsOptional({ always: false })
+  @Min(0)
+  weight!: number;
+
+  @IsNumber()
+  @IsOptional({ always: false })
+  @Min(0)
+  warranty!: number;
+
+  @IsNotEmpty()
+  @IsOptional({ always: false })
+  @IsString()
+  warranty_type!: string;
 }

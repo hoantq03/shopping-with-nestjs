@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductEntity } from '../product.entity';
 
-const INVENTORY_PREFIX = 'electronics_';
+const ELECTRONICS_PREFIX = 'electronics_';
 
-@Entity('elecronics')
+@Entity('electronics')
 export class ElectronicsEntity {
   @PrimaryColumn({
     type: 'character varying',
@@ -30,13 +31,13 @@ export class ElectronicsEntity {
   })
   warranty_type!: string;
 
-  @Column({ type: 'integer', nullable: false, name: 'long' })
+  @Column({ type: 'integer', nullable: false, name: 'long_product' })
   long!: number;
 
-  @Column({ type: 'integer', nullable: false, name: 'wide' })
+  @Column({ type: 'integer', nullable: false, name: 'wide_product' })
   wide!: number;
 
-  @Column({ type: 'integer', nullable: false, name: 'high' })
+  @Column({ type: 'integer', nullable: false, name: 'high_product' })
   high!: number;
 
   @Column({ type: 'integer', nullable: false, name: 'weight_product' })
@@ -63,9 +64,14 @@ export class ElectronicsEntity {
   updatedBy?: string;
 
   //relations
+  @OneToOne(() => ProductEntity, (product) => product.category, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'product_id' })
+  product?: ProductEntity;
 
   // methods
-  static createProductId(id?: string): string {
-    return id ? id : `${INVENTORY_PREFIX}${new Date().getTime()}_${uuidv4()}`;
+  static createElectronicId(id?: string): string {
+    return id ? id : `${ELECTRONICS_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

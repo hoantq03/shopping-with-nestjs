@@ -22,6 +22,49 @@ export class AuthServices {
     private cartRepo: Repository<CartEntity>,
   ) {}
 
+  async signUp(props: RegisterUserDto): Promise<object> {
+    if (props.password !== props.confirmPassword) {
+      UserException.passwordNotMatch();
+    }
+    const userExist: UsersEntity | null =
+      await this.userServices.findUserByEmail(props.email);
+    if (userExist) {
+      UserException.userExist();
+    }
+    const userId: string = UsersEntity.createUserId();
+    props.password = await bcrypt.hash(
+      props.password,
+      Number.parseInt(process.env.SALT, 10),
+    );
+    // test
+
+    const userSignUp: UsersEntity = this.userRepo.create({
+      ...props,
+      id: userId,
+      status: UserStatus.ACTIVE,
+      orders: [],
+    });
+
+    const cartId = CartEntity.createCartId();
+    const cart = this.cartRepo.create({
+      id: cartId,
+      cartItems: [],
+      total_amount: 0,
+    });
+
+    await this.cartRepo.save(cart);
+    userSignUp.cart = cart;
+
+    await this.userRepo.save(userSignUp);
+
+    const user = new ResUserDto(userSignUp);
+    const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
+    const access_token = await this.jwtService.signAsync(payLoad);
+    return {
+      access_token,
+    };
+  }
+
   async signIn(email: string, password: string): Promise<ResLoginDto> {
     const user = await this.userServices.findUserByEmail(email);
     if (!user) {
@@ -33,50 +76,6 @@ export class AuthServices {
     }
     const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
     const access_token = await this.jwtService.signAsync(payLoad);
-    return {
-      access_token,
-    };
-  }
-
-  async signUp(props: RegisterUserDto): Promise<object> {
-    if (props.password !== props.confirmPassword) {
-      UserException.passwordNotMatch();
-    }
-    const userExist: UsersEntity | null =
-      await this.userServices.findUserByEmail(props.email);
-    if (userExist) {
-      UserException.userExist();
-    }
-
-    const userId: string = UsersEntity.createUserId();
-    props.password = await bcrypt.hash(
-      props.password,
-      Number.parseInt(process.env.SALT, 10),
-    );
-
-    // test
-    const cartId = CartEntity.createCartId();
-    const cart: CartEntity = this.cartRepo.create({
-      id: cartId,
-      amount_total: 0,
-    });
-    await this.cartRepo.save(cart);
-
-    const userSignUp: UsersEntity = this.userRepo.create({
-      ...props,
-
-      id: userId,
-      status: UserStatus.ACTIVE,
-      cart: cart,
-      orders: [],
-    });
-    await this.userRepo.save(userSignUp);
-
-    const user = new ResUserDto(userSignUp);
-    const payLoad: UserJwtPayload = { userId: user.id, email: user.email };
-
-    const access_token = await this.jwtService.signAsync(payLoad);
-
     return {
       access_token,
     };

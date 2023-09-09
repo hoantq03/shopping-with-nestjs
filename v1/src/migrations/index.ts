@@ -11,3 +11,4 @@ export * from './1694168701944-create-paymentDetails-table';
 export * from './1694180808758-create-discountUsedDetail-table';
 export * from './1694181294315-create-inventories-table';
 export * from './1694183365886-create-elictronicsProducts-table';
+export * from './1694225557323-create-orderDetails-table';

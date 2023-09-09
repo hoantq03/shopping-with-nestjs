@@ -43,7 +43,6 @@ export class UserServices {
     });
     return user ? user : null;
   }
-
   async findUserById(id: string): Promise<UsersEntity | null> {
     const user: UsersEntity = await this.userRepo.findOne({
       where: { id },
@@ -146,11 +145,7 @@ export class UserServices {
   }
 
   async getAllAddress(): Promise<ResAddressDto[]> {
-    const result = await this.addressRepo.find({
-      where: {},
-      relations: ['user'],
-    });
-
+    const result = await this.addressRepo.find();
     const resAddress: ResAddressDto[] = [];
     result.forEach((res) => {
       resAddress.push(new ResAddressDto(res));
@@ -161,7 +156,6 @@ export class UserServices {
   async getAddress(userId: string): Promise<ResAddressDto[]> {
     const result = await this.addressRepo.find({
       where: { user: { id: userId } },
-      relations: ['user'],
     });
 
     const resAddress: ResAddressDto[] = [];
@@ -169,6 +163,11 @@ export class UserServices {
       resAddress.push(new ResAddressDto(res));
     });
     return resAddress;
+  }
+
+  async getOneAddress(id: string): Promise<ResAddressDto> {
+    const result = await this.addressRepo.findOne({ where: { id } });
+    return new ResAddressDto(result);
   }
 
   async deleteAddress(addressId: string, userId: string): Promise<object> {
