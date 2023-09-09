@@ -44,7 +44,7 @@ export class ProductController {
   async getAllProductsWithCategory(
     @Query() query: any,
   ): Promise<ResProductDto[]> {
-    const page = query.page ?? 0;
+    const page = query.page ?? 1;
     return this.productServices.getAllProducts(page);
   }
 
