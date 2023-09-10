@@ -41,7 +41,7 @@ export class ReqCreateDiscountDto {
 
   @IsNumber()
   @Min(0)
-  number_od_use!: number;
+  number_of_use!: number;
 
   @IsOptional({ always: false })
   @IsNumber()
