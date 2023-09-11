@@ -100,7 +100,7 @@ export class DiscountsEntity {
   )
   discount_used_detail: DiscountUsedDetailEntity[];
   // methods
-  static createUserId(id?: string): string {
+  static createDiscountId(id?: string): string {
     return id ? id : `${DISCOUNT_PREFIX}${new Date().getTime()}_${uuidv4()}`;
   }
 }

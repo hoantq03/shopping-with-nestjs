@@ -18,6 +18,6 @@ export class DiscountsController {
 
   @Post('/createDiscount')
   async createDiscount(@Body() body: ReqCreateDiscountDto) {
-    return this.discountService.createDiscount();
+    return this.discountService.createDiscount(body);
   }
 }
