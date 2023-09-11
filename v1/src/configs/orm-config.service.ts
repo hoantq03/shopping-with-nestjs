@@ -16,7 +16,7 @@ import {
   DiscountUsedDetailEntity,
   UsersEntity,
 } from '../user/entity';
-import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
+import { DiscountsEntity } from 'src/discounts/entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

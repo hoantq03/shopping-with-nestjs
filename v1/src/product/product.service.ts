@@ -7,7 +7,6 @@ import { ReqAddProduct, ReqUpdateProduct, ResProductDto } from './dto';
 import { ElectronicsEntity, InventoryEntity } from './entity';
 import { ProductEntity } from './entity/product.entity';
 import { ProductType } from './type';
-import { distinct } from 'rxjs';
 
 @Injectable()
 export class ProductService {

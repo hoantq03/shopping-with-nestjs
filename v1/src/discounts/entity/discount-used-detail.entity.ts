@@ -55,7 +55,7 @@ export class DiscountUsedDetailEntity {
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
   // methods
-  static createProductId(id?: string): string {
+  static createDiscountUsedDetailId(id?: string): string {
     return id
       ? id
       : `${DISCOUNT_USED_DETAIL_PREFIX}${new Date().getTime()}_${uuidv4()}`;
