@@ -1,32 +1,26 @@
-import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { OrderStatus } from 'src/common';
 
 export class ReqCreateOrder {
   @IsString()
   @IsOptional({ always: false })
-  orderId?: string;
-
-  @IsNumber()
-  @Min(0)
-  discount!: number;
-
-  @IsEnum(OrderStatus)
-  status!: OrderStatus;
-
-  @IsNumber()
-  @Min(0)
-  tax!: number;
-
-  @IsNumber()
-  @Min(0)
-  shipCost!: number;
+  id?: string;
 
   @IsString()
-  shipperId!: string;
+  @IsOptional({ always: false })
+  shipper_id?: string;
 
   @IsString()
   userId!: string;
 
   @IsString()
-  addressId!: string;
+  address_id!: string;
+
+  @IsEnum(OrderStatus)
+  @IsOptional({ always: false })
+  status?: OrderStatus;
+
+  @IsString()
+  @IsOptional({ always: false })
+  discount_id?: string;
 }

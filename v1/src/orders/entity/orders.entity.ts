@@ -8,7 +8,11 @@ import {
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { ResUserDto } from 'src/user/dto';
-import { DiscountUsedDetailEntity, UsersEntity } from 'src/user/entity';
+import {
+  AddressEntity,
+  DiscountUsedDetailEntity,
+  UsersEntity,
+} from 'src/user/entity';
 import { OrderDetailEntity } from './order-detail.entity';
 import { ShipperEntity } from './shippers.entity';
 import { DiscountsEntity } from 'src/discounts/entity/discount.entity';
@@ -43,7 +47,7 @@ export class OrderEntity {
   @Column({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
-    name: 'billDate',
+    name: 'bill_date',
     nullable: true,
   })
   bill_date?: Date;
@@ -107,6 +111,9 @@ export class OrderEntity {
   @JoinColumn({ name: 'discount_id' })
   discount!: DiscountsEntity;
 
+  @ManyToOne(() => AddressEntity, (address) => address.orders)
+  @JoinColumn({ name: 'address_id' })
+  address!: AddressEntity;
   //methods
   static createOrderId(id?: string): string {
     return id ? id : `${ORDER_PREFIX}${new Date().getTime()}_${uuidv4()}`;
