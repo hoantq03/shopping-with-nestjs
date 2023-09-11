@@ -17,7 +17,7 @@ export class CreateInventoriesTable1694181294315 implements MigrationInterface {
                 "updated_by" character varying NOT NULL DEFAULT '1',
                 
                 CONSTRAINT "PK_b9fb1c6a3fb0c84167433f907fc" PRIMARY KEY ("id"),
-                CONSTRAINT "FK_f9fb85f04cf306b4161cc37a7b9" FOREIGN KEY ("product_id") REFERENCES products("id")
+                CONSTRAINT "FK_f9fb85f04cf306b4161cc37a7b9" FOREIGN KEY ("product_id") REFERENCES products("id"),
                 CONSTRAINT "FK_f9f4cb85f0c37a7b9f306b4161c" FOREIGN KEY ("user_id") REFERENCES users("id")
                 );
                 `);

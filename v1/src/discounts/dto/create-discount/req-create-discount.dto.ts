@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
@@ -36,12 +37,17 @@ export class ReqCreateDiscountDto {
   start_date?: Date;
 
   @IsDate()
+  @Type(() => Date)
   @MinDate(new Date())
   end_date!: Date;
 
   @IsNumber()
   @Min(0)
   number_of_use!: number;
+
+  @IsNumber()
+  @Min(0)
+  value!: number;
 
   @IsOptional({ always: false })
   @IsNumber()

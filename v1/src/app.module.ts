@@ -5,11 +5,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { DatabaseModule } from './configs';
-import { DiscountModule } from './discounts/discount.module';
-import { DiscountsService } from './discounts/discounts.service';
 import { OrdersModule } from './orders/orders.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+import { DiscountsModule } from './discounts/discounts.module';
 
 @Module({
   imports: [
@@ -20,9 +19,9 @@ import { UserModule } from './user/user.module';
     ProductModule,
     OrdersModule,
     CartModule,
-    DiscountModule,
+    DiscountsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, DiscountsService],
+  providers: [AppService],
 })
 export class AppModule {}
