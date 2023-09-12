@@ -54,12 +54,16 @@ export class InventoryEntity {
 
   //relations
   @OneToOne(() => ProductEntity, (product) => product.inventory, {
-    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'product_id' })
   product?: ProductEntity;
 
-  @ManyToOne(() => UsersEntity, (user) => user.inventories)
+  @ManyToOne(() => UsersEntity, (user) => user.inventories, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
   // methods

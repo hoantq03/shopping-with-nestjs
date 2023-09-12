@@ -14,21 +14,21 @@ export class OrderDetailEntity {
   id!: string;
 
   @Column({
-    type: 'decimal',
-    name: 'price',
-    precision: 2,
-    default: 0,
-    nullable: false,
-  })
-  price!: number;
-
-  @Column({
     type: 'integer',
     name: 'quantity',
     default: 0,
     nullable: false,
   })
   quantity!: number;
+
+  @Column({
+    type: 'decimal',
+    precision: 2,
+    name: 'total_amount',
+    default: 0,
+    nullable: false,
+  })
+  total_amount!: number;
 
   @Column({
     type: 'timestamptz',
@@ -50,12 +50,18 @@ export class OrderDetailEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  // relations
-  @ManyToOne(() => OrderEntity, (order) => order.orderDetails)
+  //relations
+  @ManyToOne(() => OrderEntity, (order) => order.orderDetails, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
 
-  @ManyToOne(() => ProductEntity, (product) => product.order_details)
+  @ManyToOne(() => ProductEntity, (product) => product.order_details, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'product_id' })
   product!: ProductEntity;
 

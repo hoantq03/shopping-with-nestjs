@@ -59,12 +59,18 @@ export class AddressEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  // relations
-  @ManyToOne(() => UsersEntity, (user) => user.addresses)
+  //relations
+  @ManyToOne(() => UsersEntity, (user) => user.addresses, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
-  @OneToMany(() => OrderEntity, (orders) => orders.address)
+  @OneToMany(() => OrderEntity, (orders) => orders.address, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
   orders?: OrderEntity[];
   //methods
   static createAddressId(id?: string): string {

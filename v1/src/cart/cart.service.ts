@@ -65,6 +65,7 @@ export class CartService {
       await this.cartDetailRepo.save(cartItemSave);
       product.inventory.stock -= props.quantity;
     }
+
     await this.productRepo.save(product);
     await this.cartRepo.save(cart);
 
@@ -88,7 +89,7 @@ export class CartService {
     const cart: ResCartDto = {
       userId: userId,
       cartDetails: cartItems,
-      totalAmount: totalAmount,
+      total_amount: totalAmount,
     };
     return cart;
   }
@@ -116,5 +117,25 @@ export class CartService {
       message: 'remove product in cart successfully',
       status: 200,
     };
+  }
+
+  async getFullCart(userId: string): Promise<CartEntity> {
+    const user: UsersEntity = await this.userServices.findUserById(userId);
+    const cartItems: CartDetailEntity[] = await this.cartDetailRepo.find({
+      where: { cart: { id: user.cart.id } },
+      relations: ['product'],
+    });
+    let totalAmount = 0;
+    cartItems.forEach((cartItem) => {
+      totalAmount += +cartItem.total_amount;
+    });
+    const cart: CartEntity = {
+      id: user.cart.id,
+      total_amount: totalAmount,
+      cartItems,
+      user,
+    };
+
+    return cart;
   }
 }

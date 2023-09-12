@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { RoleUser } from 'src/common';
+import { RoleUser, UserStatus } from 'src/common';
 import { AuthException } from 'src/exception';
 import { UsersEntity } from 'src/user/entity';
 import { UserServices } from 'src/user/user.services';
@@ -30,7 +30,8 @@ export class AdminGuard extends AuthGuard('jwt') {
         payLoad.email,
       );
       request.body.userId = payLoad.userId;
-      if (user.role === RoleUser.ADMIN) return true;
+      if (user.role === RoleUser.ADMIN && user.status === UserStatus.ACTIVE)
+        return true;
     } catch (e) {
       throw AuthException.unauthorized();
     }

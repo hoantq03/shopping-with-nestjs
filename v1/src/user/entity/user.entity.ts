@@ -105,8 +105,10 @@ export class UsersEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  // relations
-  @OneToOne(() => CartEntity)
+  //relations
+  @OneToOne(() => CartEntity, {
+    cascade: true,
+  })
   @JoinColumn({ name: 'cart_id' })
   cart!: CartEntity;
 

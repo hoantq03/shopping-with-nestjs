@@ -27,7 +27,7 @@ export class UserController {
   constructor(private readonly userService: UserServices) {}
 
   @UseGuards(AdminGuard)
-  @Post('/getAllUsers')
+  @Get('/getAllUsers')
   async getAllUser(@Body() body: ReqFindAllUserDto): Promise<ResUserDto[]> {
     return this.userService.getAllUser(body);
   }

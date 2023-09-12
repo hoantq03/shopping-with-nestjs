@@ -85,9 +85,12 @@ export class DiscountsEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  // relations
+  //relations
 
-  @ManyToOne(() => UsersEntity, (user) => user.discounts)
+  @ManyToOne(() => UsersEntity, (user) => user.discounts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn([{ name: 'user_id' }])
   user: UsersEntity;
 
@@ -97,6 +100,9 @@ export class DiscountsEntity {
   @OneToMany(
     () => DiscountUsedDetailEntity,
     (discount_used_detail) => discount_used_detail.discount,
+    {
+      cascade: true,
+    },
   )
   discount_used_detail: DiscountUsedDetailEntity[];
   // methods

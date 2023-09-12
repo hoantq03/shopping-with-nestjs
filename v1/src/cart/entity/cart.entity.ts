@@ -46,15 +46,11 @@ export class CartEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.cart, {
-    cascade: true,
-  })
-  cartItems: CartDetailEntity[];
+  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.cart)
+  cartItems?: CartDetailEntity[];
 
-  @OneToOne(() => UsersEntity, {
-    cascade: true,
-  })
-  user: UsersEntity;
+  @OneToOne(() => UsersEntity)
+  user?: UsersEntity;
 
   //methods
   static createCartId(id?: string): string {

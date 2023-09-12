@@ -89,29 +89,46 @@ export class OrderEntity {
   @Column({ name: 'updated_by', default: () => '1' })
   updatedBy?: string;
 
-  // relations
-  @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders)
+  //relations
+  @ManyToOne(() => ShipperEntity, (shipper) => shipper.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'shipper_id' })
   shipper?: ShipperEntity;
 
-  @ManyToOne(() => UsersEntity, (user) => user.orders)
+  @ManyToOne(() => UsersEntity, (user) => user.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: ResUserDto;
 
-  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order)
+  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.order, {
+    cascade: ['insert', 'remove', 'update'],
+  })
   orderDetails!: OrderDetailEntity[];
 
   @OneToMany(
     () => DiscountUsedDetailEntity,
     (discount_used_detail) => discount_used_detail.order,
+    {
+      cascade: ['insert', 'remove', 'update'],
+    },
   )
   discount_used_detail!: DiscountUsedDetailEntity[];
 
-  @ManyToOne(() => DiscountsEntity, (discount) => discount.orders)
+  @ManyToOne(() => DiscountsEntity, (discount) => discount.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'discount_id' })
   discount!: DiscountsEntity;
 
-  @ManyToOne(() => AddressEntity, (address) => address.orders)
+  @ManyToOne(() => AddressEntity, (address) => address.orders, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'address_id' })
   address!: AddressEntity;
   //methods

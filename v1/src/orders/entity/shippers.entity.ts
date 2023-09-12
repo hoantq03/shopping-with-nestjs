@@ -43,7 +43,8 @@ export class ShipperEntity {
 
   //relations
   @OneToMany(() => OrderEntity, (orders) => orders.shipper, {
-    cascade: true,
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
   })
   orders: OrderEntity[];
 

@@ -43,15 +43,28 @@ export class DiscountUsedDetailEntity {
   updatedBy?: string;
 
   //relations
-  @ManyToOne(() => DiscountsEntity, (discount) => discount.discount_used_detail)
+  @ManyToOne(
+    () => DiscountsEntity,
+    (discount) => discount.discount_used_detail,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'discount_id' })
   discount!: DiscountsEntity;
 
-  @ManyToOne(() => UsersEntity, (user) => user.discount_used_detail)
+  @ManyToOne(() => UsersEntity, (user) => user.discount_used_detail, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
-  @ManyToOne(() => OrderEntity, (order) => order.discount_used_detail)
+  @ManyToOne(() => OrderEntity, (order) => order.discount_used_detail, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
   @JoinColumn({ name: 'order_id' })
   order!: OrderEntity;
   // methods

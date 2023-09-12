@@ -102,4 +102,8 @@ export class DiscountsService {
       data: discount,
     };
   }
+
+  async getAllDiscounts(): Promise<DiscountsEntity[]> {
+    return this.discountRepo.find({});
+  }
 }

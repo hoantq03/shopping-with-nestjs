@@ -65,7 +65,8 @@ export class ElectronicsEntity {
 
   //relations
   @OneToOne(() => ProductEntity, (product) => product.category, {
-    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'product_id' })
   product?: ProductEntity;

@@ -20,6 +20,7 @@ import { CartModule } from 'src/cart/cart.module';
       DiscountsEntity,
       DiscountUsedDetailEntity,
       CartDetailEntity,
+      CartEntity,
     ]),
     UserModule,
     ProductModule,

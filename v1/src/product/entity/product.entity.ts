@@ -74,20 +74,33 @@ export class ProductEntity {
   updatedBy?: string;
 
   //relations
-  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.product)
+  @OneToMany(() => OrderDetailEntity, (orderDetails) => orderDetails.product, {
+    cascade: true,
+  })
   order_details?: OrderDetailEntity[];
 
-  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.product)
+  @OneToMany(() => CartDetailEntity, (cartItems) => cartItems.product, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   cart_details?: CartDetailEntity[];
 
-  @ManyToOne(() => UsersEntity, (user) => user.products)
+  @ManyToOne(() => UsersEntity, (user) => user.products, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user!: UsersEntity;
 
-  @OneToOne(() => InventoryEntity, (inventory) => inventory.product)
+  @OneToOne(() => InventoryEntity, (inventory) => inventory.product, {
+    cascade: true,
+  })
   inventory?: InventoryEntity;
 
-  @OneToOne(() => ElectronicsEntity, (category) => category.product)
+  @OneToOne(() => ElectronicsEntity, (category) => category.product, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
   category?: ElectronicsEntity;
 
   // methods
