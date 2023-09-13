@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartDetailEntity, CartEntity } from 'src/cart/entity';
 import { DiscountsEntity } from 'src/discounts/entity';
-import { DataSource, Repository } from 'typeorm';
+import { Connection, DataSource, Repository } from 'typeorm';
 import { CartService } from '../cart/cart.service';
 import { DiscountStatus, DiscountType, OrderStatus } from '../common';
 import {
@@ -42,91 +42,99 @@ export class OrdersService {
     @InjectRepository(DiscountUsedDetailEntity)
     private discountUsedRepo: Repository<DiscountUsedDetailEntity>,
     private dataSource: DataSource,
-    @InjectRepository(CartEntity)
-    private cartRepo: Repository<CartEntity>,
   ) {}
 
   async createOrder(orderProps: ReqCreateOrder): Promise<any> {
-    const user: UsersEntity = await this.userServices.findUserById(
-      orderProps.userId,
-    );
-    if (!user) UserException.userNotFound();
-    user.orders = [];
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    // get all product of user from cart
-    const cart: CartEntity = await this.cartServices.getFullCart(
-      orderProps.userId,
-    );
-    if (!cart) CartException.cartNotFound();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    const discount = await this.discountRepo.findOne({
-      where: { id: orderProps.discount_id },
-    });
-    if (!discount) {
-      throw DiscountException.discountNotFound();
-    }
-    const address: AddressEntity = await this.userServices.findAddressById(
-      orderProps.address_id,
-    );
-    if (!address) AddressException.addressNotFound();
+    try {
+      const user: UsersEntity = await this.userServices.findUserById(
+        orderProps.userId,
+      );
+      if (!user) UserException.userNotFound();
+      user.orders = [];
 
-    // transfer products from cart to order detail
-    const orderId: string = OrderEntity.createOrderId();
-    const order: OrderEntity = this.orderRepo.create({
-      id: orderId,
-      bill_date: new Date(),
-      status: OrderStatus.PREPARING,
-      user: new ResUserDto(user),
-      discount,
-      address,
-    });
+      // get all product of user from cart
+      const cart: CartEntity = await this.cartServices.getFullCart(
+        orderProps.userId,
+      );
+      if (!cart) CartException.cartNotFound();
 
-    // pre save
-    await this.orderRepo.save(order);
-
-    const orderDetailsList: OrderDetailEntity[] =
-      await this.transferProductFromCartToOrderDetail(cart, orderId);
-
-    order.orderDetails = orderDetailsList;
-    order.status = OrderStatus.ORDERED;
-
-    const { total_order_raw } = await this.orderDetailRepo
-      .createQueryBuilder('order_details')
-      .select('SUM(order_details.total_amount)', 'total_order_raw')
-      .getRawOne();
-
-    if (
-      total_order_raw > +order.discount.min_order_value &&
-      order.discount &&
-      order.discount.end_date > new Date() &&
-      order.discount.number_of_use > 0 &&
-      order.discount.status === DiscountStatus.AVAILABLE
-    ) {
-      if (order.discount.type === DiscountType.FIXED_NUMBER) {
-        order.total_amount = total_order_raw - order.discount.value;
-        order.discount.number_of_use--;
-      } else {
-        order.total_amount =
-          (total_order_raw * (100 - order.discount.value)) / 100;
-        order.discount.number_of_use--;
+      const discount = await this.discountRepo.findOne({
+        where: { id: orderProps.discount_id },
+      });
+      if (!discount) {
+        throw DiscountException.discountNotFound();
       }
-    } else {
-      order.total_amount = total_order_raw;
+      const address: AddressEntity = await this.userServices.findAddressById(
+        orderProps.address_id,
+      );
+      if (!address) AddressException.addressNotFound();
+
+      // transfer products from cart to order detail
+      const orderId: string = OrderEntity.createOrderId();
+      const order: OrderEntity = this.orderRepo.create({
+        id: orderId,
+        bill_date: new Date(),
+        status: OrderStatus.PREPARING,
+        user: new ResUserDto(user),
+        discount,
+        address,
+      });
+
+      // pre save
+      await this.orderRepo.save(order);
+
+      const orderDetailsList: OrderDetailEntity[] =
+        await this.transferProductFromCartToOrderDetail(cart, orderId);
+
+      order.orderDetails = orderDetailsList;
+      order.status = OrderStatus.ORDERED;
+      const { total_order_raw } = await this.orderDetailRepo
+        .createQueryBuilder('order_details')
+        .select('SUM(order_details.total_amount)', 'total_order_raw')
+        .getRawOne();
+
+      if (
+        total_order_raw > +order.discount.min_order_value &&
+        order.discount &&
+        order.discount.end_date > new Date() &&
+        order.discount.number_of_use > 0 &&
+        order.discount.status === DiscountStatus.AVAILABLE
+      ) {
+        if (order.discount.type === DiscountType.FIXED_NUMBER) {
+          order.total_amount = total_order_raw - order.discount.value;
+          order.discount.number_of_use--;
+        } else {
+          order.total_amount =
+            (total_order_raw * (100 - order.discount.value)) / 100;
+          order.discount.number_of_use--;
+        }
+      } else {
+        order.total_amount = total_order_raw;
+      }
+
+      const discountUsed = this.discountUsedRepo.create({
+        id: DiscountUsedDetailEntity.createDiscountUsedId(),
+        discount,
+        order,
+        used_date: new Date(),
+        user,
+      });
+      await queryRunner.manager.save(discountUsed);
+      await queryRunner.manager.save(order);
+
+      // // delete all product from cart
+      await this.cartDetailRepo.delete({ cart: { id: user.cart.id } });
+      await queryRunner.commitTransaction();
+      return order;
+    } catch (error) {
+      console.error(error);
+      await queryRunner.rollbackTransaction();
     }
-
-    const discountUsed = this.discountUsedRepo.create({
-      id: DiscountUsedDetailEntity.createDiscountUsedId(),
-      discount,
-      order,
-      used_date: new Date(),
-      user,
-    });
-    await this.discountUsedRepo.save(discountUsed);
-    await this.orderRepo.save(order);
-
-    // // delete all product from cart
-    await this.cartDetailRepo.delete({ cart: { id: user.cart.id } });
-    return order;
   }
 
   async transferProductFromCartToOrderDetail(

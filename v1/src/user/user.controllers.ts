@@ -54,19 +54,16 @@ export class UserController {
     return this.userService.updateUser(body);
   }
 
-  @UseGuards(CustomerGuard)
   @Post('/addAddress')
   async addAddress(@Body() body: ReqAddAddress): Promise<ResAddressDto> {
     return this.userService.addAddress(body);
   }
 
-  @UseGuards(AdminGuard)
   @Get('/getAllAddress')
   async getAllAddress(): Promise<ResAddressDto[]> {
     return this.userService.getAllAddress();
   }
 
-  @UseGuards(CustomerGuard)
   @Get('/getAddress')
   async getAddress(@Body() body: any): Promise<ResAddressDto[]> {
     const { userId } = body;
@@ -74,7 +71,6 @@ export class UserController {
   }
 
   // confused
-  @UseGuards(CustomerGuard)
   @Delete('/deleteAddress/:id')
   async deleteAddress(@Param() param: any, @Body() body: any): Promise<object> {
     const addressId: string = param.id;
@@ -83,7 +79,6 @@ export class UserController {
   }
 
   //  /:id
-  @UseGuards(CustomerGuard)
   @Get('/getAddress/:id')
   getById(@Param('id') id: string): Promise<ResAddressDto> {
     return this.userService.getOneAddress(id);

@@ -49,10 +49,9 @@ export class ReqCreateDiscountDto {
   @Min(0)
   value!: number;
 
-  @IsOptional({ always: false })
   @IsNumber()
   @Min(0)
-  min_order_value?: number;
+  min_order_value!: number;
 
   @IsEnum(DiscountStatus)
   @IsNotEmpty()
